@@ -1,0 +1,88 @@
+.courseSuggestionForm {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.10), 0 1.5px 6px rgba(15, 23, 42, 0.08);
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 480px;
+  margin: 40px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.courseFormTitle {
+  color: #1e293b;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.courseForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.courseFormLabel {
+  font-size: 1rem;
+  color: #334155;
+  margin-bottom: 0.2rem;
+  font-weight: 500;
+}
+
+.courseFormInput,
+.courseFormTextarea {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f8fafc;
+  color: #1e293b;
+  transition: border 0.2s;
+  resize: none;
+  box-sizing: border-box;
+}
+
+.courseFormInput:focus,
+.courseFormTextarea:focus {
+  border-color: #6366f1;
+  outline: none;
+  background: #fff;
+}
+
+.courseFormTextarea {
+  min-height: 90px;
+  max-height: 200px;
+}
+
+.courseFormButton[type="submit"] {
+  margin-top: 0.5rem;
+  padding: 0.8rem 0;
+  background: linear-gradient(90deg, #6366f1 0%, #0ea5e9 100%);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
+  transition: background 0.2s, transform 0.1s;
+}
+
+.courseFormButton[type="submit"]:hover {
+  background: linear-gradient(90deg, #4f46e5 0%, #0284c7 100%);
+  transform: translateY(-2px) scale(1.03);
+}
+
+@media (max-width: 500px) {
+  .courseSuggestionForm {
+    padding: 1.2rem 0.5rem;
+    max-width: 98vw;
+  }
+  .courseSuggestionForm h2 {
+    font-size: 1.1rem;
+  }
+}

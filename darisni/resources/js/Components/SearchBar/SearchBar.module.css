@@ -1,0 +1,132 @@
+.Container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    background-color: #ff8f0f;
+    color: white;
+    width: 50%;
+    height: 110px;
+    border-radius: 10px;
+    position: absolute;
+    bottom: -85px;
+}
+
+h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.Description {
+    color: #fff;
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.SearchBar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 5px;
+}
+
+.SearchBar input {
+    width: 80%;
+    padding: 10px;
+    color: white;
+    border: 1px solid white;
+    border-radius: 20px;
+    background: transparent;
+}
+
+.SearchBar input:focus {
+    outline: none;
+}
+
+.SearchBar input::placeholder {
+    color: white;
+    opacity: 0.8;
+    font-style: italic;
+    font-size: 1rem;
+}
+
+.SearchBar button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 20px;
+    background-color: #002246;
+    color: white;
+    cursor: pointer;
+    width: 20%;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.SearchBar button:hover {
+    background-color: #004080;
+}
+
+.SearchBar button:active {
+    background-color: #001f33;
+    transform: scale(0.98);
+}
+
+.NoResults {
+    display: none;
+    color: #efefef;
+    font-size: 1.5rem;
+    margin-top: 10px;
+    text-align: center;
+    font-style: italic;
+}
+
+@media (max-width: 900px) {
+    .Container {
+        width: 80%;
+        padding: 20px;
+        height: auto;
+        bottom: -40px;
+    }
+    .SearchBar input {
+        width: 70%;
+        font-size: 0.95rem;
+        padding: 8px;
+    }
+    .SearchBar button {
+        width: 30%;
+        font-size: 0.95rem;
+        padding: 8px 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    .Container {
+        width: 80%;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    .Description {
+        font-size: 0.95rem;
+    }
+
+    .SearchBar input {
+        width: 70%;
+        font-size: 0.9rem;
+        padding: 6px;
+    }
+
+    .SearchBar button {
+        width: 30%;
+        font-size: 0.9rem;
+        padding: 6px 8px;
+    }
+
+    .NoResults {
+        font-size: 1.1rem;
+    }
+}

@@ -1,0 +1,281 @@
+.coursesContainer {
+    background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 25%, #00d2ff 50%, #928dab 75%, #1e3c72 100%);
+    background-attachment: fixed;
+    background-size: 400% 400%;
+    min-height: 100vh;
+    font-family: 'Outfit', sans-serif;
+    animation: gradientShift 15s ease infinite;
+    padding: 0;
+    margin: 0;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.loaderWrapper {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transform: none;
+    transition:
+        opacity 0.6s cubic-bezier(.68,-0.55,.27,1.55),
+        visibility 0.6s;
+    visibility: visible;
+}
+
+.pageTitle {
+    text-align: center;
+    font-family: 'Outfit', sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 40px;
+    position: relative;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 30%, #ffffff 50%, #e9ecef 70%, #ffffff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.pageTitle:hover {
+    transform: translateY(-2px);
+    transition: transform 0.3s ease;
+    animation-duration: 1s;
+}
+
+.filterSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 40px;
+    padding: 20px;
+    position: relative;
+    z-index: 10;
+}
+
+.filterSubject,
+.filterSemester {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 11; 
+}
+
+.filterSubject:hover,
+.filterSemester:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.3);
+}
+
+.filterLabel {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.cartToggleButton {
+    position: fixed;
+    top: 40%;
+    right: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    padding: 15px;
+    border: none;
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cartToggleButton:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+.cartToggleButton img {
+    width: 30px;
+    height: 30px;
+}
+
+.cartOpen {
+    right: 340px;
+    transition: right 0.3s ease;
+}
+
+.cartOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+}
+
+.coursesGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+
+.aboutSection {
+    margin-top: 40px;
+}
+
+.noCourses {
+    width: 100%;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 40px 0;
+    padding: 24px 0;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px 0 rgba(58, 123, 213, 0.15);
+    letter-spacing: 1px;
+    animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+
+@media (max-width: 768px) {
+    .filterSection {
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px;
+    }
+
+    .filterSubject,
+    .filterSemester {
+        width: 100%;
+        max-width: 300px;
+        position: relative;
+    }
+
+    .filterSelect {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .filterLabel {
+        font-size: 1rem;
+    }
+
+    .pageTitle {
+        font-size: 2.5rem;
+    }
+
+    .semesterPushDown {
+        margin-top: 200px;
+        transition: margin-top 0.3s;
+    }
+}
+
+@media (max-width: 480px) {
+    .filterSection {
+        padding: 10px;
+        margin-bottom: 30px;
+    }
+
+    .filterSubject,
+    .filterSemester {
+        padding: 15px;
+    }
+
+    .filterSelect {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        padding-right: 40px;
+    }
+
+    .pageTitle {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .cartToggleButton.cartOpen {
+        right: 275px;
+    }
+}
+
+@media (max-width: 320px) {
+    .filterSection {
+        padding: 20px;
+        z-index: 1001;
+    }
+
+    .filterSubject,
+    .filterSemester {
+        padding: 10px;
+        z-index: 1002;
+    }
+
+    .filterSelect {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        padding-right: 40px;
+    }
+
+    .cartToggleButton {
+        z-index: 10;
+    }
+
+    .pageTitle {
+        font-size: 2rem;
+    }
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}

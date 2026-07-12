@@ -1,0 +1,612 @@
+.tutorInfoContent {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    position: relative;
+}
+
+.tutorInfoContainer {
+    display: flex;
+    gap: 30px;
+    position: relative;
+}
+
+.tutorProfileContainer {
+    position: absolute;
+    top: 90px;
+    left: 30px;
+    z-index: 10;
+}
+
+.tutorDetails {
+    width: 100%;
+}
+
+.tutorDetailsHeader {
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    background: linear-gradient(135deg, #667eea 0%, #10234c 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.tutorDetailsHeader::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    opacity: 0.3;
+}
+
+.backButton button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    z-index: 2;
+}
+
+.backButton button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.tutorDetailsHeaderDetails {
+    padding: 100px 40px 20px 350px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    position: relative;
+    z-index: 1;
+}
+
+.tutorDetailsHeaderDetails h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.tutorDetailsHeaderDetails p {
+    font-size: 1.3rem;
+    margin: 0;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+.tutorDetailsBody {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    padding: 40px 40px 40px 30px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    gap: 30px;
+}
+
+/* Padding Div */
+.paddingDiv {
+    padding-left: 350px;
+}
+
+/* Basic Info Section */
+.joinedDateContainer {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 15px;
+    border: 1px solid #dee2e6;
+}
+
+.joinedDate {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    color: #495057;
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Stats Section */
+.tutorStats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.statCard {
+    background: linear-gradient(135deg, #667eea 0%, #10234c 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.statCard:hover {
+    transform: translateY(-5px);
+}
+
+.statNumber {
+    font-size: 2.2rem;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.statLabel {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* noPadding Section */
+.noPadding {
+    padding-left: 30px;
+}
+
+/* Courses Section */
+.coursesSection {
+    margin-top: 100px;
+    margin-bottom: 30px;
+}
+
+.sectionTitle {
+    font-size: 1.8rem;
+    color: #10234c;
+    margin-bottom: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sectionTitle::before {
+    content: '';
+    width: 4px;
+    height: 30px;
+    background: linear-gradient(135deg, #667eea 0%, #10234c 100%);
+    border-radius: 2px;
+}
+
+.coursesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.courseCard {
+    background: white;
+    border: 2px solid #e9ecef;
+    padding: 20px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.courseCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(135deg, #667eea 0%, #10234c 100%);
+}
+
+.courseCard:hover {
+    border-color: #667eea;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+}
+
+.courseName {
+    font-weight: 600;
+    color: #495057;
+    font-size: 1.1rem;
+}
+
+/* Private Courses Section */
+.privateCoursesSection {
+    margin-bottom: 30px;
+}
+
+.privateCoursesSection h3 {
+    font-size: 1.5rem;
+    color: #10234c;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.privateCoursesList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.privateCoursesList li {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #6c757d;
+    transition: all 0.3s ease;
+}
+
+.privateCoursesList li:hover {
+    background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+
+
+/* Tutor Bio Section */
+.bioSection {
+    margin-bottom: 0;
+}
+
+.bioSection h3 {
+    font-size: 1.5rem;
+    color: #10234c;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.bioText {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #dee2e6;
+    font-size: 1rem;
+    color: #6c757d;
+    line-height: 1.6;
+}
+
+/* Contact Section */
+.contactSection {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid #dee2e6;
+}
+
+.contactButtons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.contactBtn {
+    flex: 1;
+    min-width: 150px;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.whatsappBtn {
+    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+    color: white;
+}
+
+.emailBtn {
+    background: linear-gradient(135deg, #667eea 0%, #10234c 100%);
+    color: white;
+}
+
+.bookBtn {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+}
+
+.rateBtn {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+}
+
+.contactBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Availability Section */
+.availabilitySection {
+    margin-bottom: 30px;
+}
+
+.availabilityGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.availabilityCard {
+    background: white;
+    border: 2px solid #e9ecef;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.availabilityCard:hover {
+    border-color: #28a745;
+    background: #f8fff8;
+}
+
+.dayName {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 10px;
+}
+
+.timeSlot {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 1050px){
+    .coursesSection {
+        margin-top: 60px; /* Adjust top margin for better spacing */
+    }
+}
+
+/* Mobile Responsive */
+/* Add this new media query for screens less than 800px */
+@media (max-width: 800px) {
+    .tutorInfoContainer {
+        flex-direction: column;
+        gap: 0; /* Remove gap since we want header directly above profile */
+    }
+
+    .tutorDetails {
+        order: -1; /* Move header above profile */
+    }
+
+    .tutorProfileContainer {
+        position: static; /* Remove absolute positioning */
+        top: auto;
+        left: auto;
+        z-index: auto;
+        align-self: center; /* Center the profile */
+        margin-bottom: 20px;
+        order: 1; /* Profile comes after header */
+    }
+
+    .tutorDetailsHeader {
+        border-radius: 30px 30px 0 0;
+        margin-bottom: 0;
+    }
+
+    .backButton button {
+        position: static; /* Remove absolute positioning */
+        margin: 20px;
+    }
+
+    .tutorDetailsBody {
+        border-radius: 0 0 30px 30px; /* Only round bottom corners */
+        margin-top: 0; /* Remove margin to connect with header */
+    }
+
+    .tutorDetailsHeaderDetails {
+        padding: 0 20px 30px 20px; /* Remove left padding since profile is no longer overlapping */
+        text-align: center;
+    }
+
+    .tutorDetailsHeaderDetails h2 {
+        font-size: 2.2rem;
+    }
+
+    .tutorDetailsBody {
+        padding: 30px 20px;
+    }
+
+    /* Remove padding from sections since profile is no longer overlapping */
+    .paddingDiv {
+        padding-left: 0;
+    }
+
+    .noPadding {
+        padding-left: 0;
+    }
+
+    /* Stats will now naturally flow under the profile */
+    .tutorStats {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+        margin-top: 0; /* Ensure stats start right after profile */
+    }
+
+    .joinedDateContainer {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .coursesSection {
+        margin-top: 20px; /* Adjust top margin for better spacing */
+    }
+
+    .coursesGrid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+/* Update existing mobile responsive styles */
+@media (max-width: 768px) {
+    .tutorInfoContainer {
+        flex-direction: column;
+        gap: 0; /* Remove gap for connected layout */
+    }
+
+    .tutorDetails {
+        order: -1; /* Header first */
+    }
+
+    .tutorProfileContainer {
+        position: static;
+        align-self: center;
+        margin-bottom: 0;
+        border-radius: 0;
+    }
+
+    .tutorDetailsHeader {
+        border-radius: 30px 30px 0 0; /* Only top corners rounded */
+    }
+
+    .tutorDetailsBody {
+        border-radius: 0 0 30px 30px; /* Only bottom corners rounded */
+    }
+
+    .tutorDetailsHeaderDetails {
+        padding: 0 20px 25px 20px;
+        text-align: center;
+    }
+    
+    .tutorDetailsHeaderDetails h2 {
+        font-size: 2rem;
+    }
+    
+    .tutorDetailsBody {
+        padding: 25px 15px;
+    }
+    
+    .joinedDateContainer {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+    
+    .tutorStats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .coursesGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .contactButtons {
+        flex-direction: column;
+    }
+    
+    .contactBtn {
+        min-width: auto;
+    }
+    
+    .availabilityGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .paddingDiv,
+    .noPadding {
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .tutorInfoContainer {
+        gap: 0; /* Keep connected layout */
+    }
+
+    .tutorDetailsHeader {
+        border-radius: 20px 20px 0 0; /* Smaller radius for mobile */
+    }
+
+    .tutorDetailsBody {
+        border-radius: 0 0 20px 20px; /* Smaller radius for mobile */
+    }
+
+    .tutorStats {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .availabilityGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .tutorDetailsHeaderDetails h2 {
+        font-size: 1.8rem;
+    }
+
+    .tutorDetailsHeaderDetails {
+        padding: 0px 15px 20px 15px;
+    }
+
+    .tutorDetailsBody {
+        padding: 20px 10px;
+    }
+
+    .statCard {
+        padding: 20px 15px;
+    }
+
+    .statNumber {
+        font-size: 1.8rem;
+    }
+}
+
+/* Fine-tune for very small screens */
+@media (max-width: 360px) {
+    .tutorDetailsHeader {
+        border-radius: 15px 15px 0 0; /* Even smaller radius */
+    }
+
+    .tutorDetailsBody {
+        border-radius: 0 0 15px 15px; /* Even smaller radius */
+    }
+
+    .tutorDetailsHeaderDetails h2 {
+        font-size: 1.6rem;
+    }
+
+    .tutorDetailsHeaderDetails p {
+        font-size: 1.1rem;
+    }
+
+    .statCard {
+        padding: 15px 10px;
+    }
+
+    .statNumber {
+        font-size: 1.6rem;
+    }
+
+    .sectionTitle {
+        font-size: 1.5rem;
+    }
+}

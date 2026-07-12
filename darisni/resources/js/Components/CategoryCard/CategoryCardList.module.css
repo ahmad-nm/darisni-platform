@@ -1,0 +1,85 @@
+.CategoryCardListContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.CategorySearchBar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.searchInput {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    color: #333;
+}
+
+.searchInput:focus {
+    border-color: #007bff;
+}
+
+.loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120px;
+    width: 100%;
+}
+
+.loadingText {
+    font-size: 1.3rem;
+    color: #007bff;
+    font-weight: 600;
+    letter-spacing: 1px;
+    background: linear-gradient(90deg, #007bff 0%, #00c6ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+.categoryCards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 30px 70px;
+}
+
+@media (max-width: 480px) {
+    .categoryCards {
+        padding: 10px 40px;
+        gap: 15px;
+    }
+
+    .searchInput {
+        width: 300px;
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 320px) {
+    .searchInput {
+        width: 250px;
+        font-size: 12px;
+        padding: 6px;
+    }
+}

@@ -1,0 +1,37 @@
+# Laravel project folder
+
+# Dependencies
+darisni/vendor/
+darisni/node_modules/
+
+# Environment files
+darisni/.env
+darisni/.env.*
+
+# Laravel cache / runtime files
+darisni/storage/*.key
+darisni/storage/framework/cache/*
+darisni/storage/framework/sessions/*
+darisni/storage/framework/views/*
+darisni/bootstrap/cache/*
+
+# Frontend build files
+darisni/public/build/
+
+# Logs
+darisni/storage/logs/*
+
+
+# Outside Laravel project files
+
+# Intro page
+IntroPage/
+
+# Database dump
+darisni_local.sql
+
+# Darisni zip archive
+darisni.net.zip
+
+# Zip archive
+darisni.zip

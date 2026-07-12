@@ -1,0 +1,107 @@
+.CourseCard {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    width: 280px;
+    min-width: 280px;
+}
+
+.CourseCard:hover {
+    transform: scale(1.05);
+}
+
+.ImageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.CourseImage {
+    height: 200px;
+    max-width: 270px;
+    object-fit: cover;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.CourseDetails {
+    display: flex;
+    flex-direction: column;
+}
+
+.CourseTitle {
+    margin: 5px;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.CourseInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.Time, 
+.Lectures,
+.Rating {
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #414141;
+    gap: 5px;
+}
+
+.Time,
+.Lectures {
+    border-right: 1px solid #ccc;
+}
+
+.Icon {
+    width: 20px;
+    height: 20px;
+}
+
+.ViewPrice {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.ViewPrice a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 600;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.ViewPrice a::after {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 2px;
+    background: #007bff;
+    transition: width 0.3s ease;
+}
+
+.ViewPrice a:hover::after {
+    width: 100%;
+}

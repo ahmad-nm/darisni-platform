@@ -1,0 +1,81 @@
+.WWOContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background-color: rgb(13, 13, 77);
+    padding-top: 100px;
+}
+
+.WWOHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: rgb(255, 255, 255);
+    width: 50%;
+    text-align: center;
+}
+
+.WWOHeader h1 {
+    font-size: 2.7rem;
+}
+
+.WWOHeader p{
+    font-size: 14px;
+    font-weight: 600;
+    color: #ccc;
+    margin: 0;
+}
+
+.WWOContent {
+    position: relative;
+    bottom: -100px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 65%;
+}
+
+@media (max-width: 1024px) {
+    .WWOHeader {
+        width: 70%;
+    }
+    .WWOContent {
+        width: 90%;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .WWOHeader {
+        width: 90%;
+    }
+    .WWOHeader h1 {
+        font-size: 2rem;
+    }
+    .WWOContent {
+        align-items: stretch;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .WWOContainer {
+        padding-top: 110px;
+    }
+
+    .WWOHeader h1 {
+        font-size: 1.3rem;
+    }
+
+    .WWOHeader p {
+        font-size: 12px;
+    }
+
+    .WWOContent {
+        flex-direction: column;
+        align-items: center;
+        bottom: -100px;
+        gap: 15px;
+    }
+}

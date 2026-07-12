@@ -1,0 +1,138 @@
+.AboutContentContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+    padding: 20px;
+}
+
+.AboutSection {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 20px 0;
+    gap: 30px;
+    scroll-margin-top: 120px;
+    min-height: 70vh;
+    transition: all 0.6s ease-in-out;
+}
+
+.AboutSectionContent {
+    width: 50%;
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.AboutSectionContent h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #667eea;
+    margin-bottom: 0;
+}
+
+.AboutSectionContent h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+    margin: 5px 0;
+    margin-bottom: 20px;
+}
+
+.AboutSectionContent p {
+    font-size: 1.8rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.AboutSectionImage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.AboutSectionImage img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.JoinLink {
+    text-decoration: none;
+    color: #667eea;
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin-top: 0;
+}
+
+.JoinLink:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 1024px) {
+    .AboutSection {
+        gap: 20px;
+        min-height: 60vh;
+    }
+    .AboutSectionContent h1 {
+        font-size: 2rem;
+    }
+    .AboutSectionContent h2 {
+        font-size: 1.2rem;
+    }
+    .AboutSectionContent p {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .AboutSection {
+        flex-direction: column;
+        gap: 15px;
+        min-height: 50vh;
+    }
+    .AboutSectionContent,
+    .AboutSectionImage {
+        width: 100%;
+    }
+    .AboutSectionContent h1 {
+        font-size: 1.5rem;
+    }
+    .AboutSectionContent h2 {
+        font-size: 1rem;
+    }
+    .AboutSectionContent p {
+        font-size: 1rem;
+    }
+    .AboutSectionImage img {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .AboutContentContainer {
+        padding: 10px;
+        margin-top: 20px;
+    }
+    .AboutSection {
+        gap: 10px;
+        min-height: 40vh;
+    }
+    .AboutSectionContent h1 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+    .AboutSectionContent h2 {
+        font-size: 0.9rem;
+    }
+    .AboutSectionContent p {
+        font-size: 0.9rem;
+    }
+    .AboutSectionImage img {
+        max-width: 100%;
+        border-radius: 6px;
+    }
+}

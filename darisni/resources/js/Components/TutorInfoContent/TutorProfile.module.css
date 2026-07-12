@@ -1,0 +1,237 @@
+.tutorProfile {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    width: 300px;
+    height: auto;
+    border-top-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+}
+
+.tutorImage {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-top-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    margin-bottom: 20px;
+}
+
+.ratingInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.tutorRating {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    width: 90%;
+    font-size: 1.4rem;
+    margin: 0 30px 20px 30px;
+    color: #333;
+}
+
+.tutorRating p {
+    margin: 0;
+}
+
+.tutorReviews {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.reviewsSlider {
+    width: 100%;
+}
+
+.sliderHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.sliderHeader p {
+    font-size: 1.2rem;
+    margin: 0;
+    font-weight: 600;
+}
+
+.sliderNav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.navBtn {
+    background: #667eea;
+    color: white;
+    border: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+}
+
+.navBtn:hover {
+    background: #10234c;
+}
+
+.counter {
+    font-size: 12px;
+    color: #6c757d;
+    min-width: 30px;
+    text-align: center;
+}
+
+.reviewContainer {
+    overflow: hidden;
+    border-bottom-left-radius: 30px;
+    background: #f8f9fa;
+}
+
+.reviewTrack {
+    display: flex;
+    transition: transform 0.4s ease;
+    height: 100%;
+}
+
+.reviewSlide {
+    width: 90%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.reviewContent {
+    width: 100%;
+    font-size: 18px;
+    line-height: 1.4;
+    color: #495057;
+}
+
+.stars {
+    color: #ffc107;
+    font-weight: 500;
+    margin-left: 5px;
+}
+
+.loadingReviews {
+    width: 100%;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #764ba2;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 24px 0;
+    padding: 16px 0;
+    border-radius: 12px;
+    letter-spacing: 1px;
+    animation: pulse 1.2s infinite;
+}
+
+.noReviews {
+    width: 100%;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ee5a24;
+    background: linear-gradient(90deg, #ff6b6b 0%, #ee5a24 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+    padding: 0;
+    border-radius: 12px;
+    letter-spacing: 1px;
+    animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+
+@media (max-width: 800px) {
+    .tutorProfile {
+        width: 100%;
+        border-radius: 0;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .tutorImage {
+        height: auto;
+        border-radius: 0;
+        margin-bottom: 15px;
+    }
+
+    .reviewContainer {
+        border-bottom-left-radius: 0;
+    }
+
+    .tutorRating {
+        font-size: 1.1rem;
+        margin: 0 15px 15px 15px;
+        width: 100%;
+    }
+
+    .sliderHeader p {
+        font-size: 1.3rem;
+    }
+
+    .reviewSlide {
+        width: 100%;
+        padding: 0 8px;
+    }
+
+    .reviewContent {
+        font-size: 18px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 500px) {
+    .tutorProfile {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .tutorImage {
+        height: auto;
+    }
+
+    .tutorRating {
+        font-size: 1rem;
+        margin: 0 5px 10px 5px;
+    }
+
+    .sliderHeader p {
+        font-size: 1.1rem;
+    }
+
+    .reviewSlide {
+        padding: 0 4px;
+    }
+
+    .reviewContent {
+        font-size: 16px;
+        padding: 8px;
+    }
+}

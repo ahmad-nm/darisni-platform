@@ -1,0 +1,80 @@
+.IntroContainer {
+    display: flex;
+    flex-direction: column;
+    margin: 8% 0px;
+    gap: 10px;
+    width: 80%;
+    color: white;
+}
+
+.Title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.Description {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.IntroBtns {
+    display: flex;
+    margin-top: 15px;
+    gap: 10px;
+}
+
+.GetStarted,
+.LearnMore {
+    padding: 15px 25px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    background-color: #007bff;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.GetStarted:hover,
+.LearnMore:hover {
+    background-color: #ffffff;
+    color: black;
+}
+
+.GetStarted:active,
+.LearnMore:active {
+    background-color: #0056b3;
+    color: white;
+}
+
+@media (max-width: 600px) {
+    .IntroContainer {
+        margin: 18% 0px;
+        padding: 0 20px;
+        gap: 8px;
+    }
+
+    .Title {
+        font-size: 2.2rem;
+    }
+
+    .Description {
+        font-size: 1.2rem;
+    }
+
+    .IntroBtns {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+    }
+
+    .IntroBtns .GetStarted,
+    .IntroBtns .LearnMore {
+        width: 100%;
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+}

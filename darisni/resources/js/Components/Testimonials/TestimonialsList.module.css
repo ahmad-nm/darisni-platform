@@ -1,0 +1,346 @@
+.TestimonialsListContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.TestimonialsListContainer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.TestimonialsTitle {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: 700;
+    max-width: 800px;
+}
+
+.TestimonialsTitle::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    margin: 15px auto;
+    border-radius: 2px;
+}
+
+.NoReviews {
+    text-align: center;
+    color: #888;
+    font-size: 1.1rem;
+    margin: 2rem 0;
+}
+
+.TestimonialsList {
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 20px;
+    gap: 0;
+    width: 100%;
+    max-width: 1400px;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #007bff #f1f1f1;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+}
+
+.TestimonialsList > * {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+}
+
+/* Custom scrollbar for webkit browsers */
+.TestimonialsList::-webkit-scrollbar {
+    height: 8px;
+}
+
+.TestimonialsList::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.TestimonialsList::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    border-radius: 4px;
+}
+
+.TestimonialsList::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #004494 100%);
+}
+
+.ScrollIndicator {
+    display: none;
+    font-size: 14px;
+    color: #999;
+    font-style: italic;
+    margin-top: 15px;
+    text-align: center;
+}
+
+/* Large desktops */
+@media (min-width: 1400px) {
+    .TestimonialsListContainer {
+        padding: 80px 40px;
+    }
+
+    .TestimonialsTitle {
+        font-size: 3rem;
+    }
+
+    .TestimonialsSubtitle {
+        font-size: 1.2rem;
+        margin-bottom: 50px;
+    }
+
+    .TestimonialsList {
+        padding: 30px;
+    }
+
+    .NavButton {
+        width: 55px;
+        height: 55px;
+        font-size: 20px;
+    }
+}
+
+/* Large tablets and small desktops */
+@media (max-width: 1024px) {
+    .TestimonialsListContainer {
+        padding: 50px 15px;
+    }
+
+    .TestimonialsTitle {
+        font-size: 2.2rem;
+    }
+
+    .TestimonialsSubtitle {
+        font-size: 1rem;
+        margin-bottom: 30px;
+    }
+
+    .TestimonialsList {
+        padding: 15px;
+    }
+
+    .NavButton {
+        width: 45px;
+        height: 45px;
+        font-size: 16px;
+    }
+
+    .NavigationContainer {
+        margin-top: 25px;
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    .TestimonialsListContainer {
+        padding: 40px 10px;
+    }
+
+    .TestimonialsTitle {
+        font-size: 1.8rem;
+        margin-bottom: 8px;
+    }
+
+    .TestimonialsTitle::after {
+        width: 60px;
+        height: 3px;
+        margin: 12px auto;
+    }
+
+    .TestimonialsSubtitle {
+        font-size: 0.95rem;
+        margin-bottom: 25px;
+        padding: 0 15px;
+    }
+
+    .TestimonialsList {
+        padding: 10px;
+        gap: 5px;
+        scrollbar-width: none;
+    }
+
+    .TestimonialsList::-webkit-scrollbar {
+        display: none;
+    }
+
+    .NavigationContainer {
+        display: none;
+    }
+
+    .ScrollIndicator {
+        display: block;
+    }
+}
+
+/* Mobile landscape */
+@media (max-width: 640px) {
+    .TestimonialsListContainer {
+        padding: 35px 8px;
+    }
+
+    .TestimonialsTitle {
+        font-size: 1.6rem;
+    }
+
+    .TestimonialsSubtitle {
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+        padding: 0 10px;
+    }
+
+    .TestimonialsList {
+        padding: 8px;
+    }
+
+    .ScrollIndicator {
+        font-size: 13px;
+        margin-top: 12px;
+    }
+}
+
+/* Mobile portrait */
+@media (max-width: 480px) {
+    .TestimonialsListContainer {
+        padding: 30px 5px;
+    }
+
+    .TestimonialsTitle {
+        font-size: 1.4rem;
+    }
+
+    .TestimonialsTitle::after {
+        width: 50px;
+        height: 2px;
+        margin: 10px auto;
+    }
+
+    .TestimonialsSubtitle {
+        font-size: 0.85rem;
+        margin-bottom: 18px;
+        padding: 0 8px;
+    }
+
+    .TestimonialsList {
+        padding: 5px;
+    }
+
+    .ScrollIndicator {
+        font-size: 12px;
+        margin-top: 10px;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+    .TestimonialsListContainer {
+        padding: 25px 3px;
+    }
+
+    .TestimonialsTitle {
+        font-size: 1.2rem;
+    }
+
+    .TestimonialsSubtitle {
+        font-size: 0.8rem;
+        margin-bottom: 15px;
+        padding: 0 5px;
+    }
+
+    .TestimonialsList {
+        padding: 3px;
+    }
+
+    .ScrollIndicator {
+        font-size: 11px;
+        margin-top: 8px;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+    .TestimonialsListContainer {
+        padding: 20px 10px;
+    }
+
+    .TestimonialsTitle {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+    }
+
+    .TestimonialsTitle::after {
+        margin: 8px auto;
+    }
+
+    .TestimonialsSubtitle {
+        margin-bottom: 15px;
+        font-size: 0.9rem;
+    }
+
+    .TestimonialsList {
+        padding: 8px;
+    }
+
+    .NavigationContainer {
+        margin-top: 15px;
+    }
+
+    .ScrollIndicator {
+        margin-top: 8px;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+    .TestimonialsList::-webkit-scrollbar {
+        height: 6px;
+    }
+    
+    .TestimonialsListContainer::before {
+        height: 3px;
+    }
+    
+    .NavButton {
+        box-shadow: 0 1px 5px rgba(0, 123, 255, 0.3);
+    }
+}
+
+/* Print styles */
+@media print {
+    .TestimonialsListContainer {
+        padding: 20px 0;
+        background: none;
+    }
+
+    .TestimonialsList {
+        overflow: visible;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .NavigationContainer,
+    .ScrollIndicator {
+        display: none;
+    }
+}

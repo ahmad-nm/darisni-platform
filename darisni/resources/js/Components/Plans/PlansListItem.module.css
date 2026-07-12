@@ -1,0 +1,142 @@
+.planItem {
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    background-color: hsl(0, 0%, 98%);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    width: 300px;
+    transition: transform 0.3s ease;
+}
+
+.planItem:hover {
+    transform: translateY(-5px);
+}
+
+.Icon {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.Icon img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    padding: 5px;
+    border: 1px solid #e4e4e4;
+}
+
+.planType {
+    font-size: 14px;
+    font-weight: bold;
+    color: hsl(211, 99%, 45%);
+    background-color: #d7eaff;
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 1px solid #258efe;
+}
+
+.planItem h2 {
+    margin: 0;
+}
+
+.description {
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    margin-top: 10px;
+}
+
+.planPrice {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+}
+
+.planPrice span {
+    font-size: 14px;
+    color: #999;
+}
+
+.features {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 20px;
+}
+
+.featuresList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.featuresList li::before {
+    content: '✔';
+    color: green;
+    margin-right: 10px;
+}
+
+.buyBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #007bff;
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    font-size: 16px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.buyBtn:hover {
+    background-color: #0056b3;
+}
+
+.buyBtn:active {
+    background-color: #004494;
+    transform: translateY(1px);
+}
+
+@media (max-width: 768px) {
+    .planItem {
+        width: 50%;
+        padding: 25px;
+    }
+}
+
+@media (max-width: 600px) {
+    .planItem {
+        width: 300px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 320px) {
+    .planItem {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    .planPrice {
+        font-size: 20px;
+    }
+    .buyBtn {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+}

@@ -1,0 +1,358 @@
+.loaderWrapper {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transform: none;
+    transition:
+        opacity 0.6s cubic-bezier(.68,-0.55,.27,1.55),
+        visibility 0.6s;
+    visibility: visible;
+}
+
+.authRequiredContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 2rem;
+}
+
+.authCard {
+    background: white;
+    border-radius: 12px;
+    padding: 3rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    border: 1px solid #e1e5e9;
+}
+
+.authTitle {
+    color: #2c3e50;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.authMessage {
+    color: #5a6c7d;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.authButtons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.authButton {
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.loginButton {
+    background: #3498db;
+    color: white;
+}
+
+.loginButton:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+}
+
+.signupButton {
+    background: #2ecc71;
+    color: white;
+}
+
+.signupButton:hover {
+    background: #27ae60;
+    transform: translateY(-2px);
+}
+
+.userInfo {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.userInfo p {
+    margin: 0;
+    color: #495057;
+    font-size: 1rem;
+}
+
+.fileNote {
+    display: block;
+    color: #6c757d;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+.JoinTeamContainer {
+    max-width: 540px;
+    margin: 3rem auto;
+    padding: 2.5rem 2rem;
+    background: #fff;
+    border-radius: 1.2rem;
+    box-shadow: 0 4px 24px rgba(60,130,246,0.08), 0 1.5px 8px #e0e7ef;
+    border: 1.5px solid #e0e7ef;
+}
+
+.title {
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: #222;
+    text-align: center;
+    margin-bottom: 2rem;
+    letter-spacing: 1px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+}
+
+.formInputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.formInputGroup label {
+    font-size: 1.08rem;
+    font-weight: 600;
+    color: #2d3a4b;
+    margin-bottom: 0.2rem;
+}
+
+.formInputGroup input[type="text"],
+.formInputGroup input[type="email"],
+.formInputGroup input[type="tel"],
+.formInputGroup input[type="number"],
+.formInputGroup input[type="file"] {
+    padding: 0.7rem 1rem;
+    border: 1.5px solid #e0e7ef;
+    border-radius: 0.7rem;
+    font-size: 1rem;
+    background: #f5f6fa;
+    color: #222;
+    transition: border 0.2s;
+}
+
+.formInputGroup input[type="text"]:focus,
+.formInputGroup input[type="email"]:focus,
+.formInputGroup input[type="tel"]:focus,
+.formInputGroup input[type="number"]:focus,
+.formInputGroup input[type="file"]:focus {
+    border-color: #4cafef;
+    outline: none;
+}
+
+.formInputGroup textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    resize: vertical;
+    min-height: 100px;
+}
+
+.formInputGroup textarea:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.courseSelectionContainer {
+    background: #f5f6fa;
+    border-radius: 0.7rem;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border: 1.5px solid #e0e7ef;
+}
+
+.courseSelectionTitle {
+    font-weight: 600;
+    color: #2d3a4b;
+    margin-bottom: 0;
+    font-size: 1.08rem;
+}
+
+.checkboxGroup {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.4rem;
+}
+
+.checkboxGroup input[type="checkbox"] {
+    accent-color: #4cafef;
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+.checkboxGroup label {
+    font-size: 1rem;
+    color: #222;
+}
+
+.submitButton {
+    margin-top: 1.5rem;
+    padding: 0.85rem 0;
+    background: #4cafef;
+    color: #fff;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 0.8rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(76,175,239,0.10);
+    transition: background 0.2s, transform 0.15s;
+}
+
+.submitButton:hover {
+    background: #1976d2;
+    transform: scale(1.03);
+}
+
+.submitButton:disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.submitButton:disabled:hover {
+    background: #bdc3c7;
+    transform: none;
+}
+
+@media (max-width: 600px) {
+    .JoinTeamContainer {
+        padding: 1.2rem 0.5rem;
+    }
+    .title {
+        font-size: 1.4rem;
+    }
+    .submitButton {
+        font-size: 1rem;
+    }
+}
+
+/* Success Message Styles */
+.successContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 2rem;
+}
+
+.successCard {
+    background: white;
+    border-radius: 16px;
+    padding: 3rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+    border: 2px solid #10b981;
+    animation: slideInUp 0.6s ease-out;
+}
+
+.successIcon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    animation: bounce 1s ease-in-out;
+}
+
+.successTitle {
+    color: #10b981;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.successMessage {
+    color: #374151;
+    font-size: 1.2rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+.redirectMessage {
+    background: #f0fdf4;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    border-left: 4px solid #10b981;
+}
+
+.redirectMessage p {
+    color: #16a34a;
+    font-weight: 500;
+    margin: 0;
+}
+
+.homeButton {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.homeButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}

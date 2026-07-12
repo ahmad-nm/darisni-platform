@@ -1,0 +1,53 @@
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10000;
+}
+
+.atom {
+    width: 140px;
+    height: 140px;
+    transform-origin: 90px 90px;
+    animation: atomPulse 1.5s ease-in-out infinite alternate;
+}
+
+.orbit {
+    fill: none;
+    stroke: rgba(255,255,255,0.3);
+    stroke-width: 1.5;
+}
+
+.electron {
+    fill: #fff;
+    filter: url(#glow);
+}
+
+/* Orbit animations */
+.orbitA { transform-origin: 90px 90px; animation: rotateA 2.2s linear infinite; }
+.orbitB { transform-origin: 90px 90px; animation: rotateB 3.6s linear infinite; }
+.orbitC { transform-origin: 90px 90px; animation: rotateC 1.6s linear infinite; }
+
+@keyframes rotateA { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+@keyframes rotateB { 0% { transform: rotate(0deg);} 100% { transform: rotate(-360deg);} }
+@keyframes rotateC { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+
+.nucleus {
+    fill: #fff;
+    filter: url(#glowNucleus);
+    transform-origin: 90px 90px;
+    animation: pulse 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.3); }
+}
+
+@keyframes atomPulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}

@@ -1,0 +1,416 @@
+.AboutContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    padding: 30px;
+    background-color: hsl(221, 65%, 18%);
+}
+
+.Info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 75%;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.EmailsContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.CallUs,
+.EmailUs,
+.Location {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.CallUs,
+.EmailUs {
+    border-right: 1px solid #ccc;
+    padding-right: 90px;
+}
+
+.IconContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    border-radius: 50%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.IconContainer::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, 
+        transparent 30%, 
+        rgba(0, 123, 255, 0.8) 45%, 
+        rgba(0, 191, 255, 1) 50%, 
+        rgba(0, 123, 255, 0.8) 55%, 
+        transparent 70%
+    );
+    transform: rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.IconContainer:hover::before {
+    animation: lightSweep 0.6s ease-in-out;
+}
+
+@keyframes lightSweep {
+    0% { 
+        opacity: 0;
+        transform: translateX(-100%) rotate(45deg); 
+    }
+    50% { 
+        opacity: 1; 
+    }
+    100% { 
+        opacity: 0;
+        transform: translateX(100%) rotate(45deg); 
+    }
+}
+
+.Icon {
+    height: 25px;
+    width: 25px;
+}
+
+.InfoDescription {
+    display: flex;
+    flex-direction: column;
+}
+
+.InfoTitles {
+    font-size: 14px;
+    color: #ccc;
+    margin: 0;
+}
+
+.InfoSubtitles {
+    font-size: 16px;
+    color: white;
+    margin: 0;
+}
+
+.AboutDetailsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 100px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.AboutDetails {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start; 
+    gap: 30px; 
+}
+
+.AboutText {
+    display: flex;
+    flex-direction: column;
+    margin-right: 30px;
+    margin-top: 18px;
+    width: 370px;
+}
+
+.rateSection {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.rateSection p {
+    margin: 0 0 12px 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+}
+
+.ratePlatformBtn {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 24px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 3px 12px rgba(243, 156, 18, 0.3);
+}
+
+.ratePlatformBtn:hover {
+    background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+}
+
+.Links {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.QuickLinks {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    position: relative;
+}
+
+.Resources {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    position: relative;
+}
+
+.SocialMedia {
+    display: flex;
+    flex-direction: column;
+    width: 180px; 
+    position: relative;
+}
+
+.QuickLinks h3::before,
+.Resources h3::before,
+.SocialMedia h3::before {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, #007bff, #0056b3);
+    margin-bottom: 10px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.QuickLinks h3:hover::before,
+.Resources h3:hover::before,
+.SocialMedia h3:hover::before {
+    width: 70px;
+    background: linear-gradient(90deg, #007bff, #00bfff, #007bff);
+    box-shadow: 0 2px 15px rgba(0, 123, 255, 0.6);
+    animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    0% { box-shadow: 0 2px 15px rgba(0, 123, 255, 0.6); }
+    100% { box-shadow: 0 2px 20px rgba(0, 191, 255, 0.8); }
+}
+
+.AboutDetails ul {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 5px 20px;
+    margin: 0;
+}
+
+.AboutDetails a {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.AboutDetails a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.Divider {
+    width: 100%;
+    height: 3px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.4);
+    margin: 30px 0 0 0;
+}
+
+.Footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #ccc;
+    width: 100%;
+}
+
+@media (max-width: 1200px) {
+    .AboutContainer {
+        padding: 20px;
+    }
+
+    .CallUs,
+    .EmailUs {
+        border-right: none;
+        padding-right: 0;
+    }
+
+    .CallUs,
+    .EmailUs,
+    .Location {
+        gap: 10px;
+    }
+
+    .IconContainer {
+        margin-right: 0;
+    }
+
+    .AboutDetailsContainer {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .AboutContainer {
+        padding: 20px;
+    }
+
+    .CallUs,
+    .EmailUs {
+        border-right: none;
+        padding-right: 0;
+    }
+
+    .CallUs,
+    .EmailUs,
+    .Location {
+        gap: 10px;
+    }
+
+    .IconContainer {
+        margin-right: 0;
+    }
+
+    .AboutDetailsContainer {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 992px) {
+    .AboutContainer {
+        padding: 20px;
+    }
+
+    .AboutDetailsContainer {
+        width: 100%;
+    }
+
+    .AboutDetails {
+        flex-direction: column;
+        width: 100%;
+        padding: 0 30px;
+        box-sizing: border-box;
+    }
+
+    .Info {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .CallUs,
+    .EmailUs {
+        border-right: none;
+        padding-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .Links {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .IconContainer {
+        margin-right: 0;
+    }
+
+    .AboutDetailsContainer {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .AboutDetailsContainer {
+        padding: 20px 10px;
+    }
+
+    .AboutDetails {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .AboutText {
+        margin-right: 0;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .QuickLinks,
+    .Resources,
+    .SocialMedia {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .AboutContainer {
+        padding: 20px;
+    }
+
+    .Info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .CallUs,
+    .EmailUs {
+        border-right: none;
+        padding-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .IconContainer {
+        margin-right: 0;
+    }
+
+    .AboutDetailsContainer {
+        padding: 10px;
+    }
+
+    .Links {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
