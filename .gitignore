@@ -35,3 +35,8 @@ darisni.net.zip
 
 # Zip archive
 darisni.zip
+public/build.zip
+
+# Others
+.phpunit.result.cache
+test_*.php
