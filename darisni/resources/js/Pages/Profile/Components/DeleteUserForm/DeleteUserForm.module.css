@@ -1,0 +1,175 @@
+/* Danger Zone Container */
+.dangerZone {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Warning Section */
+.warningSection {
+    display: flex;
+    gap: 16px;
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
+    border: 2px solid #fca5a5;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.warningIcon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.warningContent {
+    flex: 1;
+}
+
+.warningTitle {
+    color: #dc2626;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+}
+
+.warningText {
+    color: #991b1b;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Delete Button */
+/* Modal Content */
+.modalContent {
+    padding: 32px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.modalHeader {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.modalIcon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+}
+
+.modalTitle {
+    color: #dc2626;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+    line-height: 1.3;
+}
+
+.modalDescription {
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Modal Form */
+.modalForm {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Confirmation Checks */
+.confirmationChecks {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+}
+
+.checkItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    color: #374151;
+    font-weight: 500;
+}
+
+.checkItem:not(:last-child) {
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 8px;
+    padding-bottom: 16px;
+}
+
+.checkIcon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+/* Password Confirmation */
+.passwordConfirmation {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Modal Actions */
+.modalActions {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.cancelButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f3f4f6;
+    color: #374151;
+    border: 2px solid #d1d5db;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    justify-content: center;
+}
+
+.cancelButton:hover {
+    background: #e5e7eb;
+    border-color: #9ca3af;
+    transform: translateY(-1px);
+}
+
+.cancelIcon {
+    font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+    .modalContent {
+        padding: 24px 20px;
+    }
+
+    .modalActions {
+        flex-direction: column;
+    }
+
+    .warningSection {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+
+    .confirmationChecks {
+        padding: 16px;
+    }
+
+    .checkItem {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+
+}

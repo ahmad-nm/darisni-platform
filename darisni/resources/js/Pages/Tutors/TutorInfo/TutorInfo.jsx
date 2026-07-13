@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { router } from '@inertiajs/react';
-import { Loader } from '../../Components/Loader/Loader';
-import { TutorInfoContent } from '../../Components/TutorInfoContent/TutorInfoContent';
+import { Loader } from '@/Components/Loader/Loader';
+import { TutorInfoContent } from '@/Components/TutorInfoContent/TutorInfoContent';
 import style from './TutorInfo.module.css';
 
 export default function TutorInfo({ tutorId }) {

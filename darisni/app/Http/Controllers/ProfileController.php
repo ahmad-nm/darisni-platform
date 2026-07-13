@@ -64,14 +64,26 @@ class ProfileController extends Controller
     public function updateImage(Request $request): RedirectResponse
     {
         $request->validate([
-            'image' => 'nullable|string|max:255', // Accepts a URL/path or null
+            'image' => ['required', 'image', 'max:2048'],
         ]);
 
         $user = $request->user();
-        $user->image = $request->input('image');
+
+        // Delete old image
+        if ($user->image) {
+            $oldPath = str_replace('/storage/', '', $user->image);
+            \Storage::disk('public')->delete($oldPath);
+        }
+
+        // Store new image
+        $path = $request->file('image')->store('user_images', 'public');
+
+        // Save path
+        $user->image = '/storage/' . $path;
         $user->save();
 
-        return Redirect::route('profile.edit')->with('status', 'Avatar updated successfully.');
+        return Redirect::route('profile.edit')
+            ->with('status', 'Avatar updated successfully.');
     }
 
     public function deleteImage(Request $request): RedirectResponse
