@@ -27,6 +27,7 @@
     transition: all 0.3s ease;
     background: #ffffff;
     color: #374151;
+    box-sizing: border-box;
 }
 
 .input:focus {
