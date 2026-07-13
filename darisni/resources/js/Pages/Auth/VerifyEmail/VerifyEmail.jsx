@@ -1,5 +1,3 @@
-import PrimaryButton from '@/Components/PrimaryButton';
-import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import styles from './VerifyEmail.module.css';
 import AuthButton from '@/Components/Auth/AuthButton/AuthButton';

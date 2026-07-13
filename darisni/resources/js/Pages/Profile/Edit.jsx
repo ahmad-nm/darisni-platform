@@ -1,10 +1,12 @@
 import { useRef } from 'react';
 import { Head, usePage, router } from '@inertiajs/react';
 import { Navbar } from '../../Components/navBar/nav';
-import DeleteUserForm from './Partials/DeleteUserForm';
-import UpdatePasswordForm from './Partials/UpdatePasswordForm';
-import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
+import DeleteUserForm from './Components/DeleteUserForm/DeleteUserForm';
+import UpdatePasswordForm from './Components/UpdatePasswordForm/UpdatePasswordForm';
+import UpdateProfileInformationForm from './Components/UpdateProfileInfo/UpdateProfileInformationForm';
 import style from './Edit.module.css';
+import ProfileHeader from './Components/ProfileHeader/ProfileHeader';
+import SectionCard from './Components/SectionCard/SectionCard';
 
 export default function Edit({ mustVerifyEmail, status }) {
     const { auth } = usePage().props;
@@ -15,36 +17,21 @@ export default function Edit({ mustVerifyEmail, status }) {
         fileInputRef.current.click();
     }
 
-    const handleImageChange = async (event) => {
+    const handleImageChange = (event) => {
         const file = event.target.files[0];
+
         if (!file) return;
 
         const formData = new FormData();
         formData.append('image', file);
 
-        try {
-            const response = await fetch('/admin/users/upload-image', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: formData
-            });
-            const data = await response.json();
-            if (data.url) {
-                // Now update the user profile with the new image URL
-                router.post('/profile/image', { image: data.url }, {
-                    preserveScroll: true,
-                    onSuccess: () => {
-                        router.reload({ only: ['auth'] });
-                    },
-                });
-            } else {
-                alert('Failed to upload image.');
-            }
-        } catch (error) {
-            alert('Image upload failed.');
-        }
+        router.post('/profile/image', formData, {
+            preserveScroll: true,
+            forceFormData: true,
+            onSuccess: () => {
+                router.reload({ only: ['auth'] });
+            },
+        });
     };
 
     const handleDeleteImage = () => {
@@ -63,90 +50,42 @@ export default function Edit({ mustVerifyEmail, status }) {
             <Navbar />
             
             <div className={style.profileContent}>
-                <div className={style.profileHeader}>
-                    <div className={style.headerContent}>
-                        <div className={style.userInfo}>
-                            <div className={style.avatarContainer}>
-                                <div className={style.avatar} onClick={handleAddImage}>
-                                    <img 
-                                        src={user?.image || '/images/default-avatar.svg'} 
-                                        alt={user?.name || 'User'} 
-                                        className={style.avatarImage}
-                                    />
-                                    <div className={style.avatarOverlay}>
-                                        <span className={style.changePhoto}>📷</span>
-                                    </div>
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        ref={fileInputRef}
-                                        style={{ display: 'none' }}
-                                        onChange={handleImageChange}
-                                    />
-                                </div>
-                                {user?.image && (
-                                    <button className={style.deleteImageButton} onClick={handleDeleteImage}>
-                                        -
-                                    </button>
-                                )}
-                            </div>
-                            <div className={style.userDetails}>
-                                <h1 className={style.userName}>{user?.name || 'User'}</h1>
-                                <p className={style.userEmail}>{user?.email}</p>
-                                <span className={style.userRole}>{user?.role || 'Student'}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <ProfileHeader
+                    user={user}
+                    handleAddImage={handleAddImage}
+                    handleImageChange={handleImageChange}
+                    handleDeleteImage={handleDeleteImage}
+                    fileInputRef={fileInputRef}
+                />
 
                 <div className={style.profileSections}>
-                    <div className={style.sectionCard}>
-                        <div className={style.sectionHeader}>
-                            <h2 className={style.sectionTitle}>
-                                <span className={style.sectionIcon}>👤</span>
-                                Personal Information
-                            </h2>
-                            <p className={style.sectionDescription}>
-                                Update your account's profile information and email address.
-                            </p>
-                        </div>
-                        <div className={style.sectionContent}>
-                            <UpdateProfileInformationForm
-                                mustVerifyEmail={mustVerifyEmail}
-                                status={status}
-                            />
-                        </div>
-                    </div>
+                    <SectionCard
+                        icon="👤"
+                        title="Personal Information"
+                        description="Update your account's profile information and email address."
+                    >
+                        <UpdateProfileInformationForm
+                            mustVerifyEmail={mustVerifyEmail}
+                            status={status}
+                        />
+                    </SectionCard>
 
-                    <div className={style.sectionCard}>
-                        <div className={style.sectionHeader}>
-                            <h2 className={style.sectionTitle}>
-                                <span className={style.sectionIcon}>🔒</span>
-                                Password & Security
-                            </h2>
-                            <p className={style.sectionDescription}>
-                                Ensure your account is using a long, random password to stay secure.
-                            </p>
-                        </div>
-                        <div className={style.sectionContent}>
-                            <UpdatePasswordForm />
-                        </div>
-                    </div>
+                    <SectionCard
+                        icon="🔒"
+                        title="Password & Security"
+                        description="Ensure your account is using a long, random password to stay secure."
+                    >
+                        <UpdatePasswordForm />
+                    </SectionCard>
 
-                    <div className={`${style.sectionCard} ${style.dangerZone}`}>
-                        <div className={style.sectionHeader}>
-                            <h2 className={style.sectionTitle}>
-                                <span className={style.sectionIcon}>⚠️</span>
-                                Danger Zone
-                            </h2>
-                            <p className={style.sectionDescription}>
-                                Once your account is deleted, all of its resources and data will be permanently deleted.
-                            </p>
-                        </div>
-                        <div className={style.sectionContent}>
-                            <DeleteUserForm />
-                        </div>
-                    </div>
+                    <SectionCard
+                        danger
+                        icon="⚠️"
+                        title="Danger Zone"
+                        description="Once your account is deleted, all of its resources and data will be permanently deleted."
+                    >
+                        <DeleteUserForm />
+                    </SectionCard>
                 </div>
             </div>
         </div>

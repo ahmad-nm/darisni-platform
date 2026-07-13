@@ -34,7 +34,7 @@ Route::get('/tutors', function () {
 })->name('tutors');
 
 Route::get('/tutors/{tutorId}', function ($tutorId) {
-    return Inertia::render('TutorInfo/TutorInfo', [
+    return Inertia::render('Tutors/TutorInfo/TutorInfo', [
         'tutorId' => $tutorId
     ]);
 })->name('tutor.show');
@@ -74,7 +74,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/users', [\App\Http\Controllers\Admin\UserController::class, 'store'])->name('users.store');
     Route::put('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
-    Route::post('/users/upload-image', [\App\Http\Controllers\Admin\UserController::class, 'uploadImage'])->name('users.upload-image');
     Route::get('/users/stats', [\App\Http\Controllers\Admin\UserController::class, 'stats'])->name('users.stats');
     
     // Course Management

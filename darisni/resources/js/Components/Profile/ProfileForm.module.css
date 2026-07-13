@@ -1,0 +1,24 @@
+.formContainer {
+    width: 100%;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.formActions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+@media (max-width: 640px) {
+    .formActions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+}
