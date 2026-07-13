@@ -1,10 +1,10 @@
 import style from './About.module.css';
-import CallIcon from '../../assets/Icons/call.png'
-import EmailIcon from '../../assets/Icons/email.png';
-import LocationIcon from '../../assets/Icons/location.png';
+import CallIcon from '../../../../assets/Icons/call.png'
+import EmailIcon from '../../../../assets/Icons/email.png';
+import LocationIcon from '../../../../assets/Icons/location.png';
 import { Link } from '@inertiajs/react';
 import { useState } from 'react';
-import { RatingModal } from '../RatingModal/RatingModal';
+import { RatingModal } from '../../../../Components/RatingModal/RatingModal';
 
 export function About() {
     const [showRatingModal, setShowRatingModal] = useState(false);

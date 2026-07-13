@@ -1,6 +1,6 @@
 import style from './CourseReviewCard.module.css';
-import RatingStar from '../../assets/Icons/testStar.png';
-import EmptyStar from '../../assets/Icons/testStarEmpty.png';
+import RatingStar from '../../../../assets/Icons/testStar.png';
+import EmptyStar from '../../../../assets/Icons/testStarEmpty.png';
 
 export function CourseReviewCard({ review }) {
     const validRating = Math.max(0, Math.min(5, parseInt(review.rating) || 0));

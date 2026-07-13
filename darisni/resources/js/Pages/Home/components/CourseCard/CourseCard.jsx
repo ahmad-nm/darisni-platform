@@ -1,7 +1,7 @@
 import style from './CourseCard.module.css';
-import clockImage from '../../assets/Icons/clock.png';
-import lectureImage from '../../assets/Icons/openBook.png';
-import ratingImage from '../../assets/Icons/star.png';
+import clockImage from '../../../../assets/Icons/clock.png';
+import lectureImage from '../../../../assets/Icons/openBook.png';
+import ratingImage from '../../../../assets/Icons/star.png';
 
 export function CourseCard({ course }) {
     return (

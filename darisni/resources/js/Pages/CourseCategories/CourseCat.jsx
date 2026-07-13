@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Loader } from '../../Components/Loader/Loader.jsx';
 import { Navbar } from '../../Components/navBar/nav.jsx';
-import { CCHeader } from '../../Components/CourseCatHeader/CCHeader.jsx';
-import { CategoryCardList } from '../../Components/CategoryCard/CategoryCardList.jsx';
-import { About } from '../../Components/About/About.jsx';
+import { CCHeader } from '../Courses/components/CourseCatHeader/CCHeader.jsx';
+import { CategoryCardList } from './components/CategoryCard/CategoryCardList.jsx';
+import { About } from '../AboutPage/components/About/About.jsx';
 import style from './CourseCat.module.css';
 
 export default function CourseCategories() {

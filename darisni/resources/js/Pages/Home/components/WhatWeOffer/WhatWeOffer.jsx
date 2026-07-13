@@ -1,8 +1,8 @@
 import style from './WhatWeOffer.module.css';
 import { WWOItem } from './WWOItem.jsx';
-import groupImage from '../../assets/Icons/group.png';
-import digitalImage from '../../assets/Icons/programming.png';
-import goalImage from '../../assets/Icons/trophy.png';
+import groupImage from '../../../../assets/Icons/group.png';
+import digitalImage from '../../../../assets/Icons/programming.png';
+import goalImage from '../../../../assets/Icons/trophy.png';
 
 const items = [
     {
