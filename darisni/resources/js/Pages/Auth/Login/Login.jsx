@@ -1,5 +1,9 @@
 import { Head, Link, useForm } from '@inertiajs/react';
 import styles from './Login.module.css';
+import ProcessingSpinner from '@/Components/Auth/ProcessingSpinner/ProcessingSpinner';
+import AnimatedBg from '@/Components/Auth/AnimatedBg/AnimatedBg';
+import FormInput from '@/Components/Auth/FormInput/FormInput';
+import AuthButton from '@/Components/Auth/AuthButton/AuthButton';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -22,21 +26,10 @@ export default function Login({ status, canResetPassword }) {
             
             <div className={styles.loginPage}>
                 {processing && (
-                    <div className={styles.loadingOverlay}>
-                        <div className={styles.loadingSpinner}></div>
-                        <div className={styles.loadingText}>Processing...</div>
-                    </div>
+                    <ProcessingSpinner />
                 )}
 
-                <div className={styles.backgroundAnimation}>
-                    <div className={styles.floatingShapes}>
-                        <div className={`${styles.shape} ${styles.shape1}`}></div>
-                        <div className={`${styles.shape} ${styles.shape2}`}></div>
-                        <div className={`${styles.shape} ${styles.shape3}`}></div>
-                        <div className={`${styles.shape} ${styles.shape4}`}></div>
-                        <div className={`${styles.shape} ${styles.shape5}`}></div>
-                    </div>
-                </div>
+                <AnimatedBg />
 
                 <div className={styles.loginContainer}>
                     <h1 className={styles.loginTitle}>Login</h1>
@@ -49,12 +42,11 @@ export default function Login({ status, canResetPassword }) {
 
                     <form onSubmit={submit} className={styles.loginForm}>
                         <div className={styles.inputGroup}>
-                            <input
+                            <FormInput
                                 id="email"
                                 type="email"
                                 name="email"
                                 value={data.email}
-                                className={styles.loginInput}
                                 placeholder="Email"
                                 autoComplete="username"
                                 autoFocus
@@ -66,12 +58,11 @@ export default function Login({ status, canResetPassword }) {
                         </div>
 
                         <div className={styles.inputGroup}>
-                            <input
+                            <FormInput
                                 id="password"
                                 type="password"
                                 name="password"
                                 value={data.password}
-                                className={styles.loginInput}
                                 placeholder="Password"
                                 autoComplete="current-password"
                                 onChange={(e) => setData('password', e.target.value)}
@@ -109,13 +100,12 @@ export default function Login({ status, canResetPassword }) {
                             Don't have an account? Sign up
                         </Link>
 
-                        <button 
-                            className={styles.loginButton} 
+                        <AuthButton
                             type="submit"
                             disabled={processing}
-                        >
-                            {processing ? 'Logging in...' : 'Login'}
-                        </button>
+                            text={processing ? 'Logging in...' : 'Login'}
+                            style={{ fontSize: '1.1rem' }}
+                        />
                     </form>
                 </div>
             </div>

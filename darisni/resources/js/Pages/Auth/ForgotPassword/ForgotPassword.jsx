@@ -3,6 +3,9 @@ import { Link } from '@inertiajs/react';
 import { Head, useForm } from '@inertiajs/react';
 import lockIcon from '@/assets/Icons/lock.png';
 import styles from './ForgotPassword.module.css';
+import ProcessingSpinner from '@/Components/Auth/ProcessingSpinner/ProcessingSpinner';
+import FormInput from '@/Components/Auth/FormInput/FormInput';
+import AuthButton from '@/Components/Auth/AuthButton/AuthButton';
 
 export default function ForgotPassword({ status }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -23,10 +26,7 @@ export default function ForgotPassword({ status }) {
             <Head title="Forgot Password" />
 
             {loading && (
-                <div className={styles.loadingOverlay}>
-                    <div className={styles.loadingSpinner}></div>
-                    <div className={styles.loadingText}>Processing...</div>
-                </div>
+                <ProcessingSpinner />
             )}
 
             <div className={styles.forgotPasswordContainer}>
@@ -41,20 +41,20 @@ export default function ForgotPassword({ status }) {
                     </div>
                 )}
                 <form className={styles.forgotPasswordForm} onSubmit={submit}>
-                    <input
-                        className={styles.emailInput}
+                    <FormInput
                         type="email"
                         placeholder="✉ Enter your email"
-                        required
                         value={data.email}
                         onChange={e => setData('email', e.target.value)}
                     />
                     {errors.email && (
                         <div className="text-red-600 text-sm mt-2">{errors.email}</div>
                     )}
-                    <button className={styles.submitButton} type="submit" disabled={processing}>
-                        Send Reset Link
-                    </button>
+                    <AuthButton
+                        type="submit" 
+                        disabled={processing}
+                        text="Send Reset Link"
+                    />
                 </form>
                 <Link className={styles.backToLogin} href="/login">Back to Login</Link>
             </div>

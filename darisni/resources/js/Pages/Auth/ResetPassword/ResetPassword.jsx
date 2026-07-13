@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Head, useForm, Link } from '@inertiajs/react';
 import resetLock from '@/assets/Icons/resetLock.png'; // Make sure this image exists
 import styles from './ResetPassword.module.css';
+import FormInput from '@/Components/Auth/FormInput/FormInput';
+import AuthButton from '@/Components/Auth/AuthButton/AuthButton';
 
 export default function ResetPassword({ token, email }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -28,38 +30,40 @@ export default function ResetPassword({ token, email }) {
 
             <div className={styles.resetPassContainer}>
                 <h1 className={styles.resetPassTitle}>Reset Your Password</h1>
+                
                 <img src={resetLock} alt="Reset Lock" className={styles.resetLockIcon} />
+                
                 <form className={styles.resetPassForm} onSubmit={submit}>
-                    <input
-                        className={styles.resetPassInput}
+                    <FormInput
                         type="email"
                         placeholder="Email"
-                        required
                         value={data.email}
                         onChange={e => setData('email', e.target.value)}
                     />
-                    <input
-                        className={styles.resetPassInput}
+
+                    <FormInput
                         type="password"
                         placeholder="New password"
-                        required
                         value={data.password}
                         onChange={e => setData('password', e.target.value)}
                     />
-                    <input
-                        className={styles.resetPassInput}
+
+                    <FormInput
                         type="password"
                         placeholder="Confirm new password"
-                        required
                         value={data.password_confirmation}
                         onChange={e => setData('password_confirmation', e.target.value)}
                     />
+
                     {errors.email && <div className="text-red-600 text-sm mt-2">{errors.email}</div>}
                     {errors.password && <div className="text-red-600 text-sm mt-2">{errors.password}</div>}
                     {errors.password_confirmation && <div className="text-red-600 text-sm mt-2">{errors.password_confirmation}</div>}
-                    <button className={styles.submitButton} type="submit" disabled={processing}>
-                        Reset Password
-                    </button>
+                    
+                    <AuthButton
+                        type="submit" 
+                        disabled={processing}
+                        text={processing ? 'Resetting...' : 'Reset Password'}
+                    />
                 </form>
                 {message && <p>{message}</p>}
                 <Link href="/login" className={styles.backToLogin}>Back to Login</Link>
