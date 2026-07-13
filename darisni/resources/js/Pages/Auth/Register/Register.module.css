@@ -1,0 +1,113 @@
+.registerPage {
+    font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #222;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.registerContainer {
+    width: 100%;
+    max-width: 400px;
+    margin: 3rem auto;
+    padding: 2.5rem 2rem;
+    border-radius: 2rem;
+    background: rgba(249, 251, 252, 0.85);
+    box-shadow: 0 8px 32px rgba(60, 130, 246, 0.18), 0 1.5px 8px rgba(76, 175, 239, 0.12);
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    border: 1.5px solid rgba(76, 175, 239, 0.12);
+    box-sizing: border-box;
+}
+
+.registerTitle {
+    margin-bottom: 1.5rem;
+    font-size: 2.2rem;
+    color: #3b82f6;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 8px #e0e7ff;
+    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+    z-index: 1;
+}
+
+.registerForm {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    z-index: 1;
+    box-sizing: border-box;
+    background: transparent;
+}
+
+.inputGroup {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.loginLink {
+    display: block;
+    margin-top: 1rem;
+    text-align: center;
+    color: #4cafef;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s, text-shadow 0.2s;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 6px #e0e7ff;
+}
+
+.loginLink:hover {
+    color: #4cafef;
+    text-shadow: 0 2px 12px #4cafef;
+    text-decoration: underline;
+}
+
+.errorMessage {
+    color: #fff;
+    background: linear-gradient(90deg, #ff9800 0%, #ff6f00 100%);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin-top: 0.5rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.08rem;
+    box-shadow: 0 4px 16px rgba(255, 107, 0, 0.18), 0 1px 8px #ffb347;
+    letter-spacing: 1px;
+    border: 2px solid #fff3e0;
+    position: relative;
+    animation: shakeError 0.4s;
+    transition: box-shadow 0.2s, background 0.2s;
+}
+
+@keyframes shakeError {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+    100% { transform: translateX(0); }
+}
+
+@media (max-width: 500px) {
+    .registerContainer {
+        padding: 1.5rem 0.5rem;
+        border-radius: 1.2rem;
+        max-width: 95vw;
+    }
+    .registerTitle {
+        font-size: 1.5rem;
+    }
+}

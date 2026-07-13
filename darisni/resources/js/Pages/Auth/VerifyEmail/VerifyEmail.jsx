@@ -2,6 +2,8 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import styles from './VerifyEmail.module.css';
+import AuthButton from '@/Components/Auth/AuthButton/AuthButton';
+import AnimatedBg from '@/Components/Auth/AnimatedBg/AnimatedBg';
 
 export default function VerifyEmail({ status }) {
     const { post, processing } = useForm({});
@@ -15,15 +17,7 @@ export default function VerifyEmail({ status }) {
         <div className={styles.verifyPage}>
             <Head title="Email Verification" />
 
-            <div className={styles.backgroundAnimation}>
-                <div className={styles.floatingShapes}>
-                    <div className={`${styles.shape} ${styles.shape1}`}></div>
-                    <div className={`${styles.shape} ${styles.shape2}`}></div>
-                    <div className={`${styles.shape} ${styles.shape3}`}></div>
-                    <div className={`${styles.shape} ${styles.shape4}`}></div>
-                    <div className={`${styles.shape} ${styles.shape5}`}></div>
-                </div>
-            </div>
+            <AnimatedBg />
 
             <div className={styles.verifyContainer}>
                 <h1 className={styles.verifyTitle}>Verify Your Email</h1>
@@ -40,9 +34,11 @@ export default function VerifyEmail({ status }) {
 
                 <form onSubmit={submit} className={styles.verifyForm}>
                     <div className={styles.verifyActions}>
-                        <button type="submit" className={styles.verifyButton} disabled={processing}>
-                            Send Verification Email
-                        </button>
+                        <AuthButton
+                            type="submit" 
+                            disabled={processing}
+                            text="Send Verification Email"
+                        />
                         <Link
                             href={route('logout')}
                             method="post"
