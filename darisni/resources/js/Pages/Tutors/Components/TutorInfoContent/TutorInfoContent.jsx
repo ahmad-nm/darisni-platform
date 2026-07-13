@@ -1,7 +1,7 @@
-import { TutorProfile } from './TutorProfile';
+import { TutorProfile } from '@/Pages/Tutors/Components/TutorProfile/TutorProfile';
 import { router } from '@inertiajs/react';
 import { useState } from 'react';
-import { RatingModal } from '../RatingModal/RatingModal';
+import { RatingModal } from '@/Components/RatingModal/RatingModal';
 import style from './TutorInfoContent.module.css';
 
 export function TutorInfoContent({ tutor }) {

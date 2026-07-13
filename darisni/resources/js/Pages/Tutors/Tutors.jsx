@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Loader } from '../../Components/Loader/Loader';
 import { Navbar } from '../../Components/navBar/nav.jsx';
-import { TutorCard } from '../../Components/TutorCard/TutorCard';
+import { TutorCard } from './Components/TutorCard/TutorCard';
 import { About } from '../../Components/About/About.jsx';
 import style from './Tutors.module.css';
 
