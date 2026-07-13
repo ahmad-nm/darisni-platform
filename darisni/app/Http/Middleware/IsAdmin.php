@@ -24,7 +24,7 @@ class IsAdmin
         // Check if user has admin role
         if (Auth::user()->role !== 'admin') {
             // Redirect non-admins to dashboard with error message
-            return redirect()->route('dashboard')
+            return redirect()->route('profile.edit')
                 ->with('error', 'Access denied. Admin privileges required.');
         }
 

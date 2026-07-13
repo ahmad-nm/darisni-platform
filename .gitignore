@@ -6,7 +6,8 @@ darisni/node_modules/
 
 # Environment files
 darisni/.env
-darisni/.env.*
+darisni/.env.local
+darisni/.env.production
 
 # Laravel cache / runtime files
 darisni/storage/*.key
