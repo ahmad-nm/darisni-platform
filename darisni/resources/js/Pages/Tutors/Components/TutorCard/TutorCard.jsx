@@ -1,6 +1,6 @@
 import { router } from '@inertiajs/react';
-import starImg from '../../assets/Icons/testStar.png';
-import emptyStarImg from '../../assets/Icons/testStarEmpty.png';
+import starImg from '@/assets/Icons/testStar.png';
+import emptyStarImg from '@/assets/Icons/testStarEmpty.png';
 import style from './TutorCard.module.css';
 
 export function TutorCard({ tutor }) {
