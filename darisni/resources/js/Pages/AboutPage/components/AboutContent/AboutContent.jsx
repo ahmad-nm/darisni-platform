@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Link } from '@inertiajs/react';
-import aboutusImage from '../../assets/Background/aboutus.jpeg';
-import ourMissionImage from '../../assets/Background/ourMission.jpeg';
-import ourVisionImage from '../../assets/Background/ourVision1.jpeg';
-import ourTeamImage from '../../assets/Background/ourTeambg.jpg';
-import joinUsImage from '../../assets/Background/JoinTeam.jpeg';
+import aboutusImage from '../../../../assets/Background/aboutus.jpeg';
+import ourMissionImage from '../../../../assets/Background/ourMission.jpeg';
+import ourVisionImage from '../../../../assets/Background/ourVision1.jpeg';
+import ourTeamImage from '../../../../assets/Background/ourTeambg.jpg';
+import joinUsImage from '../../../../assets/Background/JoinTeam.jpeg';
 import style from './AboutContent.module.css';
 
 export function AboutContent() {

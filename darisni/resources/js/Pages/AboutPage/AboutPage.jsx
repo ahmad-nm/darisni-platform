@@ -1,6 +1,6 @@
-import { AboutNav } from '../../Components/AboutNav/AboutNav';
-import { AboutContent } from '../../Components/AboutContent/AboutContent';
-import { About } from '../../Components/About/About';
+import { AboutNav } from './components/AboutNav/AboutNav';
+import { AboutContent } from './components/AboutContent/AboutContent';
+import { About } from './components/About/About';
 import style from './AboutPage.module.css';
 
 export default function AboutPage() {

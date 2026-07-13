@@ -1,14 +1,11 @@
 import { Loader } from '../../Components/Loader/Loader.jsx';
-import { Navbar } from '../../Components/navBar/nav.jsx';
-import { Intro } from '../../Components/Introduction/Introduction.jsx';
-import { SearchBar } from '../../Components/SearchBar/SearchBar.jsx';
-import { SearchOverlay } from '../../Components/SearchOverlay/SearchOverlay.jsx';
-import { WhatWeOffer } from '../../Components/WhatWeOffer/WhatWeOffer.jsx';
-import { CourseCardList } from '../../Components/CourseCard/CourseCardList.jsx';
+import { WhatWeOffer } from './components/WhatWeOffer/WhatWeOffer.jsx';
+import { CourseCardList } from './components/CourseCard/CourseCardList.jsx';
 // import { PlansList } from '../../Components/Plans/PlansList.jsx';
 // import { TestimonialsList } from '../../Components/Testimonials/TestimonialsList.jsx';
-import { CourseSuggestionForm } from '@/Components/CourseSuggestionForm/CourseSuggestionForm.jsx';
-import { About } from '../../Components/About/About.jsx';
+import HomeHeader from './components/Home/HomeHeader.jsx';
+import CourseSuggestionSection from './components/Home/CourseSuggestionsSection.jsx';
+import { About } from '../AboutPage/components/About/About.jsx';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../Context/AuthContext';
 import style from './Home.module.css';
@@ -102,22 +99,13 @@ function Home() {
         </div>
       :
       <>
-        <header className={style.HomeHeader}>
-          <Navbar />
-          <Intro />
-          <SearchBar 
-            onSearch={handleSearch} 
-            isSearchActive={isSearchActive}
-            hasSearched={hasSearched}
-            searchResults={searchResults}
-          />
-          {searchResults.length > 0 && (
-            <SearchOverlay 
-              searchResults={searchResults} 
-              onClose={handleCloseSearch} 
-            />
-          )}
-        </header>
+        <HomeHeader
+        onSearch={handleSearch}
+        isSearchActive={isSearchActive}
+        hasSearched={hasSearched}
+        searchResults={searchResults}
+        onClose={handleCloseSearch}
+      />
         <div className={style.WWOContainer}>
           <WhatWeOffer />
         </div>
@@ -130,21 +118,7 @@ function Home() {
         {/* <div className={style.TestimonialsListContainer}>
           <TestimonialsList />
         </div> */}
-        <div className={style.CourseSuggestionFormContainer}>
-          <div className={`${style.bgCircle} ${style.bgCircle1}`}></div>
-          <div className={`${style.bgCircle} ${style.bgCircle2}`}></div>
-          
-          <svg className={style.bgTriangle} viewBox="0 0 60 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="30,4 56,48 4,48" />
-          </svg>
-          
-          <div className={style.bgSquare}></div>
-          <div className={style.bgSquare2}></div>
-          
-          <div className={style.bgLine}></div>
-          
-          <CourseSuggestionForm />
-        </div>
+        <CourseSuggestionSection />
         <div className={style.AboutContainer}>
           <About />
         </div>
