@@ -3,6 +3,7 @@ import { RatingModal } from "../../../../Components/RatingModal/RatingModal.jsx"
 import style from "./CourseInfoCard.module.css";
 import { CourseDetails } from "./components/CourseDetails.jsx";
 import { CourseReviews } from "./components/CourseReviews.jsx";
+import { fetchCourseReviews } from "../../../../services/reviewService.js";
 
 export function CourseInfoCard({ course, onAddToCart, specialCategory }) {
     const [toggleReviews, setToggleReviews] = useState(false);
@@ -18,13 +19,8 @@ export function CourseInfoCard({ course, onAddToCart, specialCategory }) {
             // Fetch reviews when opening for the first time
             setReviewsLoading(true);
             try {
-                const response = await fetch(
-                    `/api/reviews/course/${course.id}`,
-                );
-                const data = await response.json();
-                if (data.success) {
-                    setCourseReviews(data.data.reviews || []);
-                }
+                const reviews = await fetchCourseReviews(course.id);
+                setCourseReviews(reviews);
             } catch (error) {
                 console.error("Error fetching course reviews:", error);
             } finally {
