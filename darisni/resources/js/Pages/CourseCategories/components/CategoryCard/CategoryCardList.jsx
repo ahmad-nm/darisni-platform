@@ -1,6 +1,7 @@
 import { CategoryCard } from './CategoryCard';
 import style from './CategoryCardList.module.css';
 import { useState, useEffect } from 'react';
+import { fetchCategories } from '../../../../services/categoryService';
 
 export function CategoryCardList() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -8,16 +9,10 @@ export function CategoryCardList() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchCategories = async () => {
+        const loadCategories = async () => {
             try {
-                const response = await fetch('/api/categories?visible=1');
-                const data = await response.json();
-                
-                if (data.success) {
-                    setCategories(data.data);
-                } else {
-                    setCategories([]);
-                }
+                const categories = await fetchCategories();
+                setCategories(categories);
             } catch (error) {
                 console.error('Error fetching categories:', error);
                 setCategories([]);
@@ -25,8 +20,7 @@ export function CategoryCardList() {
                 setLoading(false);
             }
         };
-
-        fetchCategories();
+        loadCategories();
     }, []);
 
     const filteredCategories = categories.filter(category =>
