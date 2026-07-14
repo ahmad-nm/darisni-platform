@@ -1,4 +1,4 @@
-import { courseOptions } from "../../../Objects/FormCourses";
+import { courseOptions } from "../../../Constants/FormCourses";
 import style from "../JoinTeam.module.css";
 
 export default function JoinTeamForm({

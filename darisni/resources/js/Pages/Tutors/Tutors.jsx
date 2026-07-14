@@ -4,6 +4,7 @@ import { Navbar } from '@/Components/navBar/nav.jsx';
 import { About } from '../AboutPage/components/About/About.jsx';
 import { TutorCard } from './Components/TutorCard/TutorCard';
 import style from './Tutors.module.css';
+import { fetchTutors } from '@/services/tutorService.js';
 
 export default function Tutors() {
     const [tutors, setTutors] = useState([]);
@@ -12,25 +13,6 @@ export default function Tutors() {
     useEffect(() => {
         const minLoadTime = 1500;
         const start = Date.now();
-
-        // Fetch tutors data from API
-        const fetchTutors = async () => {
-            try {
-                const response = await fetch('/api/tutors');
-                const data = await response.json();
-                
-                if (data.success) {
-                    setTutors(data.data);
-                } else {
-                    // Fallback to empty array if API fails
-                    setTutors([]);
-                }
-            } catch (error) {
-                console.error('Error fetching tutors:', error);
-                // Fallback to empty array on error
-                setTutors([]);
-            }
-        };
 
         const handleLoad = () => {
             const elapsed = Date.now() - start;
@@ -42,8 +24,13 @@ export default function Tutors() {
             }
         };
 
+        const fetchTutorsData = async () => {
+            const tutorsData = await fetchTutors();
+            setTutors(tutorsData);
+        };
+
         // Fetch tutors first
-        fetchTutors().then(() => {
+        fetchTutorsData().then(() => {
             if (document.readyState === "complete") {
                 handleLoad();
             } else {
