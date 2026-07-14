@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { CourseCard } from './CourseCard.jsx';
+import { fetchCourses } from '../../../../services/courseCradService.js';
 import style from './CourseCardList.module.css';
 
 export function CourseCardList() {
@@ -8,16 +9,10 @@ export function CourseCardList() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchCourses = async () => {
+        const loadCourses = async () => {
             try {
-                const response = await fetch('/api/courses?visible=1');
-                const data = await response.json();
-                
-                if (data.success) {
-                    setCourses(data.data);
-                } else {
-                    setCourses([]);
-                }
+                const courses = await fetchCourses();
+                setCourses(courses);
             } catch (error) {
                 console.error('Error fetching courses:', error);
                 setCourses([]);
@@ -26,7 +21,7 @@ export function CourseCardList() {
             }
         };
 
-        fetchCourses();
+        loadCourses();
     }, []);
 
     useEffect(() => {

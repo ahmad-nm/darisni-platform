@@ -8,6 +8,7 @@ import CourseSuggestionSection from './components/Home/CourseSuggestionsSection.
 import { About } from '../AboutPage/components/About/About.jsx';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../Context/AuthContext';
+import { fetchCourses } from '../../services/homeService.js';
 import style from './Home.module.css';
 
 function Home() {
@@ -23,19 +24,15 @@ function Home() {
     const start = Date.now();
 
     // Fetch courses data
-    const fetchCourses = async () => {
-      try {
-        const response = await fetch('/api/courses');
-        const data = await response.json();
-        if (data.success) {
-          setCourses(data.data);
-        }
-      } catch (error) {
+    const loadCourses = async () => {
+    try {
+        const courses = await fetchCourses();
+        setCourses(courses);
+    } catch (error) {
         console.error('Error fetching courses:', error);
-        // Fallback to empty array if API fails
         setCourses([]);
-      }
-    };
+    }
+  };
 
     const handleLoad = () => {
       const elapsed = Date.now() - start;
@@ -47,8 +44,8 @@ function Home() {
       }
     };
 
-    // Fetch courses first
-    fetchCourses();
+    // Fetch courses first`
+    loadCourses();
 
     if (document.readyState === "complete") {
       handleLoad();
