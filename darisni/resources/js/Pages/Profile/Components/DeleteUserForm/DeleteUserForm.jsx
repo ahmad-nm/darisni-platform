@@ -4,6 +4,7 @@ import ProfilePasswordInput from "@/Components/Profile/ProfilePasswordInput/Prof
 import { useForm } from "@inertiajs/react";
 import { useRef, useState } from "react";
 import styles from "./DeleteUserForm.module.css";
+import { deleteAccount } from "@/services/profileService";
 
 export default function DeleteUserForm({ className = "" }) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
@@ -25,17 +26,19 @@ export default function DeleteUserForm({ className = "" }) {
         setConfirmingUserDeletion(true);
     };
 
-    const deleteUser = (e) => {
+    const deleteUser = async (e) => {
         e.preventDefault();
 
-        destroy(route("profile.destroy"), {
-            preserveScroll: true,
-            onSuccess: () => closeModal(),
-            onError: () => passwordInput.current.focus(),
-            onFinish: () => reset(),
-        });
+        try {
+            await deleteAccount(data.password);
+            closeModal();
+        } catch {
+            passwordInput.current.focus();
+        } finally {
+            reset();
+        }
     };
-
+    
     const closeModal = () => {
         setConfirmingUserDeletion(false);
         clearErrors();

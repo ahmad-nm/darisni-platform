@@ -7,12 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\TutorReview;
 use App\Models\CourseReview;
 use App\Models\DarisniReview;
-use Inertia\Response;
-use Illuminate\Http\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class RatingController extends Controller
 {
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): HttpFoundationResponse
     {
         $request->validate([
             'type' => 'required|in:tutor,course,darisni',

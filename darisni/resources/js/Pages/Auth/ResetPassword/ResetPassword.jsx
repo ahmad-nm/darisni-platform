@@ -4,9 +4,10 @@ import resetLock from '@/assets/Icons/resetLock.png'; // Make sure this image ex
 import styles from './ResetPassword.module.css';
 import FormInput from '@/Components/Auth/FormInput/FormInput';
 import AuthButton from '@/Components/Auth/AuthButton/AuthButton';
+import { resetPassword } from '@/services/authService';
 
 export default function ResetPassword({ token, email }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, processing, errors, reset } = useForm({
         token: token,
         email: email,
         password: '',
@@ -14,14 +15,20 @@ export default function ResetPassword({ token, email }) {
     });
     const [message, setMessage] = useState('');
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
-        setMessage('');
-        post(route('password.store'), {
-            onSuccess: () => setMessage('Password reset successful! You can now log in.'),
-            onError: () => setMessage('Error resetting password.'),
-            onFinish: () => reset('password', 'password_confirmation'),
-        });
+
+        setMessage("");
+
+        try {
+            await resetPassword(data);
+
+            setMessage("Password reset successful! You can now log in.");
+        } catch {
+            setMessage("Error resetting password.");
+        } finally {
+            reset("password", "password_confirmation");
+        }
     };
 
     return (

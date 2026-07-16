@@ -6,6 +6,7 @@ import SuccessMessage from './components/SuccessMessage';
 import JoinTeamForm from './components/JoinTeamForm';
 import { useState, useEffect } from 'react';
 import style from './JoinTeam.module.css';
+import { submitTutorApplication } from '@/services/joinTeamService';
 
 export default function JoinTeam() {
     const { user, isAuthenticated } = useAuth();
@@ -106,91 +107,54 @@ export default function JoinTeam() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
         setLoading(true);
-        
+
         try {
-            // Create FormData for file upload
-            const formDataToSubmit = new FormData();
-            
-            // Append all form fields
-            formDataToSubmit.append('name', formData.name);
-            formDataToSubmit.append('email', formData.email);
-            formDataToSubmit.append('phone', formData.phone);
-            formDataToSubmit.append('age', formData.age);
-            formDataToSubmit.append('university', formData.university);
-            formDataToSubmit.append('year', formData.year);
-            formDataToSubmit.append('whereYouSeeYourself', formData.whereYouSeeYourself);
-            formDataToSubmit.append('pay', formData.pay);
-            formDataToSubmit.append('otherCourses', formData.otherCourses);
-            formDataToSubmit.append('goodTutor', formData.goodTutor);
-            formDataToSubmit.append('user_id', user?.id || '');
-            
-            // Append courses array
-            formData.coursesToGive.forEach((course, index) => {
-                formDataToSubmit.append(`coursesToGive[${index}]`, course);
+            await submitTutorApplication(formData, user?.id || "");
+
+            setShowSuccess(true);
+
+            setFormData({
+                name: user?.name || "",
+                email: user?.email || "",
+                phone: "",
+                age: "",
+                university: "",
+                year: "",
+                coursesToGive: [],
+                whereYouSeeYourself: "",
+                cv: null,
+                pay: "",
+                otherCourses: "",
+                goodTutor: "",
             });
-            
-            // Append CV file
-            if (formData.cv) {
-                formDataToSubmit.append('cv', formData.cv);
+
+            const fileInput = document.getElementById("cv");
+
+            if (fileInput) {
+                fileInput.value = "";
             }
 
-            // Submit using router.post for proper CSRF handling
-            router.post('/tutor-applications', formDataToSubmit, {
-                forceFormData: true,
-                onSuccess: (page) => {
-                    // Show success message and redirect
-                    setShowSuccess(true);
-                    
-                    // Reset form after successful submission
-                    setFormData({
-                        name: user?.name || "",
-                        email: user?.email || "",
-                        phone: "",
-                        age: "",
-                        university: "",
-                        year: "",
-                        coursesToGive: [],
-                        whereYouSeeYourself: "",
-                        cv: null,
-                        pay: "",
-                        otherCourses: "",
-                        goodTutor: ""
-                    });
+            setTimeout(() => {
+                router.visit("/");
+            }, 3000);
+        } catch (errors) {
+            console.error(errors);
 
-                    const fileInput = document.getElementById("cv");
-                    if (fileInput) {
-                        fileInput.value = "";
-                    }
-                    
-                    // Redirect to homepage after 3 seconds
-                    setTimeout(() => {
-                        router.visit('/');
-                    }, 3000);
-                },
-                onError: (errors) => {
-                    console.error('Submission errors:', errors);
-                    let errorMessage = "Failed to submit application. Please check the following:\n";
-                    
-                    Object.keys(errors).forEach(key => {
-                        if (Array.isArray(errors[key])) {
-                            errorMessage += `• ${errors[key][0]}\n`;
-                        } else {
-                            errorMessage += `• ${errors[key]}\n`;
-                        }
-                    });
-                    
-                    alert(errorMessage);
-                },
-                onFinish: () => {
-                    setLoading(false);
-                    
+            let errorMessage =
+                "Failed to submit application. Please check the following:\n";
+
+            Object.keys(errors).forEach((key) => {
+                if (Array.isArray(errors[key])) {
+                    errorMessage += `• ${errors[key][0]}\n`;
+                } else {
+                    errorMessage += `• ${errors[key]}\n`;
                 }
             });
 
-        } catch (error) {
-            alert("Failed to submit application. Please try again.");
-            console.error(error);
+            alert(errorMessage);
+        } finally {
             setLoading(false);
         }
     };
