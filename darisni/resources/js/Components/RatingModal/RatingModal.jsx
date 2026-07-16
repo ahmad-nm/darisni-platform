@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../Context/AuthContext';
 import { router } from '@inertiajs/react';
 import styles from './RatingModal.module.css';
+import { submitRating } from '@/services/ratingService';
 
 export function RatingModal({ isOpen, onClose, type, subject, onRatingSubmitted }) {
     const [rating, setRating] = useState(0);
@@ -25,53 +26,42 @@ export function RatingModal({ isOpen, onClose, type, subject, onRatingSubmitted 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (!user) {
-            setError('Please log in to submit a rating');
+            setError("Please log in to submit a rating");
             return;
         }
 
         if (rating === 0) {
-            setError('Please select a rating');
+            setError("Please select a rating");
             return;
         }
 
         setIsSubmitting(true);
-        setError('');
+        setError("");
 
         try {
-            const ratingData = {
+            await submitRating({
                 type,
                 subject_id: subject.id,
                 rating,
-                feedback: feedback.trim() || null
-            };
-
-            // Submit rating using Inertia
-            router.post('/api/ratings', ratingData, {
-                onSuccess: () => {
-                    // Reset form
-                    setRating(0);
-                    setFeedback('');
-                    
-                    // Call callback if provided
-                    if (onRatingSubmitted) {
-                        onRatingSubmitted();
-                    }
-                    
-                    // Close modal
-                    onClose();
-                },
-                onError: (errors) => {
-                    setError(errors.message || 'Failed to submit rating. Please try again.');
-                },
-                onFinish: () => {
-                    setIsSubmitting(false);
-                }
+                feedback: feedback.trim() || null,
             });
-        } catch (error) {
-            console.error('Error submitting rating:', error);
-            setError('Failed to submit rating. Please try again.');
+
+            setRating(0);
+            setFeedback("");
+
+            onRatingSubmitted?.();
+
+            onClose();
+        } catch (errors) {
+            console.error(errors);
+
+            setError(
+                errors.message ||
+                    "Failed to submit rating. Please try again."
+            );
+        } finally {
             setIsSubmitting(false);
         }
     };

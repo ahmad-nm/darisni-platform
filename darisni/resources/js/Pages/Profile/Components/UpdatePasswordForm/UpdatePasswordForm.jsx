@@ -5,6 +5,7 @@ import ProfileButton from "@/Components/Profile/ProfileButton/ProfileButton";
 import ProfilePasswordInput from "@/Components/Profile/ProfilePasswordInput/ProfilePasswordInput";
 import formStyles from "../../../../Components/Profile/ProfileForm.module.css";
 import styles from "./UpdatePasswordForm.module.css";
+import { updateUserPassword } from "@/services/profileService";
 
 export default function UpdatePasswordForm({ className = "" }) {
     const passwordInput = useRef();
@@ -14,7 +15,6 @@ export default function UpdatePasswordForm({ className = "" }) {
         data,
         setData,
         errors,
-        put,
         reset,
         processing,
         recentlySuccessful,
@@ -24,24 +24,21 @@ export default function UpdatePasswordForm({ className = "" }) {
         password_confirmation: "",
     });
 
-    const updatePassword = (e) => {
+    const updatePassword = async (e) => {
         e.preventDefault();
 
-        put(route("password.update"), {
-            preserveScroll: true,
-            onSuccess: () => reset(),
-            onError: (errors) => {
-                if (errors.password) {
-                    reset("password", "password_confirmation");
-                    passwordInput.current.focus();
-                }
-
-                if (errors.current_password) {
-                    reset("current_password");
-                    currentPasswordInput.current.focus();
-                }
-            },
-        });
+        try {
+            await updateUserPassword(data.current_password, data.password, data.password_confirmation);
+            reset();
+        } catch (error) {
+            if (error.response && error.response.status === 422) {
+                // Handle validation errors
+                console.error("Validation errors:", error.response.data.errors);
+            } else {
+                // Handle other errors
+                console.error("An error occurred:", error);
+            }
+        }
     };
 
     return (

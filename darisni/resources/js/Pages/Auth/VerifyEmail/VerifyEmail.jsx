@@ -2,13 +2,15 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import styles from './VerifyEmail.module.css';
 import AuthButton from '@/Components/Auth/AuthButton/AuthButton';
 import AnimatedBg from '@/Components/Auth/AnimatedBg/AnimatedBg';
+import { resendVerificationEmail } from "@/services/authService";
 
 export default function VerifyEmail({ status }) {
-    const { post, processing } = useForm({});
+    const { processing } = useForm({});
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
-        post(route('verification.send'));
+
+        await resendVerificationEmail();
     };
 
     return (

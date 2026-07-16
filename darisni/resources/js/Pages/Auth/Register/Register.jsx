@@ -4,21 +4,24 @@ import ProcessingSpinner from '@/Components/Auth/ProcessingSpinner/ProcessingSpi
 import AnimatedBg from '@/Components/Auth/AnimatedBg/AnimatedBg';
 import FormInput from '@/Components/Auth/FormInput/FormInput';
 import AuthButton from '@/Components/Auth/AuthButton/AuthButton';
+import { register } from '@/services/authService';
 
 export default function Register() {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, processing, errors, reset } = useForm({
         name: '',
         email: '',
         password: '',
         password_confirmation: '',
     });
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
 
-        post(route('register'), {
-            onFinish: () => reset('password', 'password_confirmation'),
-        });
+        try {
+            await register(data);
+        } finally {
+            reset("password", "password_confirmation");
+        }
     };
 
     return (

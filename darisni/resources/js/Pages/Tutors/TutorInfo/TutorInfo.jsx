@@ -3,6 +3,7 @@ import { router } from '@inertiajs/react';
 import { Loader } from '@/Components/Loader/Loader';
 import { TutorInfoContent } from '@/Pages/Tutors/Components/TutorInfoContent/TutorInfoContent';
 import style from './TutorInfo.module.css';
+import { fetchTutorById } from '@/services/tutorService';
 
 export default function TutorInfo({ tutorId }) {
     const [isLoading, setIsLoading] = useState(true);
@@ -15,22 +16,11 @@ export default function TutorInfo({ tutorId }) {
 
         const fetchTutor = async () => {
             try {
-                const response = await fetch(`/api/tutors/${tutorId}`);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    setTutor(data.data);
-                } else {
-                    setError('Tutor not found');
-                }
-            } catch (error) {
-                console.error('Error fetching tutor:', error);
-                setError('Failed to load tutor information');
+                const tutor = await fetchTutorById(tutorId);
+                setTutor(tutor);
+            }
+            catch (err) {
+                setError(err.message);
             }
         };
 

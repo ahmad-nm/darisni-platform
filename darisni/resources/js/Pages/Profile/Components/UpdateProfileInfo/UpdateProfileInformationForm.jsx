@@ -4,6 +4,7 @@ import ProfileButton from "@/Components/Profile/ProfileButton/ProfileButton";
 import ProfileInput from "@/Components/Profile/ProfileInput/ProfileInput";
 import formStyles from "../../../../Components/Profile/ProfileForm.module.css";
 import styles from "./UpdateProfileInformationForm.module.css";
+import { updateProfileInformation } from "@/services/profileService";
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -12,16 +13,20 @@ export default function UpdateProfileInformation({
 }) {
     const user = usePage().props.auth.user;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } =
+    const { data, setData, errors, processing, recentlySuccessful } =
         useForm({
             name: user.name,
             email: user.email,
         });
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
 
-        patch(route("profile.update"));
+        try {
+            await updateProfileInformation(data);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (

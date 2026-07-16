@@ -6,19 +6,24 @@ import styles from './ForgotPassword.module.css';
 import ProcessingSpinner from '@/Components/Auth/ProcessingSpinner/ProcessingSpinner';
 import FormInput from '@/Components/Auth/FormInput/FormInput';
 import AuthButton from '@/Components/Auth/AuthButton/AuthButton';
+import { forgotPassword } from '@/services/authService';
 
 export default function ForgotPassword({ status }) {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, processing, errors } = useForm({
         email: '',
     });
     const [loading, setLoading] = useState(false);
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
+
         setLoading(true);
-        post(route('password.email'), {
-            onFinish: () => setLoading(false)
-        });
+
+        try {
+            await forgotPassword(data);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
