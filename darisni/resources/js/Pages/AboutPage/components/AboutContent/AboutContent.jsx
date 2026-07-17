@@ -6,6 +6,7 @@ import ourVisionImage from '../../../../assets/Background/ourVision1.jpeg';
 import ourTeamImage from '../../../../assets/Background/ourTeambg.jpg';
 import joinUsImage from '../../../../assets/Background/JoinTeam.jpeg';
 import style from './AboutContent.module.css';
+import { ROUTES } from '@/constants/routes';
 
 export function AboutContent() {
 
@@ -94,7 +95,7 @@ export function AboutContent() {
                     <h2>Join Us</h2>
                     <h1>BE PART OF OUR JOURNEY</h1>
                     <p>We are always looking for passionate individuals to join our team and help us make a difference in the education sector.</p>
-                    <Link href="/join-team" className={style.JoinLink}>Join Our Team</Link>
+                    <Link href={ROUTES.JOIN_TEAM} className={style.JoinLink}>Join Our Team</Link>
                 </div>
 
                 <div className={style.AboutSectionImage}>

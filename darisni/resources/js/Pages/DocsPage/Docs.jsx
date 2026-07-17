@@ -3,7 +3,7 @@ import DocsHeader from "./components/DocsHeader";
 import DocsSidebar from "./components/DocsSidebar";
 import DocsContent from "./components/DocsContent";
 import DocsFooter from "./components/DocsFooter";
-import { DocsSections as sections } from "../../Constants/DocsSections";
+import { DocsSections as sections } from "../../constants/DocsSections";
 import style from "./Docs.module.css";
 
 export default function DocsPage() {

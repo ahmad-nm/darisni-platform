@@ -1,19 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Head, router } from '@inertiajs/react';
-import AdminLayout from '@/Layouts/AdminLayout';
-import styles from './UserManagement.module.css';
+import React, { useState, useEffect } from "react";
+import { Head, router } from "@inertiajs/react";
+import AdminLayout from "@/layouts/AdminLayout";
+import styles from "./UserManagement.module.css";
+import { navigate } from "@/utils/navigationService";
+import { ROUTES } from "@/constants/routes";
 
-export default function UserManagement({ users: initialUsers, stats: initialStats }) {
+export default function UserManagement({
+    users: initialUsers,
+    stats: initialStats,
+}) {
     const [users, setUsers] = useState(initialUsers || []);
     const [filteredUsers, setFilteredUsers] = useState(initialUsers || []);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useState("");
     const [loading, setLoading] = useState(false);
-    const [selectedRole, setSelectedRole] = useState('all');
+    const [selectedRole, setSelectedRole] = useState("all");
     const [currentPage, setCurrentPage] = useState(1);
     const [showUserModal, setShowUserModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
-    const [modalMode, setModalMode] = useState('view'); // 'view', 'edit'
+    const [modalMode, setModalMode] = useState("view"); // 'view', 'edit'
     const [stats, setStats] = useState(initialStats || {});
     const usersPerPage = 10;
 
@@ -31,15 +36,20 @@ export default function UserManagement({ users: initialUsers, stats: initialStat
 
         // Filter by search query
         if (searchQuery) {
-            filtered = filtered.filter(user => 
-                user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                user.email.toLowerCase().includes(searchQuery.toLowerCase())
+            filtered = filtered.filter(
+                (user) =>
+                    user.name
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase()) ||
+                    user.email
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase()),
             );
         }
 
         // Filter by role
-        if (selectedRole !== 'all') {
-            filtered = filtered.filter(user => user.role === selectedRole);
+        if (selectedRole !== "all") {
+            filtered = filtered.filter((user) => user.role === selectedRole);
         }
 
         setFilteredUsers(filtered);
@@ -61,7 +71,7 @@ export default function UserManagement({ users: initialUsers, stats: initialStat
     };
 
     const handleDeleteUser = async (userId) => {
-        setSelectedUser(users.find(user => user.id === userId));
+        setSelectedUser(users.find((user) => user.id === userId));
         setShowDeleteModal(true);
     };
 
@@ -69,23 +79,34 @@ export default function UserManagement({ users: initialUsers, stats: initialStat
         if (!selectedUser) return;
 
         setLoading(true);
-        router.delete(route('admin.users.destroy', selectedUser.id), {
+        router.delete(route("admin.users.destroy", selectedUser.id), {
             preserveScroll: true,
             onSuccess: () => {
                 // Remove user from local state
-                const updatedUsers = users.filter(user => user.id !== selectedUser.id);
+                const updatedUsers = users.filter(
+                    (user) => user.id !== selectedUser.id,
+                );
                 setUsers(updatedUsers);
-                setFilteredUsers(updatedUsers.filter(user => {
-                    const matchesSearch = user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                        user.email.toLowerCase().includes(searchQuery.toLowerCase());
-                    const matchesRole = selectedRole === 'all' || user.role === selectedRole;
-                    return matchesSearch && matchesRole;
-                }));
+                setFilteredUsers(
+                    updatedUsers.filter((user) => {
+                        const matchesSearch =
+                            user.name
+                                .toLowerCase()
+                                .includes(searchQuery.toLowerCase()) ||
+                            user.email
+                                .toLowerCase()
+                                .includes(searchQuery.toLowerCase());
+                        const matchesRole =
+                            selectedRole === "all" ||
+                            user.role === selectedRole;
+                        return matchesSearch && matchesRole;
+                    }),
+                );
                 setShowDeleteModal(false);
                 setSelectedUser(null);
             },
             onError: (errors) => {
-                alert('Failed to delete user');
+                alert("Failed to delete user");
             },
             onFinish: () => setLoading(false),
         });
@@ -93,13 +114,13 @@ export default function UserManagement({ users: initialUsers, stats: initialStat
 
     const handleViewUser = (user) => {
         setSelectedUser(user);
-        setModalMode('view');
+        setModalMode("view");
         setShowUserModal(true);
     };
 
     const handleEditUser = (user) => {
         setSelectedUser(user);
-        setModalMode('edit');
+        setModalMode("edit");
         setShowUserModal(true);
     };
 
@@ -109,7 +130,7 @@ export default function UserManagement({ users: initialUsers, stats: initialStat
         const isFormData = payload instanceof FormData;
 
         if (isFormData) {
-            router.post(route('admin.users.update', selectedUser.id), payload, {
+            router.post(route("admin.users.update", selectedUser.id), payload, {
                 preserveScroll: true,
                 forceFormData: true,
                 onSuccess: () => {
@@ -117,18 +138,18 @@ export default function UserManagement({ users: initialUsers, stats: initialStat
                     setShowUserModal(false);
                     setSelectedUser(null);
                 },
-                onError: () => alert('Failed to update user'),
+                onError: () => alert("Failed to update user"),
                 onFinish: () => setLoading(false),
             });
         } else {
-            router.put(route('admin.users.update', selectedUser.id), payload, {
+            router.put(route("admin.users.update", selectedUser.id), payload, {
                 preserveScroll: true,
                 onSuccess: () => {
                     router.reload();
                     setShowUserModal(false);
                     setSelectedUser(null);
                 },
-                onError: () => alert('Failed to update user'),
+                onError: () => alert("Failed to update user"),
                 onFinish: () => setLoading(false),
             });
         }
@@ -136,17 +157,28 @@ export default function UserManagement({ users: initialUsers, stats: initialStat
 
     const getStatusBadge = (user) => {
         const isActive = user.email_verified_at !== null;
-        const status = isActive ? 'active' : 'inactive';
-        const statusText = isActive ? 'Active' : 'Inactive';
-        const statusClass = isActive ? styles.statusActive : styles.statusInactive;
-        return <span className={`${styles.statusBadge} ${statusClass}`}>{statusText}</span>;
+        const status = isActive ? "active" : "inactive";
+        const statusText = isActive ? "Active" : "Inactive";
+        const statusClass = isActive
+            ? styles.statusActive
+            : styles.statusInactive;
+        return (
+            <span className={`${styles.statusBadge} ${statusClass}`}>
+                {statusText}
+            </span>
+        );
     };
 
     const getRoleBadge = (role) => {
-        const roleClass = role === 'admin' ? styles.roleAdmin : 
-                         role === 'tutor' ? styles.roleTutor : 
-                         styles.roleStudent;
-        return <span className={`${styles.roleBadge} ${roleClass}`}>{role}</span>;
+        const roleClass =
+            role === "admin"
+                ? styles.roleAdmin
+                : role === "tutor"
+                  ? styles.roleTutor
+                  : styles.roleStudent;
+        return (
+            <span className={`${styles.roleBadge} ${roleClass}`}>{role}</span>
+        );
     };
 
     if (loading) {
@@ -170,12 +202,18 @@ export default function UserManagement({ users: initialUsers, stats: initialStat
                     <div className={styles.header}>
                         <div className={styles.headerContent}>
                             <div>
-                                <h1 className={styles.title}>User Management</h1>
-                                <p className={styles.subtitle}>Manage all users on your platform</p>
+                                <h1 className={styles.title}>
+                                    User Management
+                                </h1>
+                                <p className={styles.subtitle}>
+                                    Manage all users on your platform
+                                </p>
                             </div>
-                            <button 
+                            <button
                                 className={styles.addUserButton}
-                                onClick={() => router.visit('/admin/users/create')}
+                                onClick={() =>
+                                    navigate(ROUTES.ADMIN_USER_CREATE)
+                                }
                             >
                                 + Add New User
                             </button>
@@ -212,19 +250,39 @@ export default function UserManagement({ users: initialUsers, stats: initialStat
                     {/* Stats */}
                     <div className={styles.statsContainer}>
                         <div className={styles.statItem}>
-                            <span className={styles.statNumber}>{filteredUsers.length}</span>
-                            <span className={styles.statLabel}>Total Users</span>
+                            <span className={styles.statNumber}>
+                                {filteredUsers.length}
+                            </span>
+                            <span className={styles.statLabel}>
+                                Total Users
+                            </span>
                         </div>
                         <div className={styles.statItem}>
-                            <span className={styles.statNumber}>{stats.active || filteredUsers.filter(u => u.email_verified_at !== null).length}</span>
+                            <span className={styles.statNumber}>
+                                {stats.active ||
+                                    filteredUsers.filter(
+                                        (u) => u.email_verified_at !== null,
+                                    ).length}
+                            </span>
                             <span className={styles.statLabel}>Active</span>
                         </div>
                         <div className={styles.statItem}>
-                            <span className={styles.statNumber}>{stats.tutors || filteredUsers.filter(u => u.role === 'tutor').length}</span>
+                            <span className={styles.statNumber}>
+                                {stats.tutors ||
+                                    filteredUsers.filter(
+                                        (u) => u.role === "tutor",
+                                    ).length}
+                            </span>
                             <span className={styles.statLabel}>Tutors</span>
                         </div>
                         <div className={styles.statItem}>
-                            <span className={styles.statNumber}>{filteredUsers.filter(u => u.email_verified_at === null).length}</span>
+                            <span className={styles.statNumber}>
+                                {
+                                    filteredUsers.filter(
+                                        (u) => u.email_verified_at === null,
+                                    ).length
+                                }
+                            </span>
                             <span className={styles.statLabel}>Unverified</span>
                         </div>
                     </div>
@@ -243,47 +301,78 @@ export default function UserManagement({ users: initialUsers, stats: initialStat
                                 </tr>
                             </thead>
                             <tbody>
-                                {currentUsers.map(user => (
-                                    <tr key={user.id} className={styles.userRow}>
+                                {currentUsers.map((user) => (
+                                    <tr
+                                        key={user.id}
+                                        className={styles.userRow}
+                                    >
                                         <td className={styles.userInfo}>
                                             <div className={styles.userAvatar}>
-                                                {user.name.charAt(0).toUpperCase()}
+                                                {user.name
+                                                    .charAt(0)
+                                                    .toUpperCase()}
                                             </div>
                                             <div className={styles.userDetails}>
-                                                <div className={styles.userName}>{user.name}</div>
-                                                <div className={styles.userEmail}>{user.email}</div>
+                                                <div
+                                                    className={styles.userName}
+                                                >
+                                                    {user.name}
+                                                </div>
+                                                <div
+                                                    className={styles.userEmail}
+                                                >
+                                                    {user.email}
+                                                </div>
                                             </div>
                                         </td>
                                         <td>{getRoleBadge(user.role)}</td>
                                         <td>{getStatusBadge(user)}</td>
                                         <td>
-                                            <span className={user.email_verified_at ? styles.verified : styles.unverified}>
-                                                {user.email_verified_at ? '✓ Verified' : '✗ Unverified'}
+                                            <span
+                                                className={
+                                                    user.email_verified_at
+                                                        ? styles.verified
+                                                        : styles.unverified
+                                                }
+                                            >
+                                                {user.email_verified_at
+                                                    ? "✓ Verified"
+                                                    : "✗ Unverified"}
                                             </span>
                                         </td>
                                         <td className={styles.joinDate}>
-                                            {new Date(user.created_at).toLocaleDateString()}
+                                            {new Date(
+                                                user.created_at,
+                                            ).toLocaleDateString()}
                                         </td>
                                         <td>
                                             <div className={styles.actions}>
-                                                <button 
-                                                    className={styles.editBtn} 
+                                                <button
+                                                    className={styles.editBtn}
                                                     title="Edit User"
-                                                    onClick={() => handleEditUser(user)}
+                                                    onClick={() =>
+                                                        handleEditUser(user)
+                                                    }
                                                 >
                                                     ✏️
                                                 </button>
-                                                <button 
-                                                    className={styles.viewBtn} 
+                                                <button
+                                                    className={styles.viewBtn}
                                                     title="View Details"
-                                                    onClick={() => handleViewUser(user)}
+                                                    onClick={() =>
+                                                        handleViewUser(user)
+                                                    }
                                                 >
                                                     👁️
                                                 </button>
-                                                <button 
-                                                    className={styles.deleteBtn} 
+                                                <button
+                                                    className={styles.deleteBtn}
                                                     title="Delete User"
-                                                    onClick={() => handleDeleteUser(user.id)}
+                                                    onClick={() =>
+                                                        handleDeleteUser(
+                                                            user.id,
+                                                        )
+                                                    }
                                                 >
                                                     🗑️
                                                 </button>
@@ -298,29 +387,39 @@ export default function UserManagement({ users: initialUsers, stats: initialStat
                     {/* Pagination */}
                     {totalPages > 1 && (
                         <div className={styles.pagination}>
-                            <button 
+                            <button
                                 className={styles.pageBtn}
-                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                onClick={() =>
+                                    setCurrentPage((prev) =>
+                                        Math.max(prev - 1, 1),
+                                    )
+                                }
                                 disabled={currentPage === 1}
                             >
                                 Previous
                             </button>
-                            
+
                             <div className={styles.pageNumbers}>
                                 {[...Array(totalPages)].map((_, index) => (
                                     <button
                                         key={index + 1}
-                                        className={`${styles.pageNumber} ${currentPage === index + 1 ? styles.active : ''}`}
-                                        onClick={() => setCurrentPage(index + 1)}
+                                        className={`${styles.pageNumber} ${currentPage === index + 1 ? styles.active : ""}`}
+                                        onClick={() =>
+                                            setCurrentPage(index + 1)
+                                        }
                                     >
                                         {index + 1}
                                     </button>
                                 ))}
                             </div>
 
-                            <button 
+                            <button
                                 className={styles.pageBtn}
-                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                onClick={() =>
+                                    setCurrentPage((prev) =>
+                                        Math.min(prev + 1, totalPages),
+                                    )
+                                }
                                 disabled={currentPage === totalPages}
                             >
                                 Next
@@ -343,7 +442,7 @@ export default function UserManagement({ users: initialUsers, stats: initialStat
                         onClose={() => {
                             setShowUserModal(false);
                             setSelectedUser(null);
-                            setModalMode('view');
+                            setModalMode("view");
                         }}
                         onUpdate={handleUpdateUser}
                         setModalMode={setModalMode}
@@ -373,7 +472,7 @@ function UserModal({ user, mode, onClose, onUpdate, setModalMode }) {
         email: user.email,
         role: user.role,
         email_verified_at: !!user.email_verified_at,
-        image: user.image || '',
+        image: user.image || "",
     });
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
@@ -383,55 +482,60 @@ function UserModal({ user, mode, onClose, onUpdate, setModalMode }) {
         if (!file) return;
         setUploading(true);
         const formDataUpload = new FormData();
-        formDataUpload.append('image', file);
+        formDataUpload.append("image", file);
 
         try {
-            const response = await fetch('/admin/users/upload-image', {
-                method: 'POST',
+            const response = await fetch("/admin/users/upload-image", {
+                method: "POST",
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
                 },
-                body: formDataUpload
+                body: formDataUpload,
             });
             const data = await response.json();
             if (data.url) {
-                setFormData(prev => ({ ...prev, image: data.url }));
+                setFormData((prev) => ({ ...prev, image: data.url }));
             } else {
-                alert('Failed to upload image.');
+                alert("Failed to upload image.");
             }
         } catch (error) {
-            alert('Image upload failed.');
+            alert("Image upload failed.");
         } finally {
             setUploading(false);
         }
     };
 
     const handleRemoveImage = () => {
-        setFormData(prev => ({ ...prev, image: '' }));
+        setFormData((prev) => ({ ...prev, image: "" }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (mode === 'view') return;
-        
+        if (mode === "view") return;
+
         setLoading(true);
 
         let payload;
-        if (formData.image && typeof formData.image !== 'string') {
+        if (formData.image && typeof formData.image !== "string") {
             // New image file selected
             payload = new FormData();
-            payload.append('name', formData.name);
-            payload.append('email', formData.email);
-            payload.append('role', formData.role);
-            payload.append('email_verified_at', formData.email_verified_at ? 1 : 0);
-            payload.append('image', formData.image);
+            payload.append("name", formData.name);
+            payload.append("email", formData.email);
+            payload.append("role", formData.role);
+            payload.append(
+                "email_verified_at",
+                formData.email_verified_at ? 1 : 0,
+            );
+            payload.append("image", formData.image);
 
             // 👇 CRUCIAL: tell Laravel this is PUT
-            payload.append('_method', 'PUT');
+            payload.append("_method", "PUT");
 
-            console.log('FormData payload:');
+            console.log("FormData payload:");
             for (let pair of payload.entries()) {
-                console.log(pair[0] + ':', pair[1]);
+                console.log(pair[0] + ":", pair[1]);
             }
         } else {
             // No new image, don’t send image at all
@@ -441,7 +545,7 @@ function UserModal({ user, mode, onClose, onUpdate, setModalMode }) {
                 role: formData.role,
                 email_verified_at: formData.email_verified_at ? 1 : 0,
             };
-            console.log('JSON payload:', payload);
+            console.log("JSON payload:", payload);
         }
 
         await onUpdate(payload);
@@ -450,13 +554,15 @@ function UserModal({ user, mode, onClose, onUpdate, setModalMode }) {
 
     return (
         <div className={styles.modalOverlay} onClick={onClose}>
-            <div className={styles.modal} onClick={e => e.stopPropagation()}>
+            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.modalHeader}>
-                    <h2>{mode === 'view' ? 'User Details' : 'Edit User'}</h2>
-                    <button className={styles.closeBtn} onClick={onClose}>×</button>
+                    <h2>{mode === "view" ? "User Details" : "Edit User"}</h2>
+                    <button className={styles.closeBtn} onClick={onClose}>
+                        ×
+                    </button>
                 </div>
-                
-                {mode === 'view' ? (
+
+                {mode === "view" ? (
                     <div className={styles.userDetailsView}>
                         <div className={styles.userProfileSection}>
                             <div className={styles.userAvatarLarge}>
@@ -464,82 +570,115 @@ function UserModal({ user, mode, onClose, onUpdate, setModalMode }) {
                             </div>
                             <div className={styles.userBasicInfo}>
                                 <h3>{user.name}</h3>
-                                <p className={styles.userEmailLarge}>{user.email}</p>
-                                <span className={`${styles.userRoleBadge} ${styles['role' + user.role.charAt(0).toUpperCase() + user.role.slice(1)]}`}>
+                                <p className={styles.userEmailLarge}>
+                                    {user.email}
+                                </p>
+                                <span
+                                    className={`${styles.userRoleBadge} ${styles["role" + user.role.charAt(0).toUpperCase() + user.role.slice(1)]}`}
+                                >
                                     {user.role.toUpperCase()}
                                 </span>
                             </div>
                         </div>
-                        
+
                         <div className={styles.userInfoGrid}>
                             <div className={styles.infoItem}>
                                 <label>User ID</label>
                                 <span>#{user.id}</span>
                             </div>
-                            
+
                             <div className={styles.infoItem}>
                                 <label>Account Status</label>
-                                <span className={`${styles.statusIndicator} ${user.email_verified_at !== null ? styles.statusActive : styles.statusInactive}`}>
-                                    {user.email_verified_at !== null ? '✓ Active' : '✗ Inactive'}
+                                <span
+                                    className={`${styles.statusIndicator} ${user.email_verified_at !== null ? styles.statusActive : styles.statusInactive}`}
+                                >
+                                    {user.email_verified_at !== null
+                                        ? "✓ Active"
+                                        : "✗ Inactive"}
                                 </span>
                             </div>
-                            
+
                             <div className={styles.infoItem}>
                                 <label>Email Verification</label>
-                                <span className={`${styles.verificationStatus} ${user.email_verified_at ? styles.verified : styles.unverified}`}>
-                                    {user.email_verified_at ? '✓ Verified' : '✗ Unverified'}
+                                <span
+                                    className={`${styles.verificationStatus} ${user.email_verified_at ? styles.verified : styles.unverified}`}
+                                >
+                                    {user.email_verified_at
+                                        ? "✓ Verified"
+                                        : "✗ Unverified"}
                                 </span>
                             </div>
-                            
+
                             <div className={styles.infoItem}>
                                 <label>Email Verified At</label>
                                 <span>
-                                    {user.email_verified_at 
-                                        ? new Date(user.email_verified_at).toLocaleString()
-                                        : 'Not verified'
-                                    }
+                                    {user.email_verified_at
+                                        ? new Date(
+                                              user.email_verified_at,
+                                          ).toLocaleString()
+                                        : "Not verified"}
                                 </span>
                             </div>
-                            
+
                             <div className={styles.infoItem}>
                                 <label>Member Since</label>
-                                <span>{new Date(user.created_at).toLocaleDateString('en-US', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                })}</span>
+                                <span>
+                                    {new Date(
+                                        user.created_at,
+                                    ).toLocaleDateString("en-US", {
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric",
+                                    })}
+                                </span>
                             </div>
-                            
+
                             <div className={styles.infoItem}>
                                 <label>Last Updated</label>
-                                <span>{new Date(user.updated_at || user.created_at).toLocaleDateString('en-US', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                })}</span>
+                                <span>
+                                    {new Date(
+                                        user.updated_at || user.created_at,
+                                    ).toLocaleDateString("en-US", {
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric",
+                                    })}
+                                </span>
                             </div>
-                            
+
                             <div className={styles.infoItem}>
                                 <label>Account Age</label>
                                 <span>
-                                    {Math.floor((new Date() - new Date(user.created_at)) / (1000 * 60 * 60 * 24))} days
+                                    {Math.floor(
+                                        (new Date() -
+                                            new Date(user.created_at)) /
+                                            (1000 * 60 * 60 * 24),
+                                    )}{" "}
+                                    days
                                 </span>
                             </div>
-                            
+
                             <div className={styles.infoItem}>
                                 <label>Profile Image</label>
-                                <span>{user.image ? 'Has profile picture' : 'No profile picture'}</span>
+                                <span>
+                                    {user.image
+                                        ? "Has profile picture"
+                                        : "No profile picture"}
+                                </span>
                             </div>
                         </div>
-                        
+
                         <div className={styles.modalActions}>
-                            <button onClick={onClose} className={styles.cancelBtn}>
+                            <button
+                                onClick={onClose}
+                                className={styles.cancelBtn}
+                            >
                                 Close
                             </button>
-                            <button 
+                            <button
                                 onClick={() => {
-                                    setModalMode('edit');
-                                }} 
+                                    setModalMode("edit");
+                                }}
                                 className={styles.editFromViewBtn}
                             >
                                 Edit User
@@ -553,28 +692,43 @@ function UserModal({ user, mode, onClose, onUpdate, setModalMode }) {
                             <input
                                 type="text"
                                 value={formData.name}
-                                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                                onChange={(e) =>
+                                    setFormData((prev) => ({
+                                        ...prev,
+                                        name: e.target.value,
+                                    }))
+                                }
                                 className={styles.modalInput}
                                 required
                             />
                         </div>
-                        
+
                         <div className={styles.formGroup}>
                             <label>Email Address</label>
                             <input
                                 type="email"
                                 value={formData.email}
-                                onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                                onChange={(e) =>
+                                    setFormData((prev) => ({
+                                        ...prev,
+                                        email: e.target.value,
+                                    }))
+                                }
                                 className={styles.modalInput}
                                 required
                             />
                         </div>
-                        
+
                         <div className={styles.formGroup}>
                             <label>Role</label>
                             <select
                                 value={formData.role}
-                                onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
+                                onChange={(e) =>
+                                    setFormData((prev) => ({
+                                        ...prev,
+                                        role: e.target.value,
+                                    }))
+                                }
                                 className={styles.modalInput}
                             >
                                 <option value="user">User</option>
@@ -595,20 +749,30 @@ function UserModal({ user, mode, onClose, onUpdate, setModalMode }) {
                             />
                             {uploading && <span>Uploading...</span>}
                             {formData.image && (
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                    <img src={formData.image} alt="User" style={{ maxWidth: 80, marginTop: 8 }} />
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 8,
+                                    }}
+                                >
+                                    <img
+                                        src={formData.image}
+                                        alt="User"
+                                        style={{ maxWidth: 80, marginTop: 8 }}
+                                    />
                                     <button
                                         type="button"
                                         onClick={handleRemoveImage}
                                         className={styles.removeImageBtn}
                                         style={{
                                             marginLeft: 8,
-                                            background: '#f44336',
-                                            color: '#fff',
-                                            border: 'none',
+                                            background: "#f44336",
+                                            color: "#fff",
+                                            border: "none",
                                             borderRadius: 4,
-                                            padding: '4px 8px',
-                                            cursor: 'pointer'
+                                            padding: "4px 8px",
+                                            cursor: "pointer",
                                         }}
                                     >
                                         Remove Image
@@ -622,18 +786,31 @@ function UserModal({ user, mode, onClose, onUpdate, setModalMode }) {
                                 <input
                                     type="checkbox"
                                     checked={formData.email_verified_at}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, email_verified_at: e.target.checked }))}
+                                    onChange={(e) =>
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            email_verified_at: e.target.checked,
+                                        }))
+                                    }
                                 />
                                 Email Verified
                             </label>
                         </div>
-                        
+
                         <div className={styles.modalActions}>
-                            <button type="button" onClick={onClose} className={styles.cancelBtn}>
+                            <button
+                                type="button"
+                                onClick={onClose}
+                                className={styles.cancelBtn}
+                            >
                                 Cancel
                             </button>
-                            <button type="submit" disabled={loading} className={styles.saveBtn}>
-                                {loading ? 'Saving...' : 'Save Changes'}
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className={styles.saveBtn}
+                            >
+                                {loading ? "Saving..." : "Save Changes"}
                             </button>
                         </div>
                     </form>
@@ -655,31 +832,38 @@ function DeleteConfirmationModal({ user, onConfirm, onCancel }) {
 
     return (
         <div className={styles.modalOverlay} onClick={onCancel}>
-            <div className={styles.deleteModal} onClick={e => e.stopPropagation()}>
+            <div
+                className={styles.deleteModal}
+                onClick={(e) => e.stopPropagation()}
+            >
                 <div className={styles.deleteModalHeader}>
                     <h2>Confirm Delete</h2>
                 </div>
-                
+
                 <div className={styles.deleteModalContent}>
                     <p>Are you sure you want to delete this user?</p>
                     <div className={styles.userPreview}>
-                        <strong>{user.name}</strong><br />
-                        <span>{user.email}</span><br />
+                        <strong>{user.name}</strong>
+                        <br />
+                        <span>{user.email}</span>
+                        <br />
                         <span className={styles.roleTag}>{user.role}</span>
                     </div>
-                    <p className={styles.warning}>This action cannot be undone.</p>
+                    <p className={styles.warning}>
+                        This action cannot be undone.
+                    </p>
                 </div>
-                
+
                 <div className={styles.deleteModalActions}>
                     <button onClick={onCancel} className={styles.cancelBtn}>
                         Cancel
                     </button>
-                    <button 
-                        onClick={handleConfirm} 
-                        disabled={loading} 
+                    <button
+                        onClick={handleConfirm}
+                        disabled={loading}
                         className={styles.deleteConfirmBtn}
                     >
-                        {loading ? 'Deleting...' : 'Delete User'}
+                        {loading ? "Deleting..." : "Delete User"}
                     </button>
                 </div>
             </div>

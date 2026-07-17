@@ -7,6 +7,8 @@ import JoinTeamForm from "./components/JoinTeamForm";
 import { useState, useEffect } from "react";
 import style from "./JoinTeam.module.css";
 import { submitTutorApplication } from "@/services/joinTeamService";
+import { navigate } from "@/utils/navigationService";
+import { ROUTES } from "@/constants/routes";
 
 export default function JoinTeam() {
     const { user, isAuthenticated } = useAuth();
@@ -21,7 +23,7 @@ export default function JoinTeam() {
                 setShowSuccess(true);
                 // Redirect to homepage after 3 seconds
                 setTimeout(() => {
-                    router.visit("/");
+                    navigate(ROUTES.HOME);
                 }, 3000);
             }
         }
@@ -137,7 +139,7 @@ export default function JoinTeam() {
             }
 
             setTimeout(() => {
-                router.visit("/");
+                navigate(ROUTES.HOME);
             }, 3000);
         } catch (errors) {
             console.error(errors);
@@ -160,11 +162,11 @@ export default function JoinTeam() {
     };
 
     const handleLogin = () => {
-        router.visit("/login");
+        navigate(ROUTES.LOGIN);
     };
 
     const handleSignup = () => {
-        router.visit("/register");
+        navigate(ROUTES.REGISTER);
     };
 
     // Show loader while checking authentication

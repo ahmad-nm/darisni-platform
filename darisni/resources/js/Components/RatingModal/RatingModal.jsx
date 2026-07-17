@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { router } from "@inertiajs/react";
 import styles from "./RatingModal.module.css";
 import { submitRating } from "@/services/ratingService";
 

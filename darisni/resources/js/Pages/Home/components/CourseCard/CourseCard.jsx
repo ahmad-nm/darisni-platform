@@ -2,6 +2,7 @@ import style from './CourseCard.module.css';
 import clockImage from '../../../../assets/Icons/clock.png';
 import lectureImage from '../../../../assets/Icons/openBook.png';
 import ratingImage from '../../../../assets/Icons/star.png';
+import { ROUTES } from '@/constants/routes';
 
 export function CourseCard({ course }) {
     return (
@@ -39,7 +40,7 @@ export function CourseCard({ course }) {
                 </div>
 
                 <div className={style.ViewPrice}>
-                    <a href={`/courses/${course.category_id}`} className={style.ViewButton}>View</a>
+                    <a href={ROUTES.COURSE_DETAIL(course.id)} className={style.ViewButton}>View</a>
                     <p className={style.CoursePrice}>{course.price ? `$${course.price}` : 'Free'}</p>
                 </div>
             </div>

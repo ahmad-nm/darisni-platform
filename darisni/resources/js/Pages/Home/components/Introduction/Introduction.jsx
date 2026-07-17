@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react';
 import style from './Introduction.module.css';
 import { useAuth } from '@/contexts/AuthContext';
+import { ROUTES } from '@/constants/routes';
 
 export function Intro() {
     const { user } = useAuth();
@@ -11,9 +12,9 @@ export function Intro() {
             <p className={style.Description}>Your one-stop solution for all your needs.</p>
             <div className={style.IntroBtns}>
                 {!user && (
-                    <Link className={style.GetStarted} href="/register">Get Started</Link>
+                    <Link className={style.GetStarted} href={ROUTES.REGISTER}>Get Started</Link>
                 )}
-                <Link className={style.LearnMore} href="/docs">Learn More</Link>
+                <Link className={style.LearnMore} href={ROUTES.DOCS}>Learn More</Link>
             </div>
         </div>
     );

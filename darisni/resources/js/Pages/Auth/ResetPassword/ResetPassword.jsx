@@ -5,6 +5,7 @@ import styles from './ResetPassword.module.css';
 import FormInput from '@/Components/Auth/FormInput/FormInput';
 import AuthButton from '@/Components/Auth/AuthButton/AuthButton';
 import { resetPassword } from '@/services/authService';
+import { ROUTES } from '@/constants/routes';
 
 export default function ResetPassword({ token, email }) {
     const { data, setData, processing, errors, reset } = useForm({
@@ -73,7 +74,7 @@ export default function ResetPassword({ token, email }) {
                     />
                 </form>
                 {message && <p>{message}</p>}
-                <Link href="/login" className={styles.backToLogin}>Back to Login</Link>
+                <Link href={ROUTES.LOGIN} className={styles.backToLogin}>Back to Login</Link>
             </div>
         </div>
     );

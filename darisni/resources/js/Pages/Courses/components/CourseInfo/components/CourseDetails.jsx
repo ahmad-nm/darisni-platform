@@ -1,6 +1,7 @@
 import cartIcon from "../../../../../assets/Icons/cart.png";
 import { Link } from "@inertiajs/react";
 import style from "../CourseInfoCard.module.css";
+import { ROUTES } from "@/constants/routes";
 
 export function CourseDetails({
     course,
@@ -123,7 +124,7 @@ export function CourseDetails({
                 <div className={style.tutorInfo}>
                     <span className={style.icon}>👨‍🏫</span>
                     <Link
-                        href={`/tutors/${course.tutor?.id}`}
+                        href={ROUTES.TUTOR_DETAIL(course.tutor_id)}
                         className={style.tutorName}
                     >
                         {tutorName}

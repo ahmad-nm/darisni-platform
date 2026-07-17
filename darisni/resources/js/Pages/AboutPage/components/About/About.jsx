@@ -5,6 +5,7 @@ import LocationIcon from '../../../../assets/Icons/location.png';
 import { Link } from '@inertiajs/react';
 import { useState } from 'react';
 import { RatingModal } from '../../../../Components/RatingModal/RatingModal';
+import { ROUTES } from '@/constants/routes';
 
 export function About() {
     const [showRatingModal, setShowRatingModal] = useState(false);
@@ -85,19 +86,19 @@ export function About() {
                         <div className={style.QuickLinks}>
                             <h3>Quick Links</h3>
                             <ul>
-                                <li><Link href="/">Home</Link></li>
-                                <li><Link href="/course-categories">Courses</Link></li>
-                                <li><Link href="/tutors">Tutors</Link></li>
-                                <li><Link href="/about">About Us</Link></li>
-                                <li><Link href="/docs">Documentation</Link></li>
+                                <li><Link href={ROUTES.HOME}>Home</Link></li>
+                                <li><Link href={ROUTES.COURSE_CATEGORIES}>Courses</Link></li>
+                                <li><Link href={ROUTES.TUTORS}>Tutors</Link></li>
+                                <li><Link href={ROUTES.ABOUT}>About Us</Link></li>
+                                <li><Link href={ROUTES.DOCS}>Documentation</Link></li>
                             </ul>
                         </div>
 
                         <div className={style.Resources}>
                             <h3>Resources</h3>
                             <ul>
-                                <li><Link href="/docs#faq">FAQ</Link></li>
-                                <li><Link href="/docs#support">Support</Link></li>
+                                <li><Link href={ROUTES.DOCS + '#faq'}>FAQ</Link></li>
+                                <li><Link href={ROUTES.DOCS + '#support'}>Support</Link></li>
                             </ul>
                         </div>
 

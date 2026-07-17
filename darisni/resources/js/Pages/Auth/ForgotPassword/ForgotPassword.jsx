@@ -7,6 +7,7 @@ import ProcessingSpinner from '@/Components/Auth/ProcessingSpinner/ProcessingSpi
 import FormInput from '@/Components/Auth/FormInput/FormInput';
 import AuthButton from '@/Components/Auth/AuthButton/AuthButton';
 import { forgotPassword } from '@/services/authService';
+import { ROUTES } from '@/constants/routes';
 
 export default function ForgotPassword({ status }) {
     const { data, setData, processing, errors } = useForm({
@@ -61,7 +62,9 @@ export default function ForgotPassword({ status }) {
                         text="Send Reset Link"
                     />
                 </form>
-                <Link className={styles.backToLogin} href="/login">Back to Login</Link>
+                <Link className={styles.backToLogin} href={ROUTES.LOGIN}>
+                    Back to Login
+                </Link>
             </div>
         </div>
     );

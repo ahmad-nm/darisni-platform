@@ -2,10 +2,12 @@ import { router } from '@inertiajs/react';
 import starImg from '@/assets/Icons/testStar.png';
 import emptyStarImg from '@/assets/Icons/testStarEmpty.png';
 import style from './TutorCard.module.css';
+import { navigate } from '@/utils/navigationService';
+import { ROUTES } from '@/constants/routes';
 
 export function TutorCard({ tutor }) {
     const handleUserNavigate = () => {
-        router.visit(`/tutors/${tutor.id}`);
+        navigate(ROUTES.TUTOR_DETAIL(tutor.id));
     };
 
     // Get courses from the relationship or fallback to empty array

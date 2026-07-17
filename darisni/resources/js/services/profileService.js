@@ -47,3 +47,24 @@ export function updateProfileInformation(data) {
         );
     });
 }
+
+export function updateProfileImage(formData, options = {}) {
+    return new Promise((resolve, reject) => {
+        router.post("/profile/image", formData, {
+            onSuccess: resolve,
+            onError: reject,
+            ...options,
+        });
+    });
+}
+
+
+export function deleteProfileImage(options = {}) {
+    return new Promise((resolve, reject) => {
+        router.post("/profile/image/delete", {}, {
+            onSuccess: resolve,
+            onError: reject,
+            ...options,
+        });
+    });
+}

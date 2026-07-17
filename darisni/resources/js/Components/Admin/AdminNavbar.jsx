@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Link, usePage, router } from '@inertiajs/react';
 import styles from './AdminNavbar.module.css';
 import { useAuth } from '@/contexts/AuthContext';
+import { logout } from '@/services/authService';
+import { navigate } from '@/utils/navigationService';
+import { ROUTES } from '@/constants/routes';
 
 export default function AdminNavbar() {
     const { url } = usePage().props;
@@ -26,7 +29,7 @@ export default function AdminNavbar() {
             name: 'Dashboard',
             href: safeRoute('admin.dashboard'),
             icon: '📊',
-            active: currentUrl === '/admin/dashboard'
+            active: currentUrl === ROUTES.ADMIN_DASHBOARD
         },
         {
             name: 'Management',
@@ -53,7 +56,14 @@ export default function AdminNavbar() {
 
     const handleLogout = () => {
         try {
-            router.post(route('logout'));
+            logout({
+                onSuccess: () => {
+                    navigate(safeRoute('login', ROUTES.LOGIN));
+                },
+                onError: (error) => {
+                    console.error('Logout failed:', error);
+                },
+            });
         } catch (error) {
             console.warn('Logout route not found, redirecting to home');
             window.location.href = '/';

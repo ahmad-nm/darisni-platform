@@ -3,6 +3,8 @@ import { router } from '@inertiajs/react';
 import { useState } from 'react';
 import { RatingModal } from '@/Components/RatingModal/RatingModal';
 import style from './TutorInfoContent.module.css';
+import { navigate } from '@/utils/navigationService';
+import { ROUTES } from '@/constants/routes';
 
 export function TutorInfoContent({ tutor }) {
     const [showRatingModal, setShowRatingModal] = useState(false);
@@ -59,7 +61,7 @@ export function TutorInfoContent({ tutor }) {
                 <div className={style.tutorDetails}>
                     <div className={style.tutorDetailsHeader}>
                         <div className={style.backButton}>
-                            <button onClick={() => router.visit('/tutors')}>
+                            <button onClick={() => navigate(ROUTES.TUTORS)}>
                                 ← Back to Tutors
                             </button>
                         </div>

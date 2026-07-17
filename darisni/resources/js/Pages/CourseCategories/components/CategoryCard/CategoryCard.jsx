@@ -1,3 +1,4 @@
+import { ROUTES } from '@/constants/routes';
 import style from './CategoryCard.module.css';
 import { Link } from '@inertiajs/react';
 
@@ -17,7 +18,7 @@ export function CategoryCard({ Category }) {
                 <p className={style.categoryDescription}>
                     {Category.description || 'Explore courses in this category'}
                 </p>
-                <Link href={`/courses/${Category.id}`} className={style.viewCoursesButton}>
+                <Link href={ROUTES.COURSE_DETAIL(Category.id)} className={style.viewCoursesButton}>
                     View Courses →
                 </Link>
             </div>

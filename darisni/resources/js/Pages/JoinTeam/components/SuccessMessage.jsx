@@ -1,5 +1,7 @@
 import { router } from "@inertiajs/react";
 import style from "../JoinTeam.module.css";
+import { navigate } from "@/utils/navigationService";
+import { ROUTES } from "@/constants/routes";
 
 export default function SuccessMessage() {
     return (
@@ -22,7 +24,7 @@ export default function SuccessMessage() {
                     </p>
                 </div>
                 <button
-                    onClick={() => router.visit("/")}
+                    onClick={() => navigate(ROUTES.HOME)}
                     className={style.homeButton}
                 >
                     Go to Homepage Now

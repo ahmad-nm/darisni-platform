@@ -4,6 +4,8 @@ import { Loader } from '@/Components/Loader/Loader';
 import { TutorInfoContent } from '@/Pages/Tutors/Components/TutorInfoContent/TutorInfoContent';
 import style from './TutorInfo.module.css';
 import { fetchTutorById } from '@/services/tutorService';
+import { navigate } from '@/utils/navigationService';
+import { ROUTES } from '@/constants/routes';
 
 export default function TutorInfo({ tutorId }) {
     const [isLoading, setIsLoading] = useState(true);
@@ -53,7 +55,7 @@ export default function TutorInfo({ tutorId }) {
                     <p>{error}</p>
                     <button 
                         className={style.backButton}
-                        onClick={() => router.visit('/tutors')}
+                        onClick={() => navigate(ROUTES.TUTORS)}
                     >
                         Back to Tutors
                     </button>
@@ -70,7 +72,7 @@ export default function TutorInfo({ tutorId }) {
                     <p>The tutor you're looking for doesn't exist.</p>
                     <button 
                         className={style.backButton}
-                        onClick={() => router.visit('/tutors')}
+                        onClick={() => navigate(ROUTES.TUTORS)}
                     >
                         Back to Tutors
                     </button>
