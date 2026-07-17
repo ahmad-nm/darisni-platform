@@ -2,6 +2,7 @@ import removeIcon from '../../assets/Icons/minusSign.png';
 import emptyCartImage from '../../assets/Background/emptyCart.png';
 import { Link } from '@inertiajs/react';
 import style from './CartTab.module.css';
+import { ROUTES } from '@/constants/routes';
 
 export function CartTab({ cartItems, onRemoveFromCart, cartToggle, setCartItems }) {
 
@@ -50,7 +51,7 @@ export function CartTab({ cartItems, onRemoveFromCart, cartToggle, setCartItems 
                             </p>
                         </div>
                         <div className={style.cartActions}>
-                            <Link href="/payment" className={style.checkoutButton}>Buy Cart</Link>
+                            <Link href={ROUTES.PAYMENT} className={style.checkoutButton}>Buy Cart</Link>
                             <button className={style.clearCartButton} onClick={handleClearCart}>Clear Cart</button>
                         </div>
                     </div>

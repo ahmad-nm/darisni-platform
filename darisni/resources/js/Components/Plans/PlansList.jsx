@@ -1,5 +1,5 @@
 import { PlansListItem } from "./PlansListItem.jsx";
-import { plans } from "../../Constants/Plans.js";
+import { plans } from "../../constants/Plans.js";
 import style from "./PlansList.module.css";
 
 export function PlansList() {

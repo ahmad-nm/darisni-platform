@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { router } from "@inertiajs/react";
 import styles from "./AdminLogin.module.css";
+import { navigate } from "@/utils/navigationService";
+import { ROUTES } from "@/constants/routes";
 
 export function AdminLogin() {
     const [form, setForm] = useState({ email: "", password: "" });
@@ -51,7 +53,7 @@ export function AdminLogin() {
 
                     // Small delay to show welcome message before redirecting
                     setTimeout(() => {
-                        router.visit("/admin/dashboard");
+                        navigate(ROUTES.ADMIN_DASHBOARD);
                     }, 1500);
                 },
                 onError: (errors) => {

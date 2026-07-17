@@ -1,5 +1,7 @@
 import { router } from '@inertiajs/react';
 import style from './Payment.module.css';
+import { navigate } from '@/utils/navigationService';
+import { ROUTES } from '@/constants/routes';
 
 export default function Payment() {
     const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
@@ -20,7 +22,7 @@ export default function Payment() {
         
         window.open(whatsappURL, '_blank');
         
-        router.visit('/');
+        navigate(ROUTES.HOME);
     }
 
     return (

@@ -8,6 +8,7 @@ import style from './Edit.module.css';
 import ProfileHeader from './Components/ProfileHeader/ProfileHeader';
 import SectionCard from './Components/SectionCard/SectionCard';
 import { useAuth } from '@/contexts/AuthContext';
+import { deleteProfileImage, updateProfileImage } from '@/services/profileService';
 
 export default function Edit({ mustVerifyEmail, status }) {
     const { user } = useAuth();
@@ -17,30 +18,31 @@ export default function Edit({ mustVerifyEmail, status }) {
         fileInputRef.current.click();
     }
 
-    const handleImageChange = (event) => {
+    const handleImageChange = async (event) => {
         const file = event.target.files[0];
 
         if (!file) return;
 
         const formData = new FormData();
-        formData.append('image', file);
+        formData.append("image", file);
 
-        router.post('/profile/image', formData, {
-            preserveScroll: true,
-            forceFormData: true,
-            onSuccess: () => {
-                router.reload({ only: ['auth'] });
-            },
-        });
+        try {
+            await updateProfileImage(formData);
+
+            router.reload({ only: ["auth"] });
+        } catch (errors) {
+            console.error(errors);
+        }
     };
 
-    const handleDeleteImage = () => {
-        router.post('/profile/image/delete', {}, {
-            preserveScroll: true,
-            onSuccess: () => {
-                router.reload({ only: ['auth'] });
-            },
-        });
+    const handleDeleteImage = async () => {
+        try {
+            await deleteProfileImage();
+
+            router.reload({ only: ["auth"] });
+        } catch (errors) {
+            console.error(errors);
+        }
     };
 
     return (

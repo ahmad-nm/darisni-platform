@@ -1,3 +1,4 @@
+import { ROUTES } from '@/constants/routes';
 import style from '../Docs.module.css';
 
 export default function DocsSidebar({
@@ -28,10 +29,10 @@ export default function DocsSidebar({
                     <div className={style.quickLinks}>
                         <h4 className={style.quickLinksTitle}>Quick Links</h4>
                         <div className={style.linksList}>
-                            <a href="/signup" className={style.quickLink}>
+                            <a href={ROUTES.REGISTER} className={style.quickLink}>
                                 <span>👤</span> Sign Up
                             </a>
-                            <a href="/tutors" className={style.quickLink}>
+                            <a href={ROUTES.TUTORS} className={style.quickLink}>
                                 <span>👨‍🏫</span> Find Tutors
                             </a>
                             <a href="mailto:info@darisni.net" className={style.quickLink}>

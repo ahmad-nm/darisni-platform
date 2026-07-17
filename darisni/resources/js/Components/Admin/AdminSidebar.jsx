@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import styles from './AdminSidebar.module.css';
+import { ROUTES } from '@/constants/routes';
 
 export default function AdminSidebar({ isOpen, onToggle }) {
     const { url } = usePage().props;
@@ -10,53 +11,53 @@ export default function AdminSidebar({ isOpen, onToggle }) {
             name: 'Dashboard',
             href: route('admin.dashboard'),
             icon: '📊',
-            active: url === '/admin/dashboard'
+            active: url === ROUTES.ADMIN_DASHBOARD
         },
         {
             name: 'User Management',
             href: route('admin.users'),
             icon: '👥',
-            active: url.includes('/admin/users'),
+            active: url.includes(ROUTES.ADMIN_USERS),
             badge: '142'
         },
         {
             name: 'Course Management',
             href: route('admin.courses'),
             icon: '📚',
-            active: url.includes('/admin/courses'),
+            active: url.includes(ROUTES.ADMIN_COURSES),
             badge: '28'
         },
         {
             name: 'Tutor Management',
             href: route('admin.tutors'),
             icon: '👨‍🏫',
-            active: url.includes('/admin/tutors'),
+            active: url.includes(ROUTES.ADMIN_TUTORS),
             badge: '15'
         },
         {
             name: 'Category Management',
             href: route('admin.categories'),
             icon: '📂',
-            active: url.includes('/admin/categories')
+            active: url.includes(ROUTES.ADMIN_CATEGORIES)
         },
         {
             name: 'Review Management',
             href: route('admin.reviews'),
             icon: '⭐',
-            active: url.includes('/admin/reviews'),
+            active: url.includes(ROUTES.ADMIN_REVIEWS),
             badge: '8'
         },
         {
             name: 'Enrollment Management',
             href: route('admin.enrollments'),
             icon: '📝',
-            active: url.includes('/admin/enrollments')
+            active: url.includes(ROUTES.ADMIN_ENROLLMENTS)
         },
         {
             name: 'Tutor Applications',
             href: route('admin.applications'),
             icon: '📝',
-            active: url.includes('/admin/applications'),
+            active: url.includes(ROUTES.ADMIN_TUTOR_APP),
             badge: '3',
             badgeColor: 'warning'
         },
@@ -64,7 +65,7 @@ export default function AdminSidebar({ isOpen, onToggle }) {
             name: 'Course Suggestions',
             href: route('admin.course-suggestions'),
             icon: '💡',
-            active: url.includes('/admin/course-suggestions'),
+            active: url.includes(ROUTES.ADMIN_COURSE_SUGGESTIONS),
             badge: '5',
             badgeColor: 'info'
         }

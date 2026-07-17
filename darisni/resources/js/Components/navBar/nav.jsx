@@ -4,6 +4,8 @@ import { Link, router } from "@inertiajs/react";
 import { route } from 'ziggy-js';
 import { useAuth } from '@/contexts/AuthContext';
 import { logout } from '@/services/authService';
+import { ROUTES } from '@/constants/routes';
+import { navigate } from '@/utils/navigationService';
 
 export function Navbar(){
     const { user, setUser } = useAuth()
@@ -22,7 +24,7 @@ export function Navbar(){
             logout({
                 onSuccess: () => {
                     setUser(null);
-                    router.visit(route('login'));
+                    navigate(ROUTES.HOME);
                 },
                 onError: (error) => {
                     console.error('Logout failed:', error);
@@ -67,12 +69,12 @@ export function Navbar(){
 
             {/* Navigation Links */}
             <ul className={`${style.links} ${isMobileMenuOpen ? style.mobileOpen : ''}`}>
-                <li><Link href="/" onClick={closeMobileMenu}>Home</Link></li>
-                <li><Link href="/course-categories" onClick={closeMobileMenu}>Courses</Link></li>
-                <li><Link href="/tutors" onClick={closeMobileMenu}>Tutors</Link></li>
-                <li><Link href="/about" onClick={closeMobileMenu}>About</Link></li>
-                <li><Link href="/docs" onClick={closeMobileMenu}>Docs</Link></li>
-                
+                <li><Link href={ROUTES.HOME} onClick={closeMobileMenu}>Home</Link></li>
+                <li><Link href={ROUTES.COURSE_CATEGORIES} onClick={closeMobileMenu}>Courses</Link></li>
+                <li><Link href={ROUTES.TUTORS} onClick={closeMobileMenu}>Tutors</Link></li>
+                <li><Link href={ROUTES.ABOUT} onClick={closeMobileMenu}>About</Link></li>
+                <li><Link href={ROUTES.DOCS} onClick={closeMobileMenu}>Docs</Link></li>
+
                 {/* Mobile-only Login/Register buttons */}
                 {user ? (
                     <>
@@ -81,7 +83,7 @@ export function Navbar(){
                         </li>
                         {user.role === 'admin' && (
                             <li className={style.mobileAuthButtons}>
-                                <Link href="/admin/dashboard" className={style.mobileAdminDashboard} onClick={closeMobileMenu}>Admin Dashboard</Link>
+                                <Link href={ROUTES.ADMIN_DASHBOARD} className={style.mobileAdminDashboard} onClick={closeMobileMenu}>Admin Dashboard</Link>
                             </li>
                         )}
                         <li className={style.mobileAuthButtons}>
@@ -93,10 +95,10 @@ export function Navbar(){
                 (
                     <>
                         <li className={style.mobileAuthButtons}>
-                            <Link href="/login" className={`${style.mobileLogin} ${style.LoginMarginTop}`} onClick={closeMobileMenu}>Login</Link>
+                            <Link href={ROUTES.LOGIN} className={`${style.mobileLogin} ${style.LoginMarginTop}`} onClick={closeMobileMenu}>Login</Link>
                         </li>
                         <li className={style.mobileAuthButtons}>
-                            <Link href="/register" className={style.mobileRegister} onClick={closeMobileMenu}>Register</Link>
+                            <Link href={ROUTES.REGISTER} className={style.mobileRegister} onClick={closeMobileMenu}>Register</Link>
                         </li>
                     </>
                 )
@@ -109,7 +111,7 @@ export function Navbar(){
                 <div className={style.LoginRegister}>
                     {/* Admin Dashboard Link for Desktop */}
                     {user.role === 'admin' && (
-                        <Link href="/admin/dashboard" className={style.adminDashboardDesktop} onClick={closeMobileMenu}>
+                        <Link href={ROUTES.ADMIN_DASHBOARD} className={style.adminDashboardDesktop} onClick={closeMobileMenu}>
                             <span className={style.adminIcon}>⚙️</span>
                             Admin
                         </Link>
@@ -121,8 +123,8 @@ export function Navbar(){
                 </div>
             ) : (
                 <div className={style.LoginRegister}>
-                    <Link href="/login" className={style.login} onClick={closeMobileMenu}>Login</Link>
-                    <Link href="/register" className={style.register} onClick={closeMobileMenu}>Register</Link>
+                    <Link href={ROUTES.LOGIN} className={style.login} onClick={closeMobileMenu}>Login</Link>
+                    <Link href={ROUTES.REGISTER} className={style.register} onClick={closeMobileMenu}>Register</Link>
                 </div>
             )}
 

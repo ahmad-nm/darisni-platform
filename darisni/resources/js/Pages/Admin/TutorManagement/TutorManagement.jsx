@@ -1,21 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { Head, router } from '@inertiajs/react';
-import AdminLayout from '@/Layouts/AdminLayout';
-import styles from './TutorManagement.module.css';
+import React, { useState, useEffect } from "react";
+import { Head, router } from "@inertiajs/react";
+import AdminLayout from "@/layouts/AdminLayout";
+import styles from "./TutorManagement.module.css";
+import { navigate } from "@/utils/navigationService";
+import { ROUTES } from "@/constants/routes";
 
-export default function TutorManagement({ tutors: initialTutors, users: initialUsers, courses: initialCourses, stats: initialStats }) {
+export default function TutorManagement({
+    tutors: initialTutors,
+    users: initialUsers,
+    courses: initialCourses,
+    stats: initialStats,
+}) {
     const [tutors, setTutors] = useState((initialTutors || []).filter(Boolean));
-    const [filteredTutors, setFilteredTutors] = useState((initialTutors || []).filter(Boolean));
+    const [filteredTutors, setFilteredTutors] = useState(
+        (initialTutors || []).filter(Boolean),
+    );
     const [users, setUsers] = useState(initialUsers || []);
     const [courses, setCourses] = useState(initialCourses || []);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filterStatus, setFilterStatus] = useState('all');
+    const [searchQuery, setSearchQuery] = useState("");
+    const [filterStatus, setFilterStatus] = useState("all");
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [showTutorModal, setShowTutorModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [selectedTutor, setSelectedTutor] = useState(null);
-    const [modalMode, setModalMode] = useState('view'); // 'view', 'edit', 'create'
+    const [modalMode, setModalMode] = useState("view"); // 'view', 'edit', 'create'
     const [stats, setStats] = useState(initialStats || {});
     const tutorsPerPage = 12;
 
@@ -35,29 +44,48 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
         let filtered = tutors.filter(Boolean); // Remove any null/undefined values
 
         if (searchQuery) {
-            filtered = filtered.filter(tutor => 
-                tutor && (
-                    tutor.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    tutor.user?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    tutor.university?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    tutor.bio?.toLowerCase().includes(searchQuery.toLowerCase())
-                )
+            filtered = filtered.filter(
+                (tutor) =>
+                    tutor &&
+                    (tutor.name
+                        ?.toLowerCase()
+                        .includes(searchQuery.toLowerCase()) ||
+                        tutor.user?.name
+                            ?.toLowerCase()
+                            .includes(searchQuery.toLowerCase()) ||
+                        tutor.university
+                            ?.toLowerCase()
+                            .includes(searchQuery.toLowerCase()) ||
+                        tutor.bio
+                            ?.toLowerCase()
+                            .includes(searchQuery.toLowerCase())),
             );
         }
 
-        if (filterStatus !== 'all') {
+        if (filterStatus !== "all") {
             switch (filterStatus) {
-                case 'active':
-                    filtered = filtered.filter(tutor => tutor && tutor.courses && tutor.courses.length > 0);
+                case "active":
+                    filtered = filtered.filter(
+                        (tutor) =>
+                            tutor && tutor.courses && tutor.courses.length > 0,
+                    );
                     break;
-                case 'inactive':
-                    filtered = filtered.filter(tutor => tutor && (!tutor.courses || tutor.courses.length === 0));
+                case "inactive":
+                    filtered = filtered.filter(
+                        (tutor) =>
+                            tutor &&
+                            (!tutor.courses || tutor.courses.length === 0),
+                    );
                     break;
-                case 'experienced':
-                    filtered = filtered.filter(tutor => tutor && tutor.experience_years >= 2);
+                case "experienced":
+                    filtered = filtered.filter(
+                        (tutor) => tutor && tutor.experience_years >= 2,
+                    );
                     break;
-                case 'new':
-                    filtered = filtered.filter(tutor => tutor && tutor.experience_years < 2);
+                case "new":
+                    filtered = filtered.filter(
+                        (tutor) => tutor && tutor.experience_years < 2,
+                    );
                     break;
                 default:
                     break;
@@ -71,7 +99,10 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
     // Pagination
     const indexOfLastTutor = currentPage * tutorsPerPage;
     const indexOfFirstTutor = indexOfLastTutor - tutorsPerPage;
-    const currentTutors = filteredTutors.slice(indexOfFirstTutor, indexOfLastTutor);
+    const currentTutors = filteredTutors.slice(
+        indexOfFirstTutor,
+        indexOfLastTutor,
+    );
     const totalPages = Math.ceil(filteredTutors.length / tutorsPerPage);
 
     const handleSearchChange = (e) => {
@@ -83,7 +114,7 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
     };
 
     const handleDeleteTutor = async (tutorId) => {
-        setSelectedTutor(tutors.find(tutor => tutor.id === tutorId));
+        setSelectedTutor(tutors.find((tutor) => tutor.id === tutorId));
         setShowDeleteModal(true);
     };
 
@@ -96,9 +127,9 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
                 window.Laravel &&
                 window.Laravel.user &&
                 window.Laravel.user.id === selectedTutor.user.id &&
-                window.Laravel.user.role === 'admin'
+                window.Laravel.user.role === "admin"
             ) {
-                alert('You cannot change your own role from admin.');
+                alert("You cannot change your own role from admin.");
                 return;
             }
 
@@ -106,7 +137,9 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
             await deleteTutor(selectedTutor.id);
 
             // Remove tutor from local state
-            const updatedTutors = tutors.filter(tutor => tutor.id !== selectedTutor.id);
+            const updatedTutors = tutors.filter(
+                (tutor) => tutor.id !== selectedTutor.id,
+            );
             setTutors(updatedTutors);
 
             // Apply current filters to updated tutors
@@ -115,8 +148,8 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
             setShowDeleteModal(false);
             setSelectedTutor(null);
         } catch (error) {
-            console.error('Error deleting tutor:', error);
-            alert('Failed to delete tutor. Please try again.');
+            console.error("Error deleting tutor:", error);
+            alert("Failed to delete tutor. Please try again.");
         }
     };
 
@@ -124,27 +157,44 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
         let filtered = tutorsList;
 
         if (searchQuery) {
-            filtered = filtered.filter(tutor => 
-                tutor.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                tutor.user?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                tutor.university?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                tutor.bio?.toLowerCase().includes(searchQuery.toLowerCase())
+            filtered = filtered.filter(
+                (tutor) =>
+                    tutor.name
+                        ?.toLowerCase()
+                        .includes(searchQuery.toLowerCase()) ||
+                    tutor.user?.name
+                        ?.toLowerCase()
+                        .includes(searchQuery.toLowerCase()) ||
+                    tutor.university
+                        ?.toLowerCase()
+                        .includes(searchQuery.toLowerCase()) ||
+                    tutor.bio
+                        ?.toLowerCase()
+                        .includes(searchQuery.toLowerCase()),
             );
         }
 
-        if (filterStatus !== 'all') {
+        if (filterStatus !== "all") {
             switch (filterStatus) {
-                case 'active':
-                    filtered = filtered.filter(tutor => tutor.courses && tutor.courses.length > 0);
+                case "active":
+                    filtered = filtered.filter(
+                        (tutor) => tutor.courses && tutor.courses.length > 0,
+                    );
                     break;
-                case 'inactive':
-                    filtered = filtered.filter(tutor => !tutor.courses || tutor.courses.length === 0);
+                case "inactive":
+                    filtered = filtered.filter(
+                        (tutor) => !tutor.courses || tutor.courses.length === 0,
+                    );
                     break;
-                case 'experienced':
-                    filtered = filtered.filter(tutor => tutor.experience_years >= 2);
+                case "experienced":
+                    filtered = filtered.filter(
+                        (tutor) => tutor.experience_years >= 2,
+                    );
                     break;
-                case 'new':
-                    filtered = filtered.filter(tutor => tutor.experience_years < 2);
+                case "new":
+                    filtered = filtered.filter(
+                        (tutor) => tutor.experience_years < 2,
+                    );
                     break;
                 default:
                     break;
@@ -156,19 +206,19 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
 
     const handleViewTutor = (tutor) => {
         setSelectedTutor(tutor);
-        setModalMode('view');
+        setModalMode("view");
         setShowTutorModal(true);
     };
 
     const handleEditTutor = (tutor) => {
         setSelectedTutor(tutor);
-        setModalMode('edit');
+        setModalMode("edit");
         setShowTutorModal(true);
     };
 
     const handleCreateTutor = () => {
         setSelectedTutor(null);
-        setModalMode('create');
+        setModalMode("create");
         setShowTutorModal(true);
     };
 
@@ -176,11 +226,11 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
         try {
             let savedTutor;
             const { availability, courses, ...basicTutorData } = tutorData;
-            
-            if (modalMode === 'create') {
+
+            if (modalMode === "create") {
                 // Create the tutor first
                 savedTutor = await createTutor(basicTutorData);
-                
+
                 // Save availability if provided
                 if (availability && availability.length > 0) {
                     for (const slot of availability) {
@@ -190,70 +240,88 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
                                     tutor_id: savedTutor.id,
                                     day: slot.day,
                                     start_time: slot.start_time,
-                                    end_time: slot.end_time
+                                    end_time: slot.end_time,
                                 });
                             } catch (error) {
-                                console.error('Error saving availability slot:', error);
+                                console.error(
+                                    "Error saving availability slot:",
+                                    error,
+                                );
                             }
                         }
                     }
                 }
-                
+
                 // Save courses if provided
                 if (courses && courses.length > 0) {
-                    console.log('Saving courses:', courses);
+                    console.log("Saving courses:", courses);
                     for (const courseId of courses) {
                         try {
-                            console.log('Creating tutor course:', {
+                            console.log("Creating tutor course:", {
                                 tutor_id: savedTutor.id,
-                                course_id: courseId
+                                course_id: courseId,
                             });
                             const result = await createTutorCourse({
                                 tutor_id: savedTutor.id,
-                                course_id: courseId
+                                course_id: courseId,
                             });
-                            console.log('Course assignment result:', result);
+                            console.log("Course assignment result:", result);
                         } catch (error) {
-                            console.error('Error saving course assignment:', error);
-                            console.error('Error response:', error.response?.data);
-                            console.error('Error status:', error.response?.status);
-                            
+                            console.error(
+                                "Error saving course assignment:",
+                                error,
+                            );
+                            console.error(
+                                "Error response:",
+                                error.response?.data,
+                            );
+                            console.error(
+                                "Error status:",
+                                error.response?.status,
+                            );
+
                             // Handle specific error cases
                             if (error.response?.status === 409) {
-                                console.log('Course already assigned to tutor');
+                                console.log("Course already assigned to tutor");
                             } else if (error.response?.status === 422) {
-                                console.error('Validation error:', error.response?.data?.errors);
+                                console.error(
+                                    "Validation error:",
+                                    error.response?.data?.errors,
+                                );
                             } else if (error.response?.status === 404) {
-                                console.error('Tutor or course not found');
+                                console.error("Tutor or course not found");
                             } else {
-                                console.error('Unexpected error:', error.message);
+                                console.error(
+                                    "Unexpected error:",
+                                    error.message,
+                                );
                             }
                         }
                     }
                 }
-                
+
                 // Refresh the page to show updated data
                 window.location.reload();
             } else {
                 // Update existing tutor with availability
                 const updateData = {
                     ...basicTutorData,
-                    availability: availability || []
+                    availability: availability || [],
                 };
-                
+
                 savedTutor = await updateTutor(selectedTutor.id, updateData);
-                
+
                 // Handle courses separately for updates if needed
                 // Note: For now, we'll just handle availability with the update
-                
+
                 // Refresh the page to show updated data
                 window.location.reload();
             }
-            
+
             setShowTutorModal(false);
             setSelectedTutor(null);
         } catch (error) {
-            console.error('Error saving tutor:', error);
+            console.error("Error saving tutor:", error);
             throw error;
         }
     };
@@ -261,14 +329,16 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
     // Course management functions
     const createTutor = async (data) => {
         try {
-            const response = await fetch('/admin/tutors', {
-                method: 'POST',
+            const response = await fetch("/admin/tutors", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
             });
 
             if (!response.ok) {
@@ -278,7 +348,7 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
             const result = await response.json();
             return result.tutor;
         } catch (error) {
-            console.error('Error creating tutor:', error);
+            console.error("Error creating tutor:", error);
             throw error;
         }
     };
@@ -286,13 +356,15 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
     const updateTutor = async (id, data) => {
         try {
             const response = await fetch(`/admin/tutors/${id}`, {
-                method: 'PUT',
+                method: "PUT",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
             });
 
             if (!response.ok) {
@@ -302,7 +374,7 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
             const result = await response.json();
             return result.tutor;
         } catch (error) {
-            console.error('Error updating tutor:', error);
+            console.error("Error updating tutor:", error);
             throw error;
         }
     };
@@ -314,9 +386,9 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
                     resolve();
                 },
                 onError: (errors) => {
-                    console.error('Delete errors:', errors);
-                    reject(new Error('Delete failed'));
-                }
+                    console.error("Delete errors:", errors);
+                    reject(new Error("Delete failed"));
+                },
             });
         });
     };
@@ -326,36 +398,44 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
             // Find the user to get their current name and email
             const userToUpdate = selectedTutor?.user;
             if (!userToUpdate) {
-                reject(new Error('User not found'));
+                reject(new Error("User not found"));
                 return;
             }
 
-            router.put(`/admin/users/${userId}`, { 
-                name: userToUpdate.name,
-                email: userToUpdate.email,
-                role: role,
-                email_verified_at: userToUpdate.email_verified_at ? true : false
-            }, {
-                onSuccess: () => {
-                    resolve();
+            router.put(
+                `/admin/users/${userId}`,
+                {
+                    name: userToUpdate.name,
+                    email: userToUpdate.email,
+                    role: role,
+                    email_verified_at: userToUpdate.email_verified_at
+                        ? true
+                        : false,
                 },
-                onError: (errors) => {
-                    console.error('Role update errors:', errors);
-                    reject(new Error('Role update failed'));
-                }
-            });
+                {
+                    onSuccess: () => {
+                        resolve();
+                    },
+                    onError: (errors) => {
+                        console.error("Role update errors:", errors);
+                        reject(new Error("Role update failed"));
+                    },
+                },
+            );
         });
     };
 
     const createTutorAvailability = async (data) => {
         try {
-            const response = await fetch('/admin/tutors/availability', {
-                method: 'POST',
+            const response = await fetch("/admin/tutors/availability", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
             });
 
             if (!response.ok) {
@@ -364,20 +444,22 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
 
             return await response.json();
         } catch (error) {
-            console.error('Error creating tutor availability:', error);
+            console.error("Error creating tutor availability:", error);
             throw error;
         }
     };
 
     const createTutorCourse = async (data) => {
         try {
-            const response = await fetch('/admin/tutors/courses', {
-                method: 'POST',
+            const response = await fetch("/admin/tutors/courses", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
             });
 
             if (!response.ok) {
@@ -386,7 +468,7 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
 
             return await response.json();
         } catch (error) {
-            console.error('Error creating tutor course:', error);
+            console.error("Error creating tutor course:", error);
             throw error;
         }
     };
@@ -394,12 +476,14 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
     const updateTutorCourse = async (courseId, tutorId, data) => {
         try {
             const response = await fetch(`/admin/tutors/courses/${courseId}`, {
-                method: 'PUT',
+                method: "PUT",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
                 },
-                body: JSON.stringify({ ...data, tutor_id: tutorId })
+                body: JSON.stringify({ ...data, tutor_id: tutorId }),
             });
 
             if (!response.ok) {
@@ -408,7 +492,7 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
 
             return await response.json();
         } catch (error) {
-            console.error('Error updating tutor course:', error);
+            console.error("Error updating tutor course:", error);
             throw error;
         }
     };
@@ -416,12 +500,14 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
     const deleteTutorCourse = async (courseId, tutorId) => {
         try {
             const response = await fetch(`/admin/tutors/courses/${courseId}`, {
-                method: 'DELETE',
+                method: "DELETE",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
                 },
-                body: JSON.stringify({ tutor_id: tutorId })
+                body: JSON.stringify({ tutor_id: tutorId }),
             });
 
             if (!response.ok) {
@@ -430,7 +516,7 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
 
             return await response.json();
         } catch (error) {
-            console.error('Error deleting tutor course:', error);
+            console.error("Error deleting tutor course:", error);
             throw error;
         }
     };
@@ -463,17 +549,23 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
                     <div className={styles.header}>
                         <div className={styles.headerContent}>
                             <div>
-                                <h1 className={styles.title}>Tutor Management</h1>
-                                <p className={styles.subtitle}>Manage tutors and their profiles</p>
+                                <h1 className={styles.title}>
+                                    Tutor Management
+                                </h1>
+                                <p className={styles.subtitle}>
+                                    Manage tutors and their profiles
+                                </p>
                             </div>
                             <div className={styles.headerButtons}>
-                                <button 
+                                <button
                                     className={styles.applicationsButton}
-                                    onClick={() => router.visit('/admin/applications')}
+                                    onClick={() =>
+                                        navigate(ROUTES.ADMIN_TUTOR_APP)
+                                    }
                                 >
                                     📋 Tutor Applications
                                 </button>
-                                <button 
+                                <button
                                     className={styles.addTutorButton}
                                     onClick={handleCreateTutor}
                                 >
@@ -495,16 +587,22 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
                             />
                             <div className={styles.searchIcon}>🔍</div>
                         </div>
-                        
-                        <select 
-                            value={filterStatus} 
+
+                        <select
+                            value={filterStatus}
                             onChange={handleFilterChange}
                             className={styles.filterSelect}
                         >
                             <option value="all">All Tutors</option>
-                            <option value="active">Active (With Courses)</option>
-                            <option value="inactive">Inactive (No Courses)</option>
-                            <option value="experienced">Experienced (2+ years)</option>
+                            <option value="active">
+                                Active (With Courses)
+                            </option>
+                            <option value="inactive">
+                                Inactive (No Courses)
+                            </option>
+                            <option value="experienced">
+                                Experienced (2+ years)
+                            </option>
                             <option value="new">New (&lt; 2 years)</option>
                         </select>
                     </div>
@@ -512,27 +610,61 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
                     {/* Stats */}
                     <div className={styles.statsContainer}>
                         <div className={styles.statItem}>
-                            <span className={styles.statNumber}>{filteredTutors.length}</span>
-                            <span className={styles.statLabel}>Total Tutors</span>
-                        </div>
-                        <div className={styles.statItem}>
                             <span className={styles.statNumber}>
-                                {(filteredTutors || []).filter(tutor => tutor && tutor.courses && tutor.courses.length > 0).length}
+                                {filteredTutors.length}
                             </span>
-                            <span className={styles.statLabel}>Active Tutors</span>
-                        </div>
-                        <div className={styles.statItem}>
-                            <span className={styles.statNumber}>
-                                {(filteredTutors || []).reduce((total, tutor) => total + (tutor && tutor.courses ? tutor.courses.length : 0), 0)}
+                            <span className={styles.statLabel}>
+                                Total Tutors
                             </span>
-                            <span className={styles.statLabel}>Total Courses</span>
                         </div>
                         <div className={styles.statItem}>
                             <span className={styles.statNumber}>
-                                {filteredTutors.length > 0 ? 
-                                    ((filteredTutors || []).reduce((total, tutor) => 
-                                        total + parseFloat(calculateAverageRating(tutor && tutor.ratings ? tutor.ratings : []) || 0), 0) / filteredTutors.length).toFixed(1) 
-                                    : '0.0'}
+                                {
+                                    (filteredTutors || []).filter(
+                                        (tutor) =>
+                                            tutor &&
+                                            tutor.courses &&
+                                            tutor.courses.length > 0,
+                                    ).length
+                                }
+                            </span>
+                            <span className={styles.statLabel}>
+                                Active Tutors
+                            </span>
+                        </div>
+                        <div className={styles.statItem}>
+                            <span className={styles.statNumber}>
+                                {(filteredTutors || []).reduce(
+                                    (total, tutor) =>
+                                        total +
+                                        (tutor && tutor.courses
+                                            ? tutor.courses.length
+                                            : 0),
+                                    0,
+                                )}
+                            </span>
+                            <span className={styles.statLabel}>
+                                Total Courses
+                            </span>
+                        </div>
+                        <div className={styles.statItem}>
+                            <span className={styles.statNumber}>
+                                {filteredTutors.length > 0
+                                    ? (
+                                          (filteredTutors || []).reduce(
+                                              (total, tutor) =>
+                                                  total +
+                                                  parseFloat(
+                                                      calculateAverageRating(
+                                                          tutor && tutor.ratings
+                                                              ? tutor.ratings
+                                                              : [],
+                                                      ) || 0,
+                                                  ),
+                                              0,
+                                          ) / filteredTutors.length
+                                      ).toFixed(1)
+                                    : "0.0"}
                             </span>
                             <span className={styles.statLabel}>Avg Rating</span>
                         </div>
@@ -540,82 +672,136 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
 
                     {/* Tutors Grid */}
                     <div className={styles.tutorsGrid}>
-                        {(currentTutors || []).filter(Boolean).map(tutor => (
+                        {(currentTutors || []).filter(Boolean).map((tutor) => (
                             <div key={tutor.id} className={styles.tutorCard}>
                                 <div className={styles.tutorHeader}>
-                                    <div className={styles.tutorId}>#{tutor.id}</div>
+                                    <div className={styles.tutorId}>
+                                        #{tutor.id}
+                                    </div>
                                     <div className={styles.tutorActions}>
-                                        <button 
+                                        <button
                                             className={styles.actionBtn}
-                                            onClick={() => handleViewTutor(tutor)}
+                                            onClick={() =>
+                                                handleViewTutor(tutor)
+                                            }
                                             title="View Details"
                                         >
                                             👁️
                                         </button>
-                                        <button 
+                                        <button
                                             className={styles.actionBtn}
-                                            onClick={() => handleEditTutor(tutor)}
+                                            onClick={() =>
+                                                handleEditTutor(tutor)
+                                            }
                                             title="Edit Tutor"
                                         >
                                             ✏️
                                         </button>
-                                        <button 
+                                        <button
                                             className={styles.actionBtn}
-                                            onClick={() => handleDeleteTutor(tutor.id)}
+                                            onClick={() =>
+                                                handleDeleteTutor(tutor.id)
+                                            }
                                             title="Delete Tutor"
                                         >
                                             🗑️
                                         </button>
                                     </div>
                                 </div>
-                                
+
                                 <div className={styles.tutorImage}>
                                     {tutor.image || tutor.user?.avatar ? (
-                                        <img src={tutor.image || tutor.user?.avatar} alt={tutor.name || tutor.user?.name} />
+                                        <img
+                                            src={
+                                                tutor.image ||
+                                                tutor.user?.avatar
+                                            }
+                                            alt={tutor.name || tutor.user?.name}
+                                        />
                                     ) : (
-                                        <div className={styles.placeholderImage}>👨‍🏫</div>
+                                        <div
+                                            className={styles.placeholderImage}
+                                        >
+                                            👨‍🏫
+                                        </div>
                                     )}
                                 </div>
-                                
+
                                 <div className={styles.tutorContent}>
                                     <h3 className={styles.tutorName}>
-                                        {tutor.name || tutor.user?.name || 'Unknown Tutor'}
+                                        {tutor.name ||
+                                            tutor.user?.name ||
+                                            "Unknown Tutor"}
                                     </h3>
                                     <p className={styles.tutorUniversity}>
-                                        {tutor.university || 'No university specified'}
+                                        {tutor.university ||
+                                            "No university specified"}
                                     </p>
                                     <p className={styles.tutorBio}>
-                                        {tutor.bio || 'No bio provided'}
+                                        {tutor.bio || "No bio provided"}
                                     </p>
-                                    
+
                                     <div className={styles.tutorStats}>
                                         <div className={styles.statRow}>
-                                            <span className={styles.tutorExperience}>
-                                                📚 {tutor.experience_years || 0} years experience
+                                            <span
+                                                className={
+                                                    styles.tutorExperience
+                                                }
+                                            >
+                                                📚 {tutor.experience_years || 0}{" "}
+                                                years experience
                                             </span>
-                                            <span className={styles.tutorRating}>
-                                                ⭐ {calculateAverageRating(tutor.ratings || [])}
+                                            <span
+                                                className={styles.tutorRating}
+                                            >
+                                                ⭐{" "}
+                                                {calculateAverageRating(
+                                                    tutor.ratings || [],
+                                                )}
                                             </span>
                                         </div>
                                         <div className={styles.statRow}>
-                                            <span className={styles.tutorCourses}>
-                                                🎓 {tutor.courses ? tutor.courses.length : 0} courses
+                                            <span
+                                                className={styles.tutorCourses}
+                                            >
+                                                🎓{" "}
+                                                {tutor.courses
+                                                    ? tutor.courses.length
+                                                    : 0}{" "}
+                                                courses
                                             </span>
                                             <span className={styles.tutorRate}>
                                                 💰 ${tutor.hourly_rate || 0}/hr
                                             </span>
                                         </div>
                                     </div>
-                                    
+
                                     <div className={styles.tutorFooter}>
                                         <span className={styles.tutorStatus}>
-                                            {tutor.courses && tutor.courses.length > 0 ? 
-                                                <span className={styles.activeStatus}>🟢 Active</span> : 
-                                                <span className={styles.inactiveStatus}>🔴 Inactive</span>
-                                            }
+                                            {tutor.courses &&
+                                            tutor.courses.length > 0 ? (
+                                                <span
+                                                    className={
+                                                        styles.activeStatus
+                                                    }
+                                                >
+                                                    🟢 Active
+                                                </span>
+                                            ) : (
+                                                <span
+                                                    className={
+                                                        styles.inactiveStatus
+                                                    }
+                                                >
+                                                    🔴 Inactive
+                                                </span>
+                                            )}
                                         </span>
                                         <span className={styles.tutorDate}>
-                                            Joined: {new Date(tutor.created_at).toLocaleDateString()}
+                                            Joined:{" "}
+                                            {new Date(
+                                                tutor.created_at,
+                                            ).toLocaleDateString()}
                                         </span>
                                     </div>
                                 </div>
@@ -626,29 +812,39 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
                     {/* Pagination */}
                     {totalPages > 1 && (
                         <div className={styles.pagination}>
-                            <button 
+                            <button
                                 className={styles.pageBtn}
-                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                onClick={() =>
+                                    setCurrentPage((prev) =>
+                                        Math.max(prev - 1, 1),
+                                    )
+                                }
                                 disabled={currentPage === 1}
                             >
                                 Previous
                             </button>
-                            
+
                             <div className={styles.pageNumbers}>
                                 {[...Array(totalPages)].map((_, index) => (
                                     <button
                                         key={index + 1}
-                                        className={`${styles.pageNumber} ${currentPage === index + 1 ? styles.active : ''}`}
-                                        onClick={() => setCurrentPage(index + 1)}
+                                        className={`${styles.pageNumber} ${currentPage === index + 1 ? styles.active : ""}`}
+                                        onClick={() =>
+                                            setCurrentPage(index + 1)
+                                        }
                                     >
                                         {index + 1}
                                     </button>
                                 ))}
                             </div>
 
-                            <button 
+                            <button
                                 className={styles.pageBtn}
-                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                onClick={() =>
+                                    setCurrentPage((prev) =>
+                                        Math.min(prev + 1, totalPages),
+                                    )
+                                }
                                 disabled={currentPage === totalPages}
                             >
                                 Next
@@ -673,7 +869,7 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
                         onClose={() => {
                             setShowTutorModal(false);
                             setSelectedTutor(null);
-                            setModalMode('view');
+                            setModalMode("view");
                         }}
                         onSave={handleSaveTutor}
                         setModalMode={setModalMode}
@@ -700,17 +896,28 @@ export default function TutorManagement({ tutors: initialTutors, users: initialU
 }
 
 // Tutor Details/Edit Modal Component
-function TutorModal({ tutor, mode, users, courses, onClose, onSave, setModalMode, createTutorCourse, deleteTutorCourse, updateTutorCourse }) {
+function TutorModal({
+    tutor,
+    mode,
+    users,
+    courses,
+    onClose,
+    onSave,
+    setModalMode,
+    createTutorCourse,
+    deleteTutorCourse,
+    updateTutorCourse,
+}) {
     const [formData, setFormData] = useState({
-        user_id: tutor?.user_id || '',
-        name: tutor?.name || '',
-        university: tutor?.university || '',
-        year: tutor?.year || '',
-        bio: tutor?.bio || '',
-        contact: tutor?.contact || '',
+        user_id: tutor?.user_id || "",
+        name: tutor?.name || "",
+        university: tutor?.university || "",
+        year: tutor?.year || "",
+        bio: tutor?.bio || "",
+        contact: tutor?.contact || "",
         experience_years: tutor?.experience_years || 0,
-        hourly_rate: tutor?.hourly_rate || '',
-        image: tutor?.image || ''
+        hourly_rate: tutor?.hourly_rate || "",
+        image: tutor?.image || "",
     });
     const [availability, setAvailability] = useState(tutor?.availability || []);
     const [tutorCourses, setTutorCourses] = useState(tutor?.courses || []);
@@ -720,7 +927,7 @@ function TutorModal({ tutor, mode, users, courses, onClose, onSave, setModalMode
     const availableUsers = users || [];
 
     const handleRemoveImage = () => {
-        setFormData(prev => ({ ...prev, image: '' }));
+        setFormData((prev) => ({ ...prev, image: "" }));
     };
 
     const handleImageChange = async (e) => {
@@ -728,24 +935,26 @@ function TutorModal({ tutor, mode, users, courses, onClose, onSave, setModalMode
         if (!file) return;
         setUploading(true);
         const formDataUpload = new FormData();
-        formDataUpload.append('image', file);
+        formDataUpload.append("image", file);
 
         try {
-            const response = await fetch('/admin/tutors/upload-image', {
-                method: 'POST',
+            const response = await fetch("/admin/tutors/upload-image", {
+                method: "POST",
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
                 },
-                body: formDataUpload
+                body: formDataUpload,
             });
             const data = await response.json();
             if (data.url) {
-                setFormData(prev => ({ ...prev, image: data.url }));
+                setFormData((prev) => ({ ...prev, image: data.url }));
             } else {
-                alert('Failed to upload image.');
+                alert("Failed to upload image.");
             }
         } catch (error) {
-            alert('Image upload failed.');
+            alert("Image upload failed.");
         } finally {
             setUploading(false);
         }
@@ -754,23 +963,27 @@ function TutorModal({ tutor, mode, users, courses, onClose, onSave, setModalMode
     const handleCourseAdd = async (e) => {
         const courseId = e.target.value;
         if (courseId) {
-            const course = courses.find(c => c.id === parseInt(courseId));
-            if (course && !tutorCourses.some(tc => tc.id === course.id)) {
+            const course = courses.find((c) => c.id === parseInt(courseId));
+            if (course && !tutorCourses.some((tc) => tc.id === course.id)) {
                 // If we're editing an existing tutor, make API call immediately
-                if (mode === 'edit' && tutor) {
+                if (mode === "edit" && tutor) {
                     try {
                         await createTutorCourse({
                             tutor_id: tutor.id,
-                            course_id: course.id
+                            course_id: course.id,
                         });
-                        console.log(`Course ${course.title} assigned to tutor successfully`);
+                        console.log(
+                            `Course ${course.title} assigned to tutor successfully`,
+                        );
                     } catch (error) {
-                        console.error('Error assigning course:', error);
-                        alert(`Failed to assign course: ${error.response?.data?.message || error.message}`);
+                        console.error("Error assigning course:", error);
+                        alert(
+                            `Failed to assign course: ${error.response?.data?.message || error.message}`,
+                        );
                         return; // Don't update local state if API call failed
                     }
                 }
-                
+
                 setTutorCourses([...tutorCourses, course]);
             }
         }
@@ -778,44 +991,51 @@ function TutorModal({ tutor, mode, users, courses, onClose, onSave, setModalMode
 
     const handleCourseRemove = async (index) => {
         const courseToRemove = tutorCourses[index];
-        
+
         // If we're editing an existing tutor, make API call immediately
-        if (mode === 'edit' && tutor && courseToRemove) {
+        if (mode === "edit" && tutor && courseToRemove) {
             try {
                 await deleteTutorCourse(courseToRemove.id, tutor.id);
-                console.log(`Course ${courseToRemove.title} unassigned from tutor successfully`);
+                console.log(
+                    `Course ${courseToRemove.title} unassigned from tutor successfully`,
+                );
             } catch (error) {
-                console.error('Error unassigning course:', error);
-                alert(`Failed to unassign course: ${error.response?.data?.message || error.message}`);
+                console.error("Error unassigning course:", error);
+                alert(
+                    `Failed to unassign course: ${error.response?.data?.message || error.message}`,
+                );
                 return; // Don't update local state if API call failed
             }
         }
-        
+
         setTutorCourses(tutorCourses.filter((_, i) => i !== index));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (mode === 'view') return;
-        
+        if (mode === "view") return;
+
         setLoading(true);
         try {
             // Include availability and courses data with the form data
             const completeData = {
                 ...formData,
                 availability: availability,
-                courses: tutorCourses.map(course => course.id)
+                courses: tutorCourses.map((course) => course.id),
             };
             await onSave(completeData);
         } catch (error) {
-            alert('Failed to save tutor. Please try again.');
+            alert("Failed to save tutor. Please try again.");
         } finally {
             setLoading(false);
         }
     };
 
     const handleAvailabilityAdd = () => {
-        setAvailability([...availability, { day: '', start_time: '', end_time: '' }]);
+        setAvailability([
+            ...availability,
+            { day: "", start_time: "", end_time: "" },
+        ]);
     };
 
     const handleAvailabilityRemove = (index) => {
@@ -823,139 +1043,208 @@ function TutorModal({ tutor, mode, users, courses, onClose, onSave, setModalMode
     };
 
     const handleAvailabilityChange = (index, field, value) => {
-        const updated = availability.map((slot, i) => 
-            i === index ? { ...slot, [field]: value } : slot
+        const updated = availability.map((slot, i) =>
+            i === index ? { ...slot, [field]: value } : slot,
         );
         setAvailability(updated);
     };
 
     const calculateAverageRating = (ratings) => {
-        if (!ratings || !Array.isArray(ratings) || ratings.length === 0) return '0.0';
-        const total = ratings.reduce((sum, rating) => sum + (rating?.rating || 0), 0);
+        if (!ratings || !Array.isArray(ratings) || ratings.length === 0)
+            return "0.0";
+        const total = ratings.reduce(
+            (sum, rating) => sum + (rating?.rating || 0),
+            0,
+        );
         return (total / ratings.length).toFixed(1);
     };
 
     return (
         <div className={styles.modalOverlay} onClick={onClose}>
-            <div className={styles.modal} onClick={e => e.stopPropagation()}>
+            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.modalHeader}>
                     <h2>
-                        {mode === 'view' ? 'Tutor Details' : 
-                         mode === 'edit' ? 'Edit Tutor' : 'Create New Tutor'}
+                        {mode === "view"
+                            ? "Tutor Details"
+                            : mode === "edit"
+                              ? "Edit Tutor"
+                              : "Create New Tutor"}
                     </h2>
-                    <button className={styles.closeBtn} onClick={onClose}>×</button>
+                    <button className={styles.closeBtn} onClick={onClose}>
+                        ×
+                    </button>
                 </div>
-                
-                {mode === 'view' ? (
+
+                {mode === "view" ? (
                     <div className={styles.tutorDetailsView}>
                         <div className={styles.tutorImageSection}>
                             {tutor.image || tutor.user?.avatar ? (
-                                <img src={tutor.image || tutor.user?.avatar} alt={tutor.name || tutor.user?.name} className={styles.tutorImageLarge} />
+                                <img
+                                    src={tutor.image || tutor.user?.avatar}
+                                    alt={tutor.name || tutor.user?.name}
+                                    className={styles.tutorImageLarge}
+                                />
                             ) : (
-                                <div className={styles.placeholderImageLarge}>👨‍🏫</div>
+                                <div className={styles.placeholderImageLarge}>
+                                    👨‍🏫
+                                </div>
                             )}
                         </div>
-                        
+
                         <div className={styles.tutorInfoGrid}>
                             <div className={styles.infoItem}>
                                 <label>Tutor ID</label>
                                 <span>#{tutor.id}</span>
                             </div>
-                            
+
                             <div className={styles.infoItem}>
                                 <label>Name</label>
-                                <span>{tutor.name || tutor.user?.name || 'N/A'}</span>
+                                <span>
+                                    {tutor.name || tutor.user?.name || "N/A"}
+                                </span>
                             </div>
-                            
+
                             <div className={styles.infoItem}>
                                 <label>Email</label>
-                                <span>{tutor.user?.email || 'N/A'}</span>
+                                <span>{tutor.user?.email || "N/A"}</span>
                             </div>
-                            
+
                             <div className={styles.infoItem}>
                                 <label>University</label>
-                                <span>{tutor.university || 'Not specified'}</span>
+                                <span>
+                                    {tutor.university || "Not specified"}
+                                </span>
                             </div>
-                            
+
                             <div className={styles.infoItem}>
                                 <label>Year</label>
-                                <span>{tutor.year || 'Not specified'}</span>
+                                <span>{tutor.year || "Not specified"}</span>
                             </div>
-                            
+
                             <div className={styles.infoItem}>
                                 <label>Experience</label>
                                 <span>{tutor.experience_years || 0} years</span>
                             </div>
-                            
+
                             <div className={styles.infoItem}>
                                 <label>Hourly Rate</label>
                                 <span>${tutor.hourly_rate || 0}/hour</span>
                             </div>
-                            
+
                             <div className={styles.infoItem}>
                                 <label>Contact</label>
-                                <span>{tutor.contact || 'Not provided'}</span>
+                                <span>{tutor.contact || "Not provided"}</span>
                             </div>
-                            
+
                             <div className={styles.infoItem}>
                                 <label>Average Rating</label>
-                                <span>⭐ {calculateAverageRating(tutor.ratings || [])} ({(tutor.ratings || []).length} reviews)</span>
+                                <span>
+                                    ⭐{" "}
+                                    {calculateAverageRating(
+                                        tutor.ratings || [],
+                                    )}{" "}
+                                    ({(tutor.ratings || []).length} reviews)
+                                </span>
                             </div>
-                            
+
                             <div className={styles.infoItem}>
                                 <label>Total Courses</label>
                                 <span>{tutor.courses?.length || 0}</span>
                             </div>
-                            
+
                             <div className={styles.infoItem}>
                                 <label>Bio</label>
-                                <span>{tutor.bio || 'No bio provided'}</span>
+                                <span>{tutor.bio || "No bio provided"}</span>
                             </div>
-                            
+
                             <div className={styles.infoItem}>
                                 <label>Created</label>
-                                <span>{new Date(tutor.created_at).toLocaleDateString()}</span>
+                                <span>
+                                    {new Date(
+                                        tutor.created_at,
+                                    ).toLocaleDateString()}
+                                </span>
                             </div>
                         </div>
 
                         {/* Availability Section */}
-                        {tutor.availability && tutor.availability.length > 0 && (
-                            <div className={styles.availabilitySection}>
-                                <h3>Availability</h3>
-                                <div className={styles.availabilityGrid}>
-                                    {tutor.availability.map((slot, index) => (
-                                        <div key={index} className={styles.availabilitySlot}>
-                                            <span className={styles.availabilityDay}>{slot.day}</span>
-                                            <span className={styles.availabilityTime}>
-                                                {slot.start_time} - {slot.end_time}
-                                            </span>
-                                        </div>
-                                    ))}
+                        {tutor.availability &&
+                            tutor.availability.length > 0 && (
+                                <div className={styles.availabilitySection}>
+                                    <h3>Availability</h3>
+                                    <div className={styles.availabilityGrid}>
+                                        {tutor.availability.map(
+                                            (slot, index) => (
+                                                <div
+                                                    key={index}
+                                                    className={
+                                                        styles.availabilitySlot
+                                                    }
+                                                >
+                                                    <span
+                                                        className={
+                                                            styles.availabilityDay
+                                                        }
+                                                    >
+                                                        {slot.day}
+                                                    </span>
+                                                    <span
+                                                        className={
+                                                            styles.availabilityTime
+                                                        }
+                                                    >
+                                                        {slot.start_time} -{" "}
+                                                        {slot.end_time}
+                                                    </span>
+                                                </div>
+                                            ),
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
 
                         {/* Courses Section */}
                         {tutor.courses && tutor.courses.length > 0 && (
                             <div className={styles.coursesSection}>
                                 <h3>Courses ({tutor.courses.length})</h3>
                                 <div className={styles.coursesGrid}>
-                                    {(tutor.courses || []).map((course, index) => (
-                                        <div key={index} className={styles.courseCard}>
-                                            <span className={styles.courseName}>{course.title || course.name}</span>
-                                            <span className={styles.courseCode}>{course.code}</span>
-                                        </div>
-                                    ))}
+                                    {(tutor.courses || []).map(
+                                        (course, index) => (
+                                            <div
+                                                key={index}
+                                                className={styles.courseCard}
+                                            >
+                                                <span
+                                                    className={
+                                                        styles.courseName
+                                                    }
+                                                >
+                                                    {course.title ||
+                                                        course.name}
+                                                </span>
+                                                <span
+                                                    className={
+                                                        styles.courseCode
+                                                    }
+                                                >
+                                                    {course.code}
+                                                </span>
+                                            </div>
+                                        ),
+                                    )}
                                 </div>
                             </div>
                         )}
-                        
+
                         <div className={styles.modalActions}>
-                            <button onClick={onClose} className={styles.cancelBtn}>
+                            <button
+                                onClick={onClose}
+                                className={styles.cancelBtn}
+                            >
                                 Close
                             </button>
-                            <button 
-                                onClick={() => setModalMode('edit')}
+                            <button
+                                onClick={() => setModalMode("edit")}
                                 className={styles.editFromViewBtn}
                             >
                                 Edit Tutor
@@ -969,120 +1258,177 @@ function TutorModal({ tutor, mode, users, courses, onClose, onSave, setModalMode
                                 <label>User Account *</label>
                                 <select
                                     value={formData.user_id}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, user_id: e.target.value }))}
+                                    onChange={(e) =>
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            user_id: e.target.value,
+                                        }))
+                                    }
                                     className={styles.modalSelect}
                                     required
-                                    disabled={mode === 'edit'}
+                                    disabled={mode === "edit"}
                                 >
                                     <option value="">
-                                        {availableUsers.length === 0 ? 
-                                            'No users available (check admin permissions)' : 
-                                            'Select a user'
-                                        }
+                                        {availableUsers.length === 0
+                                            ? "No users available (check admin permissions)"
+                                            : "Select a user"}
                                     </option>
-                                    {availableUsers.map(user => (
+                                    {availableUsers.map((user) => (
                                         <option key={user.id} value={user.id}>
                                             {user.name} ({user.email})
                                         </option>
                                     ))}
                                 </select>
                                 {availableUsers.length === 0 && (
-                                    <small style={{color: '#ff6b7a', fontSize: '0.8rem', marginTop: '5px', display: 'block'}}>
-                                        Unable to load users. Please ensure you have admin permissions and the backend is running.
+                                    <small
+                                        style={{
+                                            color: "#ff6b7a",
+                                            fontSize: "0.8rem",
+                                            marginTop: "5px",
+                                            display: "block",
+                                        }}
+                                    >
+                                        Unable to load users. Please ensure you
+                                        have admin permissions and the backend
+                                        is running.
                                     </small>
                                 )}
                             </div>
-                            
+
                             {availableUsers.length === 0 && (
                                 <div className={styles.formGroup}>
                                     <label>User ID (Manual Entry) *</label>
                                     <input
                                         type="number"
                                         value={formData.user_id}
-                                        onChange={(e) => setFormData(prev => ({ ...prev, user_id: e.target.value }))}
+                                        onChange={(e) =>
+                                            setFormData((prev) => ({
+                                                ...prev,
+                                                user_id: e.target.value,
+                                            }))
+                                        }
                                         className={styles.modalInput}
                                         placeholder="Enter user ID manually"
                                         required
                                         min="1"
                                     />
-                                    <small style={{color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', marginTop: '5px', display: 'block'}}>
-                                        Fallback: Enter the user ID number manually if user list doesn't load.
+                                    <small
+                                        style={{
+                                            color: "rgba(255,255,255,0.7)",
+                                            fontSize: "0.8rem",
+                                            marginTop: "5px",
+                                            display: "block",
+                                        }}
+                                    >
+                                        Fallback: Enter the user ID number
+                                        manually if user list doesn't load.
                                     </small>
                                 </div>
                             )}
-                            
+
                             <div className={styles.formGroup}>
                                 <label>Display Name</label>
                                 <input
                                     type="text"
                                     value={formData.name}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                                    onChange={(e) =>
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            name: e.target.value,
+                                        }))
+                                    }
                                     className={styles.modalInput}
                                     placeholder="Enter display name (optional)"
                                 />
                             </div>
-                            
+
                             <div className={styles.formGroup}>
                                 <label>University</label>
                                 <input
                                     type="text"
                                     value={formData.university}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, university: e.target.value }))}
+                                    onChange={(e) =>
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            university: e.target.value,
+                                        }))
+                                    }
                                     className={styles.modalInput}
                                     placeholder="Enter university name"
                                 />
                             </div>
-                            
+
                             <div className={styles.formGroup}>
                                 <label>Year</label>
                                 <input
                                     type="number"
                                     value={formData.year}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, year: e.target.value }))}
+                                    onChange={(e) =>
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            year: e.target.value,
+                                        }))
+                                    }
                                     className={styles.modalInput}
                                     placeholder="Enter academic year"
                                     min="1"
                                     max="10"
                                 />
                             </div>
-                            
+
                             <div className={styles.formGroup}>
                                 <label>Experience (Years)</label>
                                 <input
                                     type="number"
                                     value={formData.experience_years}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, experience_years: parseInt(e.target.value) || 0 }))}
+                                    onChange={(e) =>
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            experience_years:
+                                                parseInt(e.target.value) || 0,
+                                        }))
+                                    }
                                     className={styles.modalInput}
                                     placeholder="Years of teaching experience"
                                     min="0"
                                     max="50"
                                 />
                             </div>
-                            
+
                             <div className={styles.formGroup}>
                                 <label>Hourly Rate ($)</label>
                                 <input
                                     type="number"
                                     step="0.01"
                                     value={formData.hourly_rate}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, hourly_rate: e.target.value }))}
+                                    onChange={(e) =>
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            hourly_rate: e.target.value,
+                                        }))
+                                    }
                                     className={styles.modalInput}
                                     placeholder="Enter hourly rate"
                                     min="0"
                                 />
                             </div>
-                            
+
                             <div className={styles.formGroup}>
                                 <label>Contact</label>
                                 <input
                                     type="text"
                                     value={formData.contact}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, contact: e.target.value }))}
+                                    onChange={(e) =>
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            contact: e.target.value,
+                                        }))
+                                    }
                                     className={styles.modalInput}
                                     placeholder="Enter contact information"
                                 />
                             </div>
-                            
+
                             <div className={styles.formGroup}>
                                 <label>Profile Image</label>
                                 <input
@@ -1094,21 +1440,34 @@ function TutorModal({ tutor, mode, users, courses, onClose, onSave, setModalMode
                                 />
                                 {uploading && <span>Uploading...</span>}
                                 {formData.image && (
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                        <img src={formData.image} alt="Category" style={{ maxWidth: 80, marginTop: 8 }} />
-                                        
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: 8,
+                                        }}
+                                    >
+                                        <img
+                                            src={formData.image}
+                                            alt="Category"
+                                            style={{
+                                                maxWidth: 80,
+                                                marginTop: 8,
+                                            }}
+                                        />
+
                                         <button
                                             type="button"
                                             onClick={handleRemoveImage}
                                             className={styles.removeImageBtn}
                                             style={{
                                                 marginLeft: 8,
-                                                background: '#f44336',
-                                                color: '#fff',
-                                                border: 'none',
+                                                background: "#f44336",
+                                                color: "#fff",
+                                                border: "none",
                                                 borderRadius: 4,
-                                                padding: '4px 8px',
-                                                cursor: 'pointer'
+                                                padding: "4px 8px",
+                                                cursor: "pointer",
                                             }}
                                         >
                                             Remove Image
@@ -1117,12 +1476,17 @@ function TutorModal({ tutor, mode, users, courses, onClose, onSave, setModalMode
                                 )}
                             </div>
                         </div>
-                        
+
                         <div className={styles.formGroup}>
                             <label>Bio</label>
                             <textarea
                                 value={formData.bio}
-                                onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
+                                onChange={(e) =>
+                                    setFormData((prev) => ({
+                                        ...prev,
+                                        bio: e.target.value,
+                                    }))
+                                }
                                 className={styles.modalTextarea}
                                 placeholder="Enter tutor bio and qualifications"
                                 rows={4}
@@ -1133,8 +1497,8 @@ function TutorModal({ tutor, mode, users, courses, onClose, onSave, setModalMode
                         <div className={styles.availabilitySection}>
                             <div className={styles.sectionHeader}>
                                 <h3>Availability Schedule</h3>
-                                <button 
-                                    type="button" 
+                                <button
+                                    type="button"
                                     onClick={handleAvailabilityAdd}
                                     className={styles.addBtn}
                                 >
@@ -1143,37 +1507,76 @@ function TutorModal({ tutor, mode, users, courses, onClose, onSave, setModalMode
                             </div>
                             <div className={styles.availabilityGrid}>
                                 {availability.map((slot, index) => (
-                                    <div key={index} className={styles.availabilitySlot}>
+                                    <div
+                                        key={index}
+                                        className={styles.availabilitySlot}
+                                    >
                                         <select
-                                            value={slot.day || ''}
-                                            onChange={(e) => handleAvailabilityChange(index, 'day', e.target.value)}
+                                            value={slot.day || ""}
+                                            onChange={(e) =>
+                                                handleAvailabilityChange(
+                                                    index,
+                                                    "day",
+                                                    e.target.value,
+                                                )
+                                            }
                                             className={styles.availabilityDay}
                                         >
                                             <option value="">Select Day</option>
-                                            <option value="Monday">Monday</option>
-                                            <option value="Tuesday">Tuesday</option>
-                                            <option value="Wednesday">Wednesday</option>
-                                            <option value="Thursday">Thursday</option>
-                                            <option value="Friday">Friday</option>
-                                            <option value="Saturday">Saturday</option>
-                                            <option value="Sunday">Sunday</option>
+                                            <option value="Monday">
+                                                Monday
+                                            </option>
+                                            <option value="Tuesday">
+                                                Tuesday
+                                            </option>
+                                            <option value="Wednesday">
+                                                Wednesday
+                                            </option>
+                                            <option value="Thursday">
+                                                Thursday
+                                            </option>
+                                            <option value="Friday">
+                                                Friday
+                                            </option>
+                                            <option value="Saturday">
+                                                Saturday
+                                            </option>
+                                            <option value="Sunday">
+                                                Sunday
+                                            </option>
                                         </select>
                                         <input
                                             type="time"
-                                            value={slot.start_time || ''}
-                                            onChange={(e) => handleAvailabilityChange(index, 'start_time', e.target.value)}
+                                            value={slot.start_time || ""}
+                                            onChange={(e) =>
+                                                handleAvailabilityChange(
+                                                    index,
+                                                    "start_time",
+                                                    e.target.value,
+                                                )
+                                            }
                                             className={styles.availabilityTime}
                                         />
-                                        <span className={styles.timeSeparator}>to</span>
+                                        <span className={styles.timeSeparator}>
+                                            to
+                                        </span>
                                         <input
                                             type="time"
-                                            value={slot.end_time || ''}
-                                            onChange={(e) => handleAvailabilityChange(index, 'end_time', e.target.value)}
+                                            value={slot.end_time || ""}
+                                            onChange={(e) =>
+                                                handleAvailabilityChange(
+                                                    index,
+                                                    "end_time",
+                                                    e.target.value,
+                                                )
+                                            }
                                             className={styles.availabilityTime}
                                         />
                                         <button
                                             type="button"
-                                            onClick={() => handleAvailabilityRemove(index)}
+                                            onClick={() =>
+                                                handleAvailabilityRemove(index)
+                                            }
                                             className={styles.removeBtn}
                                         >
                                             ×
@@ -1181,7 +1584,9 @@ function TutorModal({ tutor, mode, users, courses, onClose, onSave, setModalMode
                                     </div>
                                 ))}
                                 {availability.length === 0 && (
-                                    <p className={styles.emptyMessage}>No availability slots added</p>
+                                    <p className={styles.emptyMessage}>
+                                        No availability slots added
+                                    </p>
                                 )}
                             </div>
                         </div>
@@ -1196,18 +1601,29 @@ function TutorModal({ tutor, mode, users, courses, onClose, onSave, setModalMode
                                     value=""
                                 >
                                     <option value="">+ Assign Course</option>
-                                    {courses.filter(course => 
-                                        !tutorCourses.some(tc => tc.id === course.id)
-                                    ).map(course => (
-                                        <option key={course.id} value={course.id}>
-                                            {course.title} ({course.code})
-                                        </option>
-                                    ))}
+                                    {courses
+                                        .filter(
+                                            (course) =>
+                                                !tutorCourses.some(
+                                                    (tc) => tc.id === course.id,
+                                                ),
+                                        )
+                                        .map((course) => (
+                                            <option
+                                                key={course.id}
+                                                value={course.id}
+                                            >
+                                                {course.title} ({course.code})
+                                            </option>
+                                        ))}
                                 </select>
                             </div>
                             <div className={styles.coursesList}>
                                 {tutorCourses.map((course, index) => (
-                                    <div key={course.id || index} className={styles.courseItem}>
+                                    <div
+                                        key={course.id || index}
+                                        className={styles.courseItem}
+                                    >
                                         <span className={styles.courseTitle}>
                                             {course.title || course.name}
                                         </span>
@@ -1216,7 +1632,9 @@ function TutorModal({ tutor, mode, users, courses, onClose, onSave, setModalMode
                                         </span>
                                         <button
                                             type="button"
-                                            onClick={() => handleCourseRemove(index)}
+                                            onClick={() =>
+                                                handleCourseRemove(index)
+                                            }
                                             className={styles.removeBtn}
                                         >
                                             ×
@@ -1224,17 +1642,31 @@ function TutorModal({ tutor, mode, users, courses, onClose, onSave, setModalMode
                                     </div>
                                 ))}
                                 {tutorCourses.length === 0 && (
-                                    <p className={styles.emptyMessage}>No courses assigned</p>
+                                    <p className={styles.emptyMessage}>
+                                        No courses assigned
+                                    </p>
                                 )}
                             </div>
                         </div>
-                        
+
                         <div className={styles.modalActions}>
-                            <button type="button" onClick={onClose} className={styles.cancelBtn}>
+                            <button
+                                type="button"
+                                onClick={onClose}
+                                className={styles.cancelBtn}
+                            >
                                 Cancel
                             </button>
-                            <button type="submit" disabled={loading} className={styles.saveBtn}>
-                                {loading ? 'Saving...' : (mode === 'create' ? 'Create Tutor' : 'Save Changes')}
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className={styles.saveBtn}
+                            >
+                                {loading
+                                    ? "Saving..."
+                                    : mode === "create"
+                                      ? "Create Tutor"
+                                      : "Save Changes"}
                             </button>
                         </div>
                     </form>
@@ -1256,32 +1688,47 @@ function DeleteConfirmationModal({ tutor, onConfirm, onCancel }) {
 
     return (
         <div className={styles.modalOverlay} onClick={onCancel}>
-            <div className={styles.deleteModal} onClick={e => e.stopPropagation()}>
+            <div
+                className={styles.deleteModal}
+                onClick={(e) => e.stopPropagation()}
+            >
                 <div className={styles.deleteModalHeader}>
                     <h2>Confirm Delete</h2>
                 </div>
-                
+
                 <div className={styles.deleteModalContent}>
                     <p>Are you sure you want to delete this tutor?</p>
                     <div className={styles.tutorPreview}>
-                        <strong>{tutor.name || tutor.user?.name || 'Unknown Tutor'}</strong><br />
-                        <span>{tutor.university || 'No university'}</span><br />
-                        <span>Courses: {tutor.courses ? tutor.courses.length : 0}</span><br />
-                        <span>Experience: {tutor.experience_years || 0} years</span>
+                        <strong>
+                            {tutor.name || tutor.user?.name || "Unknown Tutor"}
+                        </strong>
+                        <br />
+                        <span>{tutor.university || "No university"}</span>
+                        <br />
+                        <span>
+                            Courses: {tutor.courses ? tutor.courses.length : 0}
+                        </span>
+                        <br />
+                        <span>
+                            Experience: {tutor.experience_years || 0} years
+                        </span>
                     </div>
-                    <p className={styles.warning}>This action cannot be undone and will affect associated courses and ratings.</p>
+                    <p className={styles.warning}>
+                        This action cannot be undone and will affect associated
+                        courses and ratings.
+                    </p>
                 </div>
-                
+
                 <div className={styles.deleteModalActions}>
                     <button onClick={onCancel} className={styles.cancelBtn}>
                         Cancel
                     </button>
-                    <button 
-                        onClick={handleConfirm} 
-                        disabled={loading} 
+                    <button
+                        onClick={handleConfirm}
+                        disabled={loading}
                         className={styles.deleteConfirmBtn}
                     >
-                        {loading ? 'Deleting...' : 'Delete Tutor'}
+                        {loading ? "Deleting..." : "Delete Tutor"}
                     </button>
                 </div>
             </div>
