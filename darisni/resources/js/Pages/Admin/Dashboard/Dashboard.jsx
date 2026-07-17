@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { usePage, Link } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import styles from './Dashboard.module.css';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Dashboard() {
-    const { auth } = usePage().props;
-    const user = auth.user;
+    const { user } = useAuth();
     const [stats, setStats] = useState({
         totalUsers: 0,
         totalCourses: 0,

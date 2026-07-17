@@ -1,17 +1,18 @@
 import { Transition } from "@headlessui/react";
-import { Link, useForm, usePage } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 import ProfileButton from "@/Components/Profile/ProfileButton/ProfileButton";
 import ProfileInput from "@/Components/Profile/ProfileInput/ProfileInput";
 import formStyles from "../../../../Components/Profile/ProfileForm.module.css";
 import styles from "./UpdateProfileInformationForm.module.css";
 import { updateProfileInformation } from "@/services/profileService";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
     status,
     className = "",
 }) {
-    const user = usePage().props.auth.user;
+    const { user } = useAuth();
 
     const { data, setData, errors, processing, recentlySuccessful } =
         useForm({

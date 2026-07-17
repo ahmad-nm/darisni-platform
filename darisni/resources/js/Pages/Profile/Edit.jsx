@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Head, usePage, router } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { Navbar } from '../../Components/navBar/nav';
 import DeleteUserForm from './Components/DeleteUserForm/DeleteUserForm';
 import UpdatePasswordForm from './Components/UpdatePasswordForm/UpdatePasswordForm';
@@ -7,10 +7,10 @@ import UpdateProfileInformationForm from './Components/UpdateProfileInfo/UpdateP
 import style from './Edit.module.css';
 import ProfileHeader from './Components/ProfileHeader/ProfileHeader';
 import SectionCard from './Components/SectionCard/SectionCard';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Edit({ mustVerifyEmail, status }) {
-    const { auth } = usePage().props;
-    const user = auth?.user;
+    const { user } = useAuth();
     const fileInputRef = useRef();
 
     const handleAddImage = () => {

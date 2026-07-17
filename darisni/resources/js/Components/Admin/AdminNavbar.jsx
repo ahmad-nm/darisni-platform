@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link, usePage, router } from '@inertiajs/react';
 import styles from './AdminNavbar.module.css';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function AdminNavbar() {
-    const { auth, url } = usePage().props;
-    const user = auth.user;
+    const { url } = usePage().props;
+    const { user } = useAuth();
     const currentUrl = url || '';
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
