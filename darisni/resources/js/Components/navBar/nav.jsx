@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import style from './nav.module.css';
-// import logo from '../../assets/logo.png';
-import { Link, usePage, router } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { route } from 'ziggy-js';
+import { useAuth } from '@/contexts/AuthContext';
+import { logout } from '@/services/authService';
 
 export function Navbar(){
-    const { auth } = usePage().props;
-    const user = auth?.user;
+    const { user, setUser } = useAuth()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const toggleMobileMenu = () => {
@@ -17,8 +17,20 @@ export function Navbar(){
         setIsMobileMenuOpen(false);
     };
 
-    const handleLogout = () => {
-        router.post(route('logout'));
+    const handleLogout = async () => {
+        try {
+            logout({
+                onSuccess: () => {
+                    setUser(null);
+                    router.visit(route('login'));
+                },
+                onError: (error) => {
+                    console.error('Logout failed:', error);
+                },
+            });
+        } catch (error) {
+            console.error('An unexpected error occurred during logout:', error);
+        }
     };
 
     useEffect(() => {

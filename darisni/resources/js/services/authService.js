@@ -1,46 +1,29 @@
 import { router } from "@inertiajs/react";
 
-export function login(data) {
-    return new Promise((resolve, reject) => {
-        router.post(route("login"), data, {
-            onSuccess: resolve,
-            onError: reject,
-        });
-    });
+export function login(data, options = {}) {
+    return router.post(route("login"), data, options);
 }
 
-export function register(data) {
-    return new Promise((resolve, reject) => {
-        router.post(route("register"), data, {
-            onSuccess: resolve,
-            onError: reject,
-        });
-    });
+
+export function register(data, options = {}) {
+    return router.post(route("register"), data, options);
 }
 
-export function forgotPassword(data) {
-    return new Promise((resolve, reject) => {
-        router.post(route("password.email"), data, {
-            onSuccess: resolve,
-            onError: reject,
-        });
-    });
+
+export function forgotPassword(data, options = {}) {
+    return router.post(route("password.email"), data, options);
 }
 
-export function resetPassword(data) {
-    return new Promise((resolve, reject) => {
-        router.post(route("password.store"), data, {
-            onSuccess: resolve,
-            onError: reject,
-        });
-    });
+
+export function resetPassword(data, options = {}) {
+    return router.post(route("password.store"), data, options);
 }
 
-export function resendVerificationEmail() {
-    return new Promise((resolve, reject) => {
-        router.post(route("verification.send"), {}, {
-            onSuccess: resolve,
-            onError: reject,
-        });
-    });
+
+export function resendVerificationEmail(options = {}) {
+    return router.post(route("verification.send"), {}, options);
+}
+
+export function logout(options = {}) {
+    return router.post(route("logout"), {}, options);
 }

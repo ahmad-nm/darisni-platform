@@ -1,15 +1,21 @@
-import React, { useState } from 'react';
-import { useAuth } from '../../Context/AuthContext';
-import { router } from '@inertiajs/react';
-import styles from './RatingModal.module.css';
-import { submitRating } from '@/services/ratingService';
+import React, { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
+import { router } from "@inertiajs/react";
+import styles from "./RatingModal.module.css";
+import { submitRating } from "@/services/ratingService";
 
-export function RatingModal({ isOpen, onClose, type, subject, onRatingSubmitted }) {
+export function RatingModal({
+    isOpen,
+    onClose,
+    type,
+    subject,
+    onRatingSubmitted,
+}) {
     const [rating, setRating] = useState(0);
     const [hoveredRating, setHoveredRating] = useState(0);
-    const [feedback, setFeedback] = useState('');
+    const [feedback, setFeedback] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [error, setError] = useState('');
+    const [error, setError] = useState("");
     const { user } = useAuth();
 
     const handleStarClick = (starRating) => {
@@ -58,8 +64,7 @@ export function RatingModal({ isOpen, onClose, type, subject, onRatingSubmitted 
             console.error(errors);
 
             setError(
-                errors.message ||
-                    "Failed to submit rating. Please try again."
+                errors.message || "Failed to submit rating. Please try again.",
             );
         } finally {
             setIsSubmitting(false);
@@ -70,38 +75,52 @@ export function RatingModal({ isOpen, onClose, type, subject, onRatingSubmitted 
         if (!isSubmitting) {
             setRating(0);
             setHoveredRating(0);
-            setFeedback('');
-            setError('');
+            setFeedback("");
+            setError("");
             onClose();
         }
     };
 
     const getTypeIcon = () => {
         switch (type) {
-            case 'course': return '📚';
-            case 'tutor': return '👨‍🏫';
-            case 'darisni': return '🏢';
-            default: return '⭐';
+            case "course":
+                return "📚";
+            case "tutor":
+                return "👨‍🏫";
+            case "darisni":
+                return "🏢";
+            default:
+                return "⭐";
         }
     };
 
     const getTypeLabel = () => {
         switch (type) {
-            case 'course': return 'Course';
-            case 'tutor': return 'Tutor';
-            case 'darisni': return 'Platform';
-            default: return 'Rating';
+            case "course":
+                return "Course";
+            case "tutor":
+                return "Tutor";
+            case "darisni":
+                return "Platform";
+            default:
+                return "Rating";
         }
     };
 
     const getRatingText = (stars) => {
         switch (stars) {
-            case 1: return 'Poor';
-            case 2: return 'Fair';
-            case 3: return 'Good';
-            case 4: return 'Very Good';
-            case 5: return 'Excellent';
-            default: return '';
+            case 1:
+                return "Poor";
+            case 2:
+                return "Fair";
+            case 3:
+                return "Good";
+            case 4:
+                return "Very Good";
+            case 5:
+                return "Excellent";
+            default:
+                return "";
         }
     };
 
@@ -109,17 +128,22 @@ export function RatingModal({ isOpen, onClose, type, subject, onRatingSubmitted 
 
     return (
         <div className={styles.modalOverlay} onClick={handleClose}>
-            <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+            <div
+                className={styles.modalContent}
+                onClick={(e) => e.stopPropagation()}
+            >
                 <div className={styles.modalHeader}>
                     <div className={styles.headerInfo}>
                         <span className={styles.typeIcon}>{getTypeIcon()}</span>
                         <div>
                             <h3>Rate {getTypeLabel()}</h3>
-                            <p className={styles.subjectName}>{subject?.title || subject?.name}</p>
+                            <p className={styles.subjectName}>
+                                {subject?.title || subject?.name}
+                            </p>
                         </div>
                     </div>
-                    <button 
-                        className={styles.closeBtn} 
+                    <button
+                        className={styles.closeBtn}
                         onClick={handleClose}
                         disabled={isSubmitting}
                     >
@@ -136,7 +160,9 @@ export function RatingModal({ isOpen, onClose, type, subject, onRatingSubmitted 
                                     key={star}
                                     type="button"
                                     className={`${styles.star} ${
-                                        star <= (hoveredRating || rating) ? styles.starFilled : styles.starEmpty
+                                        star <= (hoveredRating || rating)
+                                            ? styles.starFilled
+                                            : styles.starEmpty
                                     }`}
                                     onClick={() => handleStarClick(star)}
                                     onMouseEnter={() => handleStarHover(star)}
@@ -155,7 +181,10 @@ export function RatingModal({ isOpen, onClose, type, subject, onRatingSubmitted 
                     </div>
 
                     <div className={styles.feedbackSection}>
-                        <label htmlFor="feedback" className={styles.feedbackLabel}>
+                        <label
+                            htmlFor="feedback"
+                            className={styles.feedbackLabel}
+                        >
                             Share your experience (optional)
                         </label>
                         <textarea
@@ -174,9 +203,7 @@ export function RatingModal({ isOpen, onClose, type, subject, onRatingSubmitted 
                     </div>
 
                     {error && (
-                        <div className={styles.errorMessage}>
-                            {error}
-                        </div>
+                        <div className={styles.errorMessage}>{error}</div>
                     )}
 
                     <div className={styles.modalActions}>
@@ -193,7 +220,7 @@ export function RatingModal({ isOpen, onClose, type, subject, onRatingSubmitted 
                             className={styles.submitBtn}
                             disabled={isSubmitting || rating === 0}
                         >
-                            {isSubmitting ? 'Submitting...' : 'Submit Rating'}
+                            {isSubmitting ? "Submitting..." : "Submit Rating"}
                         </button>
                     </div>
                 </form>
