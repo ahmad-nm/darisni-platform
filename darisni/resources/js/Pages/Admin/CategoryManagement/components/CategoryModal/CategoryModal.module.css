@@ -1,0 +1,259 @@
+/* Modal Styles */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modalHeader h2 {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.closeBtn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.closeBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* Modal Form */
+.modalForm {
+    padding: 30px;
+}
+
+.formGroup {
+    margin-bottom: 20px;
+}
+
+.formGroup label {
+    display: block;
+    color: #4facfe;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.modalInput,
+.modalTextarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.modalInput::placeholder,
+.modalTextarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.modalInput:focus,
+.modalTextarea:focus {
+    outline: none;
+    border-color: #4facfe;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
+}
+
+.modalTextarea {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+.modalCheckbox {
+    accent-color: #667eea;
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+    border: 2px solid #667eea;
+    background: rgba(255,255,255,0.1);
+    margin-right: 8px;
+    cursor: pointer;
+    vertical-align: middle;
+    transition: box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(102,126,234,0.15);
+}
+
+/* Category Details View */
+.categoryDetailsView {
+    padding: 30px;
+}
+
+.categoryImageSection {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.categoryImageLarge {
+    max-width: 200px;
+    max-height: 150px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.placeholderImageLarge {
+    width: 200px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0 auto;
+}
+
+.categoryInfoGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.infoItem {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.infoItem label {
+    color: #4facfe;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.infoItem span {
+    color: white;
+    font-size: 1rem;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Modal Actions */
+.modalActions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cancelBtn,
+.saveBtn,
+.editFromViewBtn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.cancelBtn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cancelBtn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.saveBtn,
+.editFromViewBtn {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+}
+
+.saveBtn:hover,
+.editFromViewBtn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+}
+
+.saveBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+@media(max-width:768px){
+    .modalActions {
+        flex-direction:column;
+    }
+
+    .modalHeader {
+        padding:20px;
+    }
+
+    .modalForm,
+    .categoryDetailsView {
+        padding:20px;
+    }
+}
+
+@media(max-width:480px){
+    .modal {
+        margin:10px;
+        max-width:calc(100% - 20px);
+    }
+}

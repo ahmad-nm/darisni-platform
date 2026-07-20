@@ -1,0 +1,135 @@
+.categoryCard {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+}
+
+.categoryCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 45px rgba(31, 38, 135, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.nonVisible {
+    opacity: 0.5;
+    filter: grayscale(0.7);
+    position: relative;
+}
+
+.nonVisibleBadge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #ff4757;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(255,71,87,0.15);
+}
+
+.categoryHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.categoryId {
+    color: #4facfe;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.categoryActions {
+    display: flex;
+    gap: 8px;
+}
+
+.actionBtn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.actionBtn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.categoryImage {
+    height: 150px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.categoryImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.placeholderImage {
+    font-size: 3rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.categoryContent {
+    padding: 20px;
+}
+
+.categoryName {
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+    line-height: 1.3;
+}
+
+.categoryDescription {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0 0 15px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.categoryStats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 0.8rem;
+}
+
+.coursesCount {
+    color: #4facfe;
+    font-weight: 600;
+}
+
+.categoryDate {
+    color: rgba(255, 255, 255, 0.6);
+}
