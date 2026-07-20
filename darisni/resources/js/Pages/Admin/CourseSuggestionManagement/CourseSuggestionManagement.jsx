@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import AdminLayout from "../../../layouts/AdminLayout";
 import style from "./CourseSuggestionManagement.module.css";
+import { deleteCourseSuggestion } from "@/services/admin/courseSuggestionService";
 
 export default function CourseSuggestionManagement({ suggestions = [] }) {
     const [search, setSearch] = useState("");
@@ -42,27 +43,22 @@ export default function CourseSuggestionManagement({ suggestions = [] }) {
 
     // Delete handler (AJAX)
     const handleDelete = async (id) => {
-        if (!window.confirm("Are you sure you want to delete this suggestion?"))
+        if (!window.confirm("Are you sure you want to delete this suggestion?")) {
             return;
+        }
 
         try {
-            const res = await fetch(`/admin/course-suggestions/${id}`, {
-                method: "DELETE",
-                headers: {
-                    "X-CSRF-TOKEN": document
-                        .querySelector('meta[name="csrf-token"]')
-                        ?.getAttribute("content"),
-                    Accept: "application/json",
-                },
-            });
+            await deleteCourseSuggestion(id);
 
-            if (res.ok) {
-                setAllSuggestions((prev) => prev.filter((s) => s.id !== id));
-                if (selected && selected.id === id) closeModal();
-            } else {
-                alert("Failed to delete suggestion.");
+            setAllSuggestions((prev) =>
+                prev.filter((s) => s.id !== id)
+            );
+
+            if (selected?.id === id) {
+                closeModal();
             }
-        } catch {
+        } catch (error) {
+            console.error(error);
             alert("Failed to delete suggestion.");
         }
     };
