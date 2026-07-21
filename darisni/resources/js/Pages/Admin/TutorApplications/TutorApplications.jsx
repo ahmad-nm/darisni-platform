@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { router } from "@inertiajs/react";
 import AdminLayout from "../../../layouts/AdminLayout";
 import styles from "./TutorApplications.module.css";
 import { navigate } from "@/utils/navigationService";
 import { ROUTES } from "@/constants/routes";
+import { fetchApplications, updateApplicationStatus, deleteApplication, downloadCV } from "../../../services/admin/tutorApplicationsServices";
+import { getStatusBadge, getStatusStats, formatDate } from "../../../utils/tutorApplicationsHelpers";
+import ApplicationCard from "./components/ApplicationCard";
+import ApplicationModal from "./components/ApplicationModal";
+import ApplicationPagination from "./components/ApplicationPagination";
+import ApplicationStats from "./components/ApplicationStats";
+import ApplicationsFilters from "./components/ApplicationsFilters";
+import ApplicationsLoader from "./components/ApplicationsLoader";
 
 export default function TutorApplications() {
     const [applications, setApplications] = useState([]);
@@ -17,60 +24,48 @@ export default function TutorApplications() {
     const [selectedApplication, setSelectedApplication] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const applicationsPerPage = 8;
+    const stats = getStatusStats(applications);
 
     // Fetch applications from Laravel API
     useEffect(() => {
-        const fetchApplications = async () => {
+        const loadApplications = async () => {
             try {
                 setLoading(true);
-                const response = await fetch("/admin/applications/data", {
-                    method: "GET",
-                    headers: {
-                        Accept: "application/json",
-                        "X-Requested-With": "XMLHttpRequest",
-                        "X-CSRF-TOKEN":
-                            document
-                                .querySelector('meta[name="csrf-token"]')
-                                ?.getAttribute("content") || "",
-                    },
-                });
 
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success) {
-                        setDuplicateUserIds(data.duplicate_user_ids || []);
-                        const sortedApplications = data.applications
-                            .map((app) => ({
-                                ...app,
-                                status: app.status || "pending",
-                                isDuplicate: (data.duplicate_user_ids || [])
-                                    .map(String)
-                                    .includes(String(app.user_id)),
-                            }))
-                            .sort(
-                                (a, b) =>
-                                    new Date(b.submitted_at) -
-                                    new Date(a.submitted_at),
-                            );
-                        setApplications(sortedApplications);
-                        setFilteredApplications(sortedApplications);
-                    } else {
-                        setApplications([]);
-                        setFilteredApplications([]);
-                    }
+                const data = await fetchApplications();
+
+                if (data.success) {
+                    setDuplicateUserIds(data.duplicate_user_ids || []);
+
+                    const sortedApplications = data.applications
+                        .map((app) => ({
+                            ...app,
+                            status: app.status || "pending",
+                            isDuplicate: (data.duplicate_user_ids || [])
+                                .map(String)
+                                .includes(String(app.user_id)),
+                        }))
+                        .sort(
+                            (a, b) =>
+                                new Date(b.submitted_at) -
+                                new Date(a.submitted_at),
+                        );
+
+                    setApplications(sortedApplications);
+                    setFilteredApplications(sortedApplications);
                 } else {
                     setApplications([]);
                     setFilteredApplications([]);
                 }
             } catch (error) {
+                console.error(error);
                 setApplications([]);
                 setFilteredApplications([]);
             } finally {
                 setLoading(false);
             }
         };
-
-        fetchApplications();
+        loadApplications();
     }, []);
 
     // Search and filter functionality
@@ -119,44 +114,6 @@ export default function TutorApplications() {
         setSelectedApplication(null);
     };
 
-    const getStatusBadge = (status) => {
-        const badges = {
-            pending: { text: "Pending", className: "pendingBadge" },
-            approved: { text: "Approved", className: "acceptedBadge" },
-            rejected: { text: "Rejected", className: "rejectedBadge" },
-            under_review: { text: "Under Review", className: "pendingBadge" },
-        };
-        return badges[status] || badges.pending;
-    };
-
-    const getStatusStats = () => {
-        const stats = applications.reduce((acc, app) => {
-            acc[app.status] = (acc[app.status] || 0) + 1;
-            return acc;
-        }, {});
-        return {
-            total: applications.length,
-            pending: stats.pending || 0,
-            approved: stats.approved || 0,
-            rejected: stats.rejected || 0,
-        };
-    };
-
-    const formatDate = (dateString) => {
-        if (!dateString) return "No date";
-        try {
-            return new Date(dateString).toLocaleDateString("en-GB", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-            });
-        } catch {
-            return "Invalid date";
-        }
-    };
-
     const handleDownloadCV = (applicationId) => {
         window.open(`/admin/applications/${applicationId}/cv`, "_blank");
     };
@@ -173,36 +130,12 @@ export default function TutorApplications() {
             }
 
             // Get fresh CSRF token
-            const csrfToken = document
-                .querySelector('meta[name="csrf-token"]')
-                ?.getAttribute("content");
-
-            if (!csrfToken) {
-                alert(
-                    "Security token not found. Please refresh the page and try again.",
-                );
-                return;
-            }
-
-            // Update application status
-            const response = await fetch(
-                `/admin/applications/${selectedApplication.id}/status`,
-                {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
-                        "X-Requested-With": "XMLHttpRequest",
-                        "X-CSRF-TOKEN": csrfToken,
-                    },
-                    body: JSON.stringify({ status: "approved" }),
-                    credentials: "same-origin",
-                },
+            const data = await updateApplicationStatus(
+                selectedApplication.id,
+                "approved",
             );
 
-            const data = await response.json();
-
-            if (response.ok && data.success) {
+            if (data.success) {
                 // Update application status in frontend
                 const updatedApplications = applications.map((app) =>
                     app.id === selectedApplication.id
@@ -227,16 +160,10 @@ export default function TutorApplications() {
                 }
             } else {
                 console.error("Server response:", response.status, data);
-                if (response.status === 419) {
-                    alert(
-                        "Security token expired. Please refresh the page and try again.",
-                    );
-                } else {
-                    alert(
-                        "Failed to update application status: " +
-                            (data.message || "Unknown error"),
-                    );
-                }
+                alert(
+                    "Failed to update application status: " +
+                        (data.message || "Unknown error"),
+                );
             }
         } catch (error) {
             console.error("Error accepting application:", error);
@@ -253,35 +180,12 @@ export default function TutorApplications() {
 
         try {
             // Get fresh CSRF token
-            const csrfToken = document
-                .querySelector('meta[name="csrf-token"]')
-                ?.getAttribute("content");
-
-            if (!csrfToken) {
-                alert(
-                    "Security token not found. Please refresh the page and try again.",
-                );
-                return;
-            }
-
-            const response = await fetch(
-                `/admin/applications/${selectedApplication.id}/status`,
-                {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
-                        "X-Requested-With": "XMLHttpRequest",
-                        "X-CSRF-TOKEN": csrfToken,
-                    },
-                    body: JSON.stringify({ status: "rejected" }),
-                    credentials: "same-origin",
-                },
+            const data = await updateApplicationStatus(
+                selectedApplication.id,
+                "rejected",
             );
 
-            const data = await response.json();
-
-            if (response.ok && data.success) {
+            if (data.success) {
                 // Update application status in frontend
                 const updatedApplications = applications.map((app) =>
                     app.id === selectedApplication.id
@@ -304,16 +208,10 @@ export default function TutorApplications() {
                 }
             } else {
                 console.error("Server response:", response.status, data);
-                if (response.status === 419) {
-                    alert(
-                        "Security token expired. Please refresh the page and try again.",
-                    );
-                } else {
-                    alert(
-                        "Failed to update application status: " +
-                            (data.message || "Unknown error"),
-                    );
-                }
+                alert(
+                    "Failed to update application status: " +
+                        (data.message || "Unknown error"),
+                );
             }
         } catch (error) {
             console.error("Error rejecting application:", error);
@@ -335,36 +233,17 @@ export default function TutorApplications() {
         if (!confirmDelete) return;
 
         try {
-            const response = await fetch(
-                `/admin/applications/${selectedApplication.id}`,
-                {
-                    method: "DELETE",
-                    headers: {
-                        Accept: "application/json",
-                        "X-Requested-With": "XMLHttpRequest",
-                        "X-CSRF-TOKEN":
-                            document
-                                .querySelector('meta[name="csrf-token"]')
-                                ?.getAttribute("content") || "",
-                    },
-                },
-            );
+            const data = await deleteApplication(selectedApplication.id);
+            if (data.success) {
+                const updatedApplications = applications.filter(
+                    (app) => app.id !== selectedApplication.id,
+                );
 
-            if (response.ok) {
-                const data = await response.json();
-                if (data.success) {
-                    // Remove application from the local state
-                    const updatedApplications = applications.filter(
-                        (app) => app.id !== selectedApplication.id,
-                    );
-                    setApplications(updatedApplications);
+                setApplications(updatedApplications);
 
-                    alert("Application deleted successfully!");
-                } else {
-                    alert("Failed to delete application: " + data.message);
-                }
+                alert("Application deleted successfully!");
             } else {
-                alert("Failed to delete application.");
+                alert("Failed to delete application: " + data.message);
             }
         } catch (error) {
             console.error("Error deleting application:", error);
@@ -375,18 +254,7 @@ export default function TutorApplications() {
     };
 
     if (loading) {
-        return (
-            <AdminLayout>
-                <div className={styles.pageContainer}>
-                    <div className={styles.container}>
-                        <div className={styles.loadingContainer}>
-                            <div className={styles.spinner}></div>
-                            <p>Loading applications...</p>
-                        </div>
-                    </div>
-                </div>
-            </AdminLayout>
-        );
+        return <ApplicationsLoader />;
     }
 
     return (
@@ -412,82 +280,19 @@ export default function TutorApplications() {
                                     become tutors
                                 </p>
                             </div>
-                            <div className={styles.statsContainer}>
-                                <div className={styles.statCard}>
-                                    <span className={styles.statNumber}>
-                                        {getStatusStats().total}
-                                    </span>
-                                    <span className={styles.statLabel}>
-                                        Total
-                                    </span>
-                                </div>
-                                <div className={styles.statCard}>
-                                    <span className={styles.statNumber}>
-                                        {getStatusStats().pending}
-                                    </span>
-                                    <span className={styles.statLabel}>
-                                        Pending
-                                    </span>
-                                </div>
-                                <div className={styles.statCard}>
-                                    <span className={styles.statNumber}>
-                                        {getStatusStats().approved}
-                                    </span>
-                                    <span className={styles.statLabel}>
-                                        Approved
-                                    </span>
-                                </div>
-                                <div className={styles.statCard}>
-                                    <span className={styles.statNumber}>
-                                        {getStatusStats().rejected}
-                                    </span>
-                                    <span className={styles.statLabel}>
-                                        Rejected
-                                    </span>
-                                </div>
-                            </div>
+                            <ApplicationStats stats={stats} />
                         </div>
                     </div>
 
                     {/* Search and Filters */}
-                    <div className={styles.filtersContainer}>
-                        <div className={styles.searchContainer}>
-                            <input
-                                type="text"
-                                placeholder="Search by name, email, or university..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className={styles.searchInput}
-                            />
-                            <select
-                                value={statusFilter}
-                                onChange={(e) =>
-                                    setStatusFilter(e.target.value)
-                                }
-                                className={styles.statusFilter}
-                            >
-                                <option value="all">All Status</option>
-                                <option value="pending">Pending</option>
-                                <option value="approved">Approved</option>
-                                <option value="rejected">Rejected</option>
-                                <option value="under_review">
-                                    Under Review
-                                </option>
-                            </select>
-
-                            <label className={styles.duplicateFilterLabel}>
-                                <input
-                                    type="checkbox"
-                                    checked={showDuplicatesOnly}
-                                    onChange={(e) =>
-                                        setShowDuplicatesOnly(e.target.checked)
-                                    }
-                                    className={styles.duplicateFilterCheckbox}
-                                />
-                                Show only duplicate applications
-                            </label>
-                        </div>
-                    </div>
+                    <ApplicationsFilters
+                        searchQuery={searchQuery}
+                        setSearchQuery={setSearchQuery}
+                        statusFilter={statusFilter}
+                        setStatusFilter={setStatusFilter}
+                        showDuplicatesOnly={showDuplicatesOnly}
+                        setShowDuplicatesOnly={setShowDuplicatesOnly}
+                    />
 
                     {/* Applications Grid */}
                     {currentApplications.length === 0 ? (
@@ -504,579 +309,41 @@ export default function TutorApplications() {
                             <div className={styles.applicationsGrid}>
                                 {currentApplications.map(
                                     (application, index) => (
-                                        <div
+                                        <ApplicationCard
                                             key={
                                                 application.id ||
                                                 application.file_id ||
                                                 index
                                             }
-                                            className={styles.applicationCard}
-                                        >
-                                            <div className={styles.cardHeader}>
-                                                <h3
-                                                    className={
-                                                        styles.applicantName
-                                                    }
-                                                >
-                                                    {application.name}
-                                                </h3>
-
-                                                {application.isDuplicate && (
-                                                    <span
-                                                        className={
-                                                            styles.duplicateBadge
-                                                        }
-                                                    >
-                                                        Duplicate(
-                                                        {application.user_id})
-                                                    </span>
-                                                )}
-
-                                                <div
-                                                    className={`${styles.statusBadge} ${styles[getStatusBadge(application.status || "pending").className]}`}
-                                                >
-                                                    {
-                                                        getStatusBadge(
-                                                            application.status ||
-                                                                "pending",
-                                                        ).text
-                                                    }
-                                                </div>
-                                            </div>
-
-                                            <div className={styles.cardContent}>
-                                                <div
-                                                    className={
-                                                        styles.applicantInfo
-                                                    }
-                                                >
-                                                    <div
-                                                        className={
-                                                            styles.infoItem
-                                                        }
-                                                    >
-                                                        <span
-                                                            className={
-                                                                styles.infoLabel
-                                                            }
-                                                        >
-                                                            Email:
-                                                        </span>
-                                                        <span
-                                                            className={
-                                                                styles.infoValue
-                                                            }
-                                                        >
-                                                            {application.email}
-                                                        </span>
-                                                    </div>
-                                                    <div
-                                                        className={
-                                                            styles.infoItem
-                                                        }
-                                                    >
-                                                        <span
-                                                            className={
-                                                                styles.infoLabel
-                                                            }
-                                                        >
-                                                            University:
-                                                        </span>
-                                                        <span
-                                                            className={
-                                                                styles.infoValue
-                                                            }
-                                                        >
-                                                            {
-                                                                application.university
-                                                            }
-                                                        </span>
-                                                    </div>
-                                                    <div
-                                                        className={
-                                                            styles.infoItem
-                                                        }
-                                                    >
-                                                        <span
-                                                            className={
-                                                                styles.infoLabel
-                                                            }
-                                                        >
-                                                            Age:
-                                                        </span>
-                                                        <span
-                                                            className={
-                                                                styles.infoValue
-                                                            }
-                                                        >
-                                                            {application.age}
-                                                        </span>
-                                                    </div>
-                                                    <div
-                                                        className={
-                                                            styles.infoItem
-                                                        }
-                                                    >
-                                                        <span
-                                                            className={
-                                                                styles.infoLabel
-                                                            }
-                                                        >
-                                                            Expected Pay:
-                                                        </span>
-                                                        <span
-                                                            className={
-                                                                styles.infoValue
-                                                            }
-                                                        >
-                                                            $
-                                                            {
-                                                                application.expected_hourly_rate
-                                                            }
-                                                            /hour
-                                                        </span>
-                                                    </div>
-                                                    <div
-                                                        className={
-                                                            styles.infoItem
-                                                        }
-                                                    >
-                                                        <span
-                                                            className={
-                                                                styles.infoLabel
-                                                            }
-                                                        >
-                                                            CV:
-                                                        </span>
-                                                        <span
-                                                            className={`${styles.infoValue} ${application.cv_filename ? styles.cvAvailable : styles.cvNotAvailable}`}
-                                                        >
-                                                            {application.cv_filename
-                                                                ? "📄 Available"
-                                                                : "❌ Not uploaded"}
-                                                        </span>
-                                                    </div>
-                                                </div>
-
-                                                <div
-                                                    className={
-                                                        styles.coursesPreview
-                                                    }
-                                                >
-                                                    <span
-                                                        className={
-                                                            styles.coursesLabel
-                                                        }
-                                                    >
-                                                        Courses to teach:
-                                                    </span>
-                                                    <div
-                                                        className={
-                                                            styles.coursesList
-                                                        }
-                                                    >
-                                                        {(
-                                                            application.courses_to_give ||
-                                                            []
-                                                        )
-                                                            .slice(0, 3)
-                                                            .map(
-                                                                (
-                                                                    course,
-                                                                    idx,
-                                                                ) => (
-                                                                    <span
-                                                                        key={
-                                                                            idx
-                                                                        }
-                                                                        className={
-                                                                            styles.courseTag
-                                                                        }
-                                                                    >
-                                                                        {course}
-                                                                    </span>
-                                                                ),
-                                                            )}
-                                                        {(
-                                                            application.courses_to_give ||
-                                                            []
-                                                        ).length > 3 && (
-                                                            <span
-                                                                className={
-                                                                    styles.moreCoursesTag
-                                                                }
-                                                            >
-                                                                +
-                                                                {(
-                                                                    application.courses_to_give ||
-                                                                    []
-                                                                ).length -
-                                                                    3}{" "}
-                                                                more
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div className={styles.cardActions}>
-                                                <button
-                                                    className={
-                                                        styles.viewButton
-                                                    }
-                                                    onClick={() =>
-                                                        handleViewApplication(
-                                                            application,
-                                                        )
-                                                    }
-                                                >
-                                                    View Details
-                                                </button>
-                                            </div>
-                                        </div>
+                                            application={application}
+                                            onView={handleViewApplication}
+                                            getStatusBadge={getStatusBadge}
+                                        />
                                     ),
                                 )}
                             </div>
 
                             {/* Pagination */}
-                            {totalPages > 1 && (
-                                <div className={styles.pagination}>
-                                    <button
-                                        onClick={() =>
-                                            setCurrentPage((prev) =>
-                                                Math.max(prev - 1, 1),
-                                            )
-                                        }
-                                        disabled={currentPage === 1}
-                                        className={styles.paginationButton}
-                                    >
-                                        Previous
-                                    </button>
-
-                                    <div className={styles.pageNumbers}>
-                                        {Array.from(
-                                            { length: totalPages },
-                                            (_, i) => i + 1,
-                                        ).map((pageNum) => (
-                                            <button
-                                                key={pageNum}
-                                                onClick={() =>
-                                                    setCurrentPage(pageNum)
-                                                }
-                                                className={`${styles.pageNumber} ${currentPage === pageNum ? styles.active : ""}`}
-                                            >
-                                                {pageNum}
-                                            </button>
-                                        ))}
-                                    </div>
-
-                                    <button
-                                        onClick={() =>
-                                            setCurrentPage((prev) =>
-                                                Math.min(prev + 1, totalPages),
-                                            )
-                                        }
-                                        disabled={currentPage === totalPages}
-                                        className={styles.paginationButton}
-                                    >
-                                        Next
-                                    </button>
-                                </div>
-                            )}
+                            <ApplicationPagination
+                                currentPage={currentPage}
+                                setCurrentPage={setCurrentPage}
+                                totalPages={totalPages}
+                            />
                         </>
                     )}
 
                     {/* Application Details Modal */}
-                    {showModal && selectedApplication && (
-                        <div
-                            className={styles.modalOverlay}
-                            onClick={handleCloseModal}
-                        >
-                            <div
-                                className={styles.modalContent}
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                <div className={styles.modalHeader}>
-                                    <h2>Application Details</h2>
-                                    <button
-                                        className={styles.closeButton}
-                                        onClick={handleCloseModal}
-                                    >
-                                        ✕
-                                    </button>
-                                </div>
-
-                                <div className={styles.modalBody}>
-                                    <div className={styles.applicantDetails}>
-                                        <h3>Personal Information</h3>
-                                        <div className={styles.detailsGrid}>
-                                            <div className={styles.detailItem}>
-                                                <strong>Name:</strong>{" "}
-                                                {selectedApplication.name}
-                                            </div>
-                                            <div className={styles.detailItem}>
-                                                <strong>Email:</strong>{" "}
-                                                {selectedApplication.email}
-                                            </div>
-                                            <div className={styles.detailItem}>
-                                                <strong>Phone:</strong>{" "}
-                                                {selectedApplication.phone}
-                                            </div>
-                                            <div className={styles.detailItem}>
-                                                <strong>Age:</strong>{" "}
-                                                {selectedApplication.age}
-                                            </div>
-                                            <div className={styles.detailItem}>
-                                                <strong>University:</strong>{" "}
-                                                {selectedApplication.university}
-                                            </div>
-                                            <div className={styles.detailItem}>
-                                                <strong>Year:</strong>{" "}
-                                                {selectedApplication.year}
-                                            </div>
-                                            <div className={styles.detailItem}>
-                                                <strong>Expected Pay:</strong> $
-                                                {
-                                                    selectedApplication.expected_hourly_rate
-                                                }
-                                                /hour
-                                            </div>
-                                            <div className={styles.detailItem}>
-                                                <strong>User Status:</strong>
-                                                <span
-                                                    className={
-                                                        selectedApplication.user_id
-                                                            ? styles.userRegistered
-                                                            : styles.userNotRegistered
-                                                    }
-                                                >
-                                                    {selectedApplication.user_id
-                                                        ? " ✓ Registered User"
-                                                        : " ⚠️ Not Registered"}
-                                                </span>
-                                            </div>
-                                            <div className={styles.detailItem}>
-                                                <strong>
-                                                    Application Status:
-                                                </strong>
-                                                <span
-                                                    className={`${styles.statusBadge} ${styles[getStatusBadge(selectedApplication.status || "pending").className]}`}
-                                                >
-                                                    {
-                                                        getStatusBadge(
-                                                            selectedApplication.status ||
-                                                                "pending",
-                                                        ).text
-                                                    }
-                                                </span>
-                                            </div>
-                                            <div className={styles.detailItem}>
-                                                <strong>Submitted:</strong>{" "}
-                                                {formatDate(
-                                                    selectedApplication.submitted_at,
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className={styles.coursesSection}>
-                                        <h3>Courses to Teach</h3>
-                                        <div className={styles.coursesFullList}>
-                                            {(
-                                                selectedApplication.courses_to_give ||
-                                                []
-                                            ).map((course, idx) => (
-                                                <span
-                                                    key={idx}
-                                                    className={
-                                                        styles.courseTagLarge
-                                                    }
-                                                >
-                                                    {course}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    <div className={styles.questionsSection}>
-                                        <h3>Responses</h3>
-                                        <div className={styles.questionItem}>
-                                            <strong>
-                                                Where do you see yourself in the
-                                                future?
-                                            </strong>
-                                            <p>
-                                                {
-                                                    selectedApplication.where_you_see_yourself
-                                                }
-                                            </p>
-                                        </div>
-                                        <div className={styles.questionItem}>
-                                            <strong>
-                                                What makes you a good tutor?
-                                            </strong>
-                                            <p>
-                                                {
-                                                    selectedApplication.what_makes_good_tutor
-                                                }
-                                            </p>
-                                        </div>
-                                        {selectedApplication.other_courses && (
-                                            <div
-                                                className={styles.questionItem}
-                                            >
-                                                <strong>
-                                                    Other courses to teach:
-                                                </strong>
-                                                <p>
-                                                    {
-                                                        selectedApplication.other_courses
-                                                    }
-                                                </p>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <div className={styles.documentSection}>
-                                        <h3>Documents</h3>
-                                        {selectedApplication.cv_filename ? (
-                                            <div className={styles.cvContainer}>
-                                                <div className={styles.cvInfo}>
-                                                    <span
-                                                        className={
-                                                            styles.documentIcon
-                                                        }
-                                                    >
-                                                        📄
-                                                    </span>
-                                                    <div
-                                                        className={
-                                                            styles.cvDetails
-                                                        }
-                                                    >
-                                                        <span
-                                                            className={
-                                                                styles.cvLabel
-                                                            }
-                                                        >
-                                                            CV/Resume:
-                                                        </span>
-                                                        <span
-                                                            className={
-                                                                styles.cvFilename
-                                                            }
-                                                        >
-                                                            {
-                                                                selectedApplication.cv_filename
-                                                            }
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div
-                                                    className={styles.cvActions}
-                                                >
-                                                    <button
-                                                        className={
-                                                            styles.viewCVButton
-                                                        }
-                                                        onClick={() =>
-                                                            handleDownloadCV(
-                                                                selectedApplication.id,
-                                                            )
-                                                        }
-                                                    >
-                                                        📖 View CV
-                                                    </button>
-                                                    <button
-                                                        className={
-                                                            styles.downloadCVButton
-                                                        }
-                                                        onClick={() =>
-                                                            handleDownloadCV(
-                                                                selectedApplication.id,
-                                                            )
-                                                        }
-                                                    >
-                                                        📥 Download
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <div
-                                                className={styles.noCvContainer}
-                                            >
-                                                <span
-                                                    className={
-                                                        styles.documentIcon
-                                                    }
-                                                >
-                                                    ❌
-                                                </span>
-                                                <span
-                                                    className={styles.noCvText}
-                                                >
-                                                    No CV/Resume uploaded
-                                                </span>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-
-                                <div className={styles.modalActions}>
-                                    {(!selectedApplication.status ||
-                                        selectedApplication.status ===
-                                            "pending") && (
-                                        <>
-                                            <button
-                                                className={styles.acceptButton}
-                                                onClick={handleAcceptTutor}
-                                            >
-                                                Accept Application
-                                            </button>
-                                            <button
-                                                className={styles.rejectButton}
-                                                onClick={handleRejectTutor}
-                                            >
-                                                Reject Application
-                                            </button>
-                                        </>
-                                    )}
-                                    {selectedApplication.status ===
-                                        "approved" && (
-                                        <div className={styles.statusMessage}>
-                                            <span
-                                                className={
-                                                    styles.acceptedMessage
-                                                }
-                                            >
-                                                ✓ This application has been
-                                                approved
-                                            </span>
-                                        </div>
-                                    )}
-                                    {selectedApplication.status ===
-                                        "rejected" && (
-                                        <div className={styles.statusMessage}>
-                                            <span
-                                                className={
-                                                    styles.rejectedMessage
-                                                }
-                                            >
-                                                ✗ This application has been
-                                                rejected
-                                            </span>
-                                        </div>
-                                    )}
-                                    <button
-                                        className={styles.deleteButton}
-                                        onClick={handleDeleteApplication}
-                                    >
-                                        🗑️ Delete Application
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                    <ApplicationModal
+                        showModal={showModal}
+                        selectedApplication={selectedApplication}
+                        onClose={handleCloseModal}
+                        onAccept={handleAcceptTutor}
+                        onReject={handleRejectTutor}
+                        onDelete={handleDeleteApplication}
+                        onDownloadCV={downloadCV}
+                        formatDate={formatDate}
+                        getStatusBadge={getStatusBadge}
+                    />
                 </div>
             </div>
         </AdminLayout>
