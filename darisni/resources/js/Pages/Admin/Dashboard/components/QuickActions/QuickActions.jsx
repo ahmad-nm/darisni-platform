@@ -61,7 +61,7 @@ export const QuickActions = () => {
                 {actions.map((action, index) => (
                     <Link
                         key={action.route}
-                        to={route(action.route)}
+                        href={route(action.route)}
                         className={styles.actionCard}
                     >
                         <div className={styles.actionIcon}>{action.icon}</div>
