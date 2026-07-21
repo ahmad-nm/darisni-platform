@@ -75,7 +75,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
     Route::get('/users/stats', [\App\Http\Controllers\Admin\UserController::class, 'stats'])->name('users.stats');
-    
+    Route::post('/users/upload-image', [\App\Http\Controllers\Admin\UserController::class, 'uploadImage'])->name('users.uploadImage');
+
     // Course Management
     Route::get('/courses', [\App\Http\Controllers\Admin\CourseController::class, 'index'])->name('courses');
     Route::post('/courses', [\App\Http\Controllers\Admin\CourseController::class, 'store'])->name('courses.store');
