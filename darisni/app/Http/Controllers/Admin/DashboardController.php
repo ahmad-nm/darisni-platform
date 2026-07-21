@@ -71,7 +71,7 @@ class DashboardController extends Controller
                     'type' => 'user_registered',
                     'icon' => '👤',
                     'message' => "New user registered: <strong>{$user->name}</strong>",
-                    'formatted_time' => $user->created_at->diffForHumans(),
+                    'formatted_time' => $user->created_at?->diffForHumans() ?? 'Unknown',
                     'created_at' => $user->created_at,
                 ];
             });
@@ -86,8 +86,8 @@ class DashboardController extends Controller
                     'type' => 'course_created',
                     'icon' => '📚',
                     'message' => "Course created: <strong>{$course->title}</strong>",
-                    'formatted_time' => $course->created_at->diffForHumans(),
-                    'created_at' => $course->created_at,
+                    'formatted_time' => $course->created_at?->diffForHumans() ?? 'Unknown',
+                    'created_at' => $course->created_at ?? now(),
                 ];
             });
 
@@ -102,7 +102,7 @@ class DashboardController extends Controller
                     'type' => 'tutor_registered',
                     'icon' => '👨‍🏫',
                     'message' => "New tutor registered: <strong>{$tutor->user->name}</strong>",
-                    'formatted_time' => $tutor->created_at->diffForHumans(),
+                    'formatted_time' => $tutor->created_at?->diffForHumans() ?? 'Unknown',
                     'created_at' => $tutor->created_at,
                 ];
             });
@@ -118,7 +118,7 @@ class DashboardController extends Controller
                     'type' => 'review_submitted',
                     'icon' => '⭐',
                     'message' => "New review for <strong>{$review->tutor->user->name}</strong> ({$review->rating}/5 stars)",
-                    'formatted_time' => $review->created_at->diffForHumans(),
+                    'formatted_time' => $review->created_at?->diffForHumans() ?? 'Unknown',
                     'created_at' => $review->created_at,
                 ];
             });
@@ -133,7 +133,7 @@ class DashboardController extends Controller
                     'type' => 'category_created',
                     'icon' => '📂',
                     'message' => "Category created: <strong>{$category->name}</strong>",
-                    'formatted_time' => $category->created_at->diffForHumans(),
+                    'formatted_time' => $category->created_at?->diffForHumans() ?? 'Unknown',
                     'created_at' => $category->created_at,
                 ];
             });
