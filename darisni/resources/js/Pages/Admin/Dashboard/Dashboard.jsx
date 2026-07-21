@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import AdminLayout from "@/layouts/AdminLayout";
 import styles from "./Dashboard.module.css";
 import { useAuth } from "@/contexts/AuthContext";
-import { fetchDashboardData } from "../../../services/dashboardService";
+import { fetchDashboardData } from "../../../services/admin/dashboardService";
 import { StatsGrid } from "./components/StatsGrid/StatsGrid";
 import { QuickActions } from "./components/QuickActions/QuickActions";
 import { ActivitySection } from "./components/ActivitySection/ActivitySection";

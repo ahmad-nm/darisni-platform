@@ -4,7 +4,7 @@ import styles from "./newUser.module.css";
 import AdminLayout from "@/layouts/AdminLayout.jsx";
 import UserFormFields from "./components/UserFormFields.jsx";
 import FormActions from "./components/FormActions";
-import { createUser } from "../../../services/userService.js";
+import { createUser } from "../../../services/admin/userService.js";
 
 export default function NewUser() {
     const [formData, setFormData] = useState({
